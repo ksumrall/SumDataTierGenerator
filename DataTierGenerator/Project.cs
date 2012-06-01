@@ -21,6 +21,7 @@ namespace TSHOU.DataTierGenerator
         #region private and protected member variables
 
         private string m_FilePath = String.Empty;
+        private string m_ProjectName;
         private string m_DbProviderType = String.Empty;
         private string m_ConnectionString = String.Empty;
         private string m_Namespace = String.Empty;
@@ -94,6 +95,16 @@ namespace TSHOU.DataTierGenerator
             }
         }
 
+        public string ProjectName
+        {
+            get { return m_ProjectName; }
+            set
+            {
+                m_ProjectName = value;
+                OnChanged();
+            }
+        }
+
         [XmlAttribute]
         public string DbProviderType
         {
@@ -161,6 +172,32 @@ namespace TSHOU.DataTierGenerator
             }
         }
 
+        public MonitoredList<View> ViewList
+        {
+            get
+            {
+                return m_ViewList;
+            }
+            set
+            {
+                m_ViewList = value;
+                OnChanged();
+            }
+        }
+
+        public MonitoredList<Procedure> ProcedureList
+        {
+            get
+            {
+                return m_ProcedureList;
+            }
+            set
+            {
+                m_ProcedureList = value;
+                OnChanged();
+            }
+        }
+
         #endregion
 
         #region event handlers / overrides
@@ -187,6 +224,7 @@ namespace TSHOU.DataTierGenerator
             newProj.IsDirty = false;
             newProj.IsNew = false;
 
+            newProj.ProjectName = "New Project";
             newProj.DbProviderType = "";
             newProj.ConnectionString = "";
             newProj.Namespace = "";

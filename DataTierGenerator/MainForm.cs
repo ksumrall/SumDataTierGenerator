@@ -86,8 +86,9 @@ namespace TSHOU.DataTierGenerator
         {
             m_SqlConnectionSettingsModel = new SqlConnectionSettingsModel();
             m_MiscSettingsModel = new MiscSettingsModel();
-            m_Project = new Project();
+            m_Project = Project.Load();
             m_Project.Changed += new EventHandler<ChangedEventArgs<Project>>(m_Project_Changed);
+            LoadTree();
 
             m_TableList = new List<Table>();
 
@@ -302,7 +303,7 @@ namespace TSHOU.DataTierGenerator
             m_GuiProjectTree.Nodes.Clear();
 
             // Add Root
-            m_GuiProjectTree.Nodes.Add("Root", m_Project.OutputPath);
+            m_GuiProjectTree.Nodes.Add("Root", m_Project.ProjectName);
 
             // Add Configuration
             m_GuiProjectTree.Nodes["Root"].Nodes.Add("Configuration", "Configuration");
@@ -311,9 +312,9 @@ namespace TSHOU.DataTierGenerator
 
             // Add Schema
             m_GuiProjectTree.Nodes["Root"].Nodes.Add("Schema", "Schema");
-            m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes.Add("Tables", "Tables");
 
             // Add Schema Tables
+            m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes.Add("Tables", "Tables");
             foreach (Table table in m_Project.TableList)
             {
                 AddTableNode(m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes["Tables"], table);
@@ -321,54 +322,22 @@ namespace TSHOU.DataTierGenerator
 
             // Add Schema Views
             m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes.Add("Views", "Views");
+            foreach (View view in m_Project.ViewList)
+            {
+                AddViewNode(m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes["Views"], view);
+            }
 
             // Add Schema Stored Procedures
             m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes.Add("StoredProcedures", "Stored Procedures");
+            foreach (Procedure procedure in m_Project.ProcedureList)
+            {
+                AddProcedureNode(m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes["StoredProcedures"], procedure);
+            }
 
             // End
             m_GuiProjectTree.EndUpdate();
 
-
-            //// Build the connection string
-            //if (m_SqlConnectionSettingsModel.SqlServerAuthenticationType == SqlServerAuthenticationTypeEnumeration.Windows) {
-            //    connectionString = "Server=" + m_SqlConnectionSettingsModel.ServerName
-            //        + "; Database=" + m_SqlConnectionSettingsModel.DatabaseName + "; Integrated Security=sspi;";
-            //}
-            //else {
-            //    connectionString = "Server=" + m_SqlConnectionSettingsModel.ServerName
-            //        + "; Database=" + m_SqlConnectionSettingsModel.DatabaseName
-            //        + "; User ID=" + m_SqlConnectionSettingsModel.UserId
-            //        + "; Password=" + m_SqlConnectionSettingsModel.Password + ";";
-            //}
-
-            //List<Table> tableList;
-
-            // Generate the SQL and C# code
-            //SchemaGenerator gen = new SchemaGenerator ();
-
-            /*tableList = gen.GetTableSchemas(connectionString);
-            tableList.Sort(new Comparison<Table>(Table.CompareByProgrammaticAlias));
-
-            TreeNode node = m_GuiProjectTree.Nodes[0].Nodes["ProjectTableNode"];
-
-            foreach (Table table in tableList) {
-                AddTableNode(node, table);
-            }*/
-
-            //gen.TableList = m_Project.TableList;
-            //gen.ConnectionString = m_Project.ConnectionString;
-            //gen.DatalayerOutputPath = m_Project.OutputPath;
-            ////gen.BusinessLayerOutputPath = m_GuiBusinessLayerOutputDirectory.Text;
-
-            //gen.DataLayerNamespace = m_Project.Namespace;
-
-            //m_ProjectXmlDoc = gen.Generate();
-
-            //if (m_ProjectXmlDoc != null) {
-            //    this.saveAsToolStripMenuItem.Enabled = true;
-            //}
-
-            // Inform the user we're done
+            m_IsProjectLoaded = true;
 
         }
 
@@ -387,6 +356,26 @@ namespace TSHOU.DataTierGenerator
 
             node.Nodes.Add(tableNode);
 
+        }
+
+        private void AddViewNode(TreeNode treeNode, View view)
+        {
+
+            TreeNode node;
+
+            node = new TreeNode(view.Name);
+
+            foreach (Column column in view.Columns)
+            {
+                AddColumnNode(node, column);
+            }
+
+            treeNode.Nodes.Add(node);
+
+        }
+
+        private void AddProcedureNode(TreeNode node, Procedure procedure)
+        {
         }
 
         private void AddColumnNode(TreeNode node, Column column)
