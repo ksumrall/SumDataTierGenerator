@@ -1,4 +1,4 @@
-namespace TSHOU.DataTierGenerator.Controls {
+namespace TotalSafety.DataTierGenerator.Controls {
     partial class SqlServerLogin {
         /// <summary> 
         /// Required designer variable.
@@ -51,7 +51,7 @@ namespace TSHOU.DataTierGenerator.Controls {
             // 
             // sqlConnectionSettingsModelBindingSource
             // 
-            this.sqlConnectionSettingsModelBindingSource.DataSource = typeof (TSHOU.DataTierGenerator.MVP.SqlConnectionSettingsModel);
+            this.sqlConnectionSettingsModelBindingSource.DataSource = typeof (TotalSafety.DataTierGenerator.MVP.SqlConnectionSettingsModel);
             // 
             // m_GuiDatabaseCombo
             // 

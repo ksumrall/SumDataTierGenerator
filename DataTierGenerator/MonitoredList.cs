@@ -4,7 +4,8 @@ using System.Text;
 using System.Collections;
 using System.Xml.Serialization;
 
-namespace TSHOU.DataTierGenerator {
+namespace TotalSafety.DataTierGenerator {
+    
     public enum ChangeType {
         Added,
         Removed,
@@ -72,6 +73,7 @@ namespace TSHOU.DataTierGenerator {
         }
 
         #region IList<T> Members
+
         public int IndexOf (T item) {
             return m_inner.IndexOf (item);
         }
@@ -101,6 +103,7 @@ namespace TSHOU.DataTierGenerator {
                 }
             }
         }
+        
         #endregion
 
         #region ICollection<T> Members
@@ -142,18 +145,23 @@ namespace TSHOU.DataTierGenerator {
             }
             return result;
         }
+        
         #endregion
 
         #region IEnumerable<T> Members
+        
         public IEnumerator<T> GetEnumerator () {
             return m_inner.GetEnumerator ();
         }
+        
         #endregion
 
         #region IEnumerable Members
+        
         IEnumerator IEnumerable.GetEnumerator () {
             return m_inner.GetEnumerator ();
         }
+        
         #endregion
     }
 }

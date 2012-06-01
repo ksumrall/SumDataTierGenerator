@@ -7,9 +7,9 @@ using System.Data.SqlClient;
 using System.Text;
 using System.Windows.Forms;
 
-using TSHOU.DataTierGenerator.MVP;
+using TotalSafety.DataTierGenerator.MVP;
 
-namespace TSHOU.DataTierGenerator.Controls {
+namespace TotalSafety.DataTierGenerator.Controls {
 
     public partial class SqlServerLogin : UserControl {
 

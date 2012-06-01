@@ -1,4 +1,4 @@
-namespace TSHOU.DataTierGenerator {
+namespace TotalSafety.DataTierGenerator {
     partial class NewProjectWizard {
         /// <summary>
         /// Required designer variable.
@@ -35,7 +35,7 @@ namespace TSHOU.DataTierGenerator {
             this.m_GuiOutputPath = new System.Windows.Forms.TextBox();
             this.m_GuiOutputPathLabel = new System.Windows.Forms.Label();
             this.m_GuiDbLoginPage = new UtilityLibrary.Wizards.WizardPageBase();
-            this.m_GuiSqlLogin = new TSHOU.DataTierGenerator.Controls.SqlServerLogin();
+            this.m_GuiSqlLogin = new TotalSafety.DataTierGenerator.Controls.SqlServerLogin();
             this.m_GuiTablePage = new UtilityLibrary.Wizards.WizardPageBase();
             this.m_GuiDeSelectAllLabel = new System.Windows.Forms.Label();
             this.m_GuiSelectAllLabel = new System.Windows.Forms.Label();
@@ -266,7 +266,7 @@ namespace TSHOU.DataTierGenerator {
         private UtilityLibrary.Wizards.WizardWelcomePage m_GuiWelcomePage;
         private UtilityLibrary.Wizards.WizardPageBase m_GuiDbLoginPage;
         private System.Windows.Forms.ImageList m_GuiImageList;
-        private TSHOU.DataTierGenerator.Controls.SqlServerLogin m_GuiSqlLogin;
+        private TotalSafety.DataTierGenerator.Controls.SqlServerLogin m_GuiSqlLogin;
         private UtilityLibrary.Wizards.WizardPageBase m_GuiTablePage;
         private System.Windows.Forms.CheckedListBox m_GuiTableList;
         private UtilityLibrary.Wizards.WizardPageBase m_GuiInfoPage;

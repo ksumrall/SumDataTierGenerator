@@ -6,7 +6,9 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.Windows.Forms;
 
-namespace TSHOU.DataTierGenerator
+using TotalSafety.DataTierGenerator.Data;
+
+namespace TotalSafety.DataTierGenerator
 {
 
     public class Project
@@ -21,13 +23,13 @@ namespace TSHOU.DataTierGenerator
         #region private and protected member variables
 
         private string m_FilePath = String.Empty;
-        private string m_ProjectName;
+        private string m_ProjectName = "New Project";
         private string m_DbProviderType = String.Empty;
         private string m_ConnectionString = String.Empty;
         private string m_Namespace = String.Empty;
         private string m_OutputPath = String.Empty;
         private MonitoredList<Table> m_TableList = new MonitoredList<Table>();
-        private MonitoredList<View> m_ViewList = new MonitoredList<View>();
+        private MonitoredList<Data.View> m_ViewList = new MonitoredList<Data.View>();
         private MonitoredList<Procedure> m_ProcedureList = new MonitoredList<Procedure>();
         private bool m_Dirty = false;
         private bool m_New = true;
@@ -45,10 +47,10 @@ namespace TSHOU.DataTierGenerator
         {
             m_TableList.Changed += new EventHandler<ChangedEventArgs<Table>>(m_TableList_Changed);
             m_TableList.Cleared += new EventHandler<ClearedEventArgs<Table>>(m_TableList_Cleared);
-            //m_ViewList.Changed += new EventHandler<ChangedEventArgs<Table>>(m_ViewList_Changed);
-            //m_ViewList.Cleared += new EventHandler<ClearedEventArgs<Table>>(m_ViewList_Cleared);
-            //m_ProcedureList.Changed += new EventHandler<ChangedEventArgs<Table>>(m_ProcedureList_Changed);
-            //m_ProcedureList.Cleared += new EventHandler<ClearedEventArgs<Table>>(m_ProcedureList_Cleared);
+            m_ViewList.Changed += new EventHandler<ChangedEventArgs<Data.View>>(m_ViewList_Changed);
+            m_ViewList.Cleared += new EventHandler<ClearedEventArgs<Data.View>>(m_ViewList_Cleared);
+            m_ProcedureList.Changed += new EventHandler<ChangedEventArgs<Procedure>>(m_ProcedureList_Changed);
+            m_ProcedureList.Cleared += new EventHandler<ClearedEventArgs<Procedure>>(m_ProcedureList_Cleared);
         }
 
         #endregion
@@ -172,7 +174,7 @@ namespace TSHOU.DataTierGenerator
             }
         }
 
-        public MonitoredList<View> ViewList
+        public MonitoredList<Data.View> ViewList
         {
             get
             {
@@ -212,28 +214,29 @@ namespace TSHOU.DataTierGenerator
             OnChanged();
         }
 
+        void m_ViewList_Cleared(object sender, ClearedEventArgs<Data.View> e)
+        {
+            OnChanged();
+        }
+
+        private void m_ViewList_Changed(object sender, ChangedEventArgs<Data.View> e)
+        {
+            OnChanged();
+        }
+
+        void m_ProcedureList_Cleared(object sender, ClearedEventArgs<Procedure> e)
+        {
+            OnChanged();
+        }
+
+        private void m_ProcedureList_Changed(object sender, ChangedEventArgs<Procedure> e)
+        {
+            OnChanged();
+        }
+
         #endregion
 
         #region public methods
-
-        public static Project Load()
-        {
-            Project newProj = new Project();
-            newProj.SupressEvents();
-
-            newProj.IsDirty = false;
-            newProj.IsNew = false;
-
-            newProj.ProjectName = "New Project";
-            newProj.DbProviderType = "";
-            newProj.ConnectionString = "";
-            newProj.Namespace = "";
-            newProj.OutputPath = "";
-
-            newProj.ResumeEvents();
-
-            return newProj;
-        }
 
         public static Project Load(string path)
         {

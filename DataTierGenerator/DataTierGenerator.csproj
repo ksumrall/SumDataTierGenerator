@@ -18,7 +18,7 @@
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
     <DelaySign>false</DelaySign>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>TSHOU.DataTierGenerator</RootNamespace>
+    <RootNamespace>TotalSafety.DataTierGenerator</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <StartupObject>
     </StartupObject>
@@ -131,12 +131,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Procedure.cs" />
-    <Compile Include="View.cs" />
-    <Content Include="Deps\UtilityLibrary.Designers.dll" />
-    <Content Include="Deps\UtilityLibrary.dll" />
-    <Content Include="Deps\UtilityLibrary.Win32.WindowsAPI.dll" />
     <Content Include="Resource\App.ico" />
+    <EmbeddedResource Include="Controls\ConfigurationView.resx">
+      <DependentUpon>ConfigurationView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resource\Microsoft.Practices.EnterpriseLibrary.Common.dll" />
     <EmbeddedResource Include="Resource\Microsoft.Practices.EnterpriseLibrary.Data.dll" />
     <EmbeddedResource Include="Resource\Microsoft.Practices.ObjectBuilder.dll" />
@@ -146,6 +144,12 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Compile Include="Controls\ConfigurationView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ConfigurationView.Designer.cs">
+      <DependentUpon>ConfigurationView.cs</DependentUpon>
+    </Compile>
     <Compile Include="DatabaseConnectionSettings.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -157,9 +161,6 @@
     <Compile Include="Generator\GeneratedDataObject.cs" />
     <Compile Include="Generator\GeneratedGateway.cs" />
     <Compile Include="AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Column.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Generator\UserGateway.cs" />
@@ -195,9 +196,6 @@
     <Compile Include="Schema\project.cs">
       <DependentUpon>project.xsd</DependentUpon>
     </Compile>
-    <Compile Include="Table.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Utility.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -230,8 +228,6 @@
     <EmbeddedResource Include="Resource\IFieldValues.cs" />
     <Compile Include="MonitoredList.cs" />
     <Compile Include="SchemaExtractor.cs" />
-    <Compile Include="ForeignKeyIndex.cs" />
-    <Compile Include="Index.cs" />
     <Compile Include="MiscSettings.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -285,6 +281,12 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataTierGenerator.Data\DataTierGenerator.Data.csproj">
+      <Project>{187A5025-7CDB-490C-B03C-9F13CAF1715D}</Project>
+      <Name>DataTierGenerator.Data</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

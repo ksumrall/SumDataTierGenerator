@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace TSHOU.DataTierGenerator {
+namespace TotalSafety.DataTierGenerator {
 
     public class ColumnList : List<Column> {
 

@@ -7,9 +7,10 @@ using System.Text;
 using System.Web;
 using System.Xml;
 
-using TSHOU.DataTierGenerator.Generator;
+using TotalSafety.DataTierGenerator.Data;
+using TotalSafety.DataTierGenerator.Generator;
 
-namespace TSHOU.DataTierGenerator {
+namespace TotalSafety.DataTierGenerator {
 
     public class DalProjectGenerator {
 
@@ -70,7 +71,7 @@ namespace TSHOU.DataTierGenerator {
 
             if ( m_TableList.Count > 0 ) {
 
-                dataMapping = Utility.GetResource( "TSHOU.DataTierGenerator.Resource.DataMapping.xml" );
+                dataMapping = Utility.GetResource( "TotalSafety.DataTierGenerator.Resource.DataMapping.xml" );
 
                 m_DataMappingXml = new XmlDocument();
                 m_DataMappingXml.LoadXml( dataMapping );
@@ -112,32 +113,32 @@ namespace TSHOU.DataTierGenerator {
                 #region create the common data layer files
 
                 // create FieldDefinition
-                fileContents = Utility.GetResource( "TSHOU.DataTierGenerator.Resource.FieldDefinition.cs" );
+                fileContents = Utility.GetResource( "TotalSafety.DataTierGenerator.Resource.FieldDefinition.cs" );
                 fileContents = fileContents.Replace( "#ROOT_NAMESPACE#", m_DalNamespace );
                 File.WriteAllText(m_DalProjectDirectory + "Common\\FieldDefinition.cs", fileContents);
 
                 // create the TypeDefaultValue
-                fileContents = Utility.GetResource( "TSHOU.DataTierGenerator.Resource.TypeDefaultValue.cs" );
+                fileContents = Utility.GetResource( "TotalSafety.DataTierGenerator.Resource.TypeDefaultValue.cs" );
                 fileContents = fileContents.Replace( "#ROOT_NAMESPACE#", m_DalNamespace );
                 File.WriteAllText(m_DalProjectDirectory + "Common\\TypeDefaultValue.cs", fileContents);
 
                 // create the GatewayHelper
-                fileContents = Utility.GetResource( "TSHOU.DataTierGenerator.Resource.GatewayHelper.cs" );
+                fileContents = Utility.GetResource( "TotalSafety.DataTierGenerator.Resource.GatewayHelper.cs" );
                 fileContents = fileContents.Replace( "#ROOT_NAMESPACE#", m_DalNamespace );
                 File.WriteAllText(m_DalProjectDirectory + "Common\\GatewayHelper.cs", fileContents);
 
                 // create the IGateway
-                fileContents = Utility.GetResource( "TSHOU.DataTierGenerator.Resource.IGateway.cs" );
+                fileContents = Utility.GetResource( "TotalSafety.DataTierGenerator.Resource.IGateway.cs" );
                 fileContents = fileContents.Replace( "#ROOT_NAMESPACE#", m_DalNamespace );
                 File.WriteAllText(m_DalProjectDirectory + "Common\\IGateway.cs", fileContents);
 
                 // create the IDataObject
-                fileContents = Utility.GetResource( "TSHOU.DataTierGenerator.Resource.IFieldValues.cs" );
+                fileContents = Utility.GetResource( "TotalSafety.DataTierGenerator.Resource.IFieldValues.cs" );
                 fileContents = fileContents.Replace( "#ROOT_NAMESPACE#", m_DalNamespace );
                 File.WriteAllText( m_DalProjectDirectory + "Common\\IFieldValues.cs", fileContents );
 
                 // create the IDataObject
-                fileContents = Utility.GetResource( "TSHOU.DataTierGenerator.Resource.IDataObject.cs" );
+                fileContents = Utility.GetResource( "TotalSafety.DataTierGenerator.Resource.IDataObject.cs" );
                 fileContents = fileContents.Replace( "#ROOT_NAMESPACE#", m_DalNamespace );
                 File.WriteAllText(m_DalProjectDirectory + "Common\\IDataObject.cs", fileContents);
 
@@ -241,7 +242,7 @@ namespace TSHOU.DataTierGenerator {
 
                 if ( m_GenProjectFile ) {
                     // create Project File
-                    projectFile = Utility.GetResource("TSHOU.DataTierGenerator.Resource.ProjectTemplate.csproj");
+                    projectFile = Utility.GetResource("TotalSafety.DataTierGenerator.Resource.ProjectTemplate.csproj");
                     projectFile = projectFile.Replace("$guid1$", Guid.NewGuid().ToString());
                     projectFile = projectFile.Replace("$safeprojectname$", m_DalNamespace);
                     projectFile = projectFile.Replace("$CompileItem$", itemGroup.ToString());

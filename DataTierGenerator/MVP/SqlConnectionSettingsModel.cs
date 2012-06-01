@@ -5,7 +5,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Text;
 
-namespace TSHOU.DataTierGenerator.MVP {
+namespace TotalSafety.DataTierGenerator.MVP {
 
     public class SqlConnectionSettingsModel : IEditableObject {
 

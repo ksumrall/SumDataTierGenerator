@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace TSHOU.DataTierGenerator {
+namespace TotalSafety.DataTierGenerator {
 
     public class ForeignKeyIndexList : List<ForeignKeyIndex> {
 

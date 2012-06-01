@@ -6,9 +6,10 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-using TSHOU.DataTierGenerator.MVP;
+using TotalSafety.DataTierGenerator.Data;
+using TotalSafety.DataTierGenerator.MVP;
 
-namespace TSHOU.DataTierGenerator {
+namespace TotalSafety.DataTierGenerator {
     public partial class NewProjectWizard : Form {
         private SqlConnectionSettingsModel m_Model = null;
         private Project m_NewProject = new Project ();

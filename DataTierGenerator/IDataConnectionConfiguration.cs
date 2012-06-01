@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace TSHOU.DataTierGenerator
+namespace TotalSafety.DataTierGenerator
 {
 	public interface IDataConnectionConfiguration
 	{

@@ -1,4 +1,4 @@
-namespace TSHOU.DataTierGenerator {
+namespace TotalSafety.DataTierGenerator {
     partial class DatabaseConnectionSettings {
         /// <summary>
         /// Required designer variable.
@@ -25,7 +25,7 @@ namespace TSHOU.DataTierGenerator {
         private void InitializeComponent() {
             this.m_GuiOkButton = new System.Windows.Forms.Button ();
             this.m_GuiCancelButton = new System.Windows.Forms.Button ();
-            this.m_GuiLogin = new TSHOU.DataTierGenerator.Controls.SqlServerLogin ();
+            this.m_GuiLogin = new TotalSafety.DataTierGenerator.Controls.SqlServerLogin ();
             this.SuspendLayout ();
             // 
             // m_GuiOkButton
@@ -82,6 +82,6 @@ namespace TSHOU.DataTierGenerator {
 
         private System.Windows.Forms.Button m_GuiOkButton;
         private System.Windows.Forms.Button m_GuiCancelButton;
-        private TSHOU.DataTierGenerator.Controls.SqlServerLogin m_GuiLogin;
+        private TotalSafety.DataTierGenerator.Controls.SqlServerLogin m_GuiLogin;
     }
 }

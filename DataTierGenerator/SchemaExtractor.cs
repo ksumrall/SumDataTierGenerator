@@ -6,9 +6,10 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Xml;
 
-using TSHOU.DataTierGenerator.Generator;
+using TotalSafety.DataTierGenerator.Data;
+using TotalSafety.DataTierGenerator.Generator;
 
-namespace TSHOU.DataTierGenerator
+namespace TotalSafety.DataTierGenerator
 {
 	public sealed class SchemaExtractor
 	{
@@ -31,7 +32,7 @@ namespace TSHOU.DataTierGenerator
 
 		public SchemaExtractor() {
 
-            string dataMapping = Utility.GetResource("TSHOU.DataTierGenerator.Resource.DataMapping.xml");
+            string dataMapping = Utility.GetResource("TotalSafety.DataTierGenerator.Resource.DataMapping.xml");
 
             m_DataMappingXml = new XmlDocument();
             m_DataMappingXml.LoadXml(dataMapping);
@@ -276,21 +277,21 @@ namespace TSHOU.DataTierGenerator
         //        #region create the common data layer files
 
         //        // create FieldDefinition
-        //        fileContents = Utility.GetResource( "TSHOU.DataTierGenerator.Resource.FieldDefinition.cs" );
+        //        fileContents = Utility.GetResource( "TotalSafety.DataTierGenerator.Resource.FieldDefinition.cs" );
         //        streamWriter = new StreamWriter( m_DataLayerOutputPath + "Common\\FieldDefinition.cs" );
         //        //fileContents = fileContents.Replace( "#ROOT_NAMESPACE#", RootNamespace );
         //        streamWriter.Write( fileContents );
         //        streamWriter.Close( );
 
         //        // create the TypeDefaultValue
-        //        fileContents = Utility.GetResource( "TSHOU.DataTierGenerator.Resource.TypeDefaultValue.cs" );
+        //        fileContents = Utility.GetResource( "TotalSafety.DataTierGenerator.Resource.TypeDefaultValue.cs" );
         //        streamWriter = new StreamWriter( m_DataLayerOutputPath + "Common\\TypeDefaultValue.cs" );
         //        //fileContents = fileContents.Replace( "#ROOT_NAMESPACE#", RootNamespace );
         //        streamWriter.Write( fileContents );
         //        streamWriter.Close( );
 
         //        // create the TypeDefaultValue
-        //        fileContents = Utility.GetResource( "TSHOU.DataTierGenerator.Resource.GatewayHelper.cs" );
+        //        fileContents = Utility.GetResource( "TotalSafety.DataTierGenerator.Resource.GatewayHelper.cs" );
         //        streamWriter = new StreamWriter( m_DataLayerOutputPath + "Common\\GatewayHelper.cs" );
         //        //fileContents = fileContents.Replace( "#ROOT_NAMESPACE#", RootNamespace );
         //        streamWriter.Write( fileContents );

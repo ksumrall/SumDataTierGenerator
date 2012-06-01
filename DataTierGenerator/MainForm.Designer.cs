@@ -1,4 +1,4 @@
-namespace TSHOU.DataTierGenerator {
+namespace TotalSafety.DataTierGenerator {
     partial class MainForm {
         /// <summary>
         /// Required designer variable.
@@ -23,8 +23,8 @@ namespace TSHOU.DataTierGenerator {
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("No project to display.");
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Please create new or open existing one.");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("No project to display.");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Please create new or open existing one.");
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -36,6 +36,8 @@ namespace TSHOU.DataTierGenerator {
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.projectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_GuiConfigurationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
             this.m_GuiConnectionSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.m_GuiOtherSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
@@ -44,15 +46,13 @@ namespace TSHOU.DataTierGenerator {
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.m_GuiSplitContainer = new System.Windows.Forms.SplitContainer();
             this.m_GuiProjectTree = new System.Windows.Forms.TreeView();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.m_GuiConfigurationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.m_GuiSplitContainer)).BeginInit();
+            this.m_GuiSplitContainer.Panel1.SuspendLayout();
+            this.m_GuiSplitContainer.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -151,6 +151,18 @@ namespace TSHOU.DataTierGenerator {
             this.projectToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
             this.projectToolStripMenuItem.Text = "&Project";
             // 
+            // m_GuiConfigurationToolStripMenuItem
+            // 
+            this.m_GuiConfigurationToolStripMenuItem.Name = "m_GuiConfigurationToolStripMenuItem";
+            this.m_GuiConfigurationToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
+            this.m_GuiConfigurationToolStripMenuItem.Text = "&Configuration...";
+            this.m_GuiConfigurationToolStripMenuItem.Click += new System.EventHandler(this.m_GuiConfigurationToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(187, 6);
+            // 
             // m_GuiConnectionSettingsToolStripMenuItem
             // 
             this.m_GuiConnectionSettingsToolStripMenuItem.Name = "m_GuiConnectionSettingsToolStripMenuItem";
@@ -190,19 +202,19 @@ namespace TSHOU.DataTierGenerator {
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // splitContainer1
+            // m_GuiSplitContainer
             // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 24);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(0);
-            this.splitContainer1.Name = "splitContainer1";
+            this.m_GuiSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_GuiSplitContainer.Location = new System.Drawing.Point(0, 24);
+            this.m_GuiSplitContainer.Margin = new System.Windows.Forms.Padding(0);
+            this.m_GuiSplitContainer.Name = "m_GuiSplitContainer";
             // 
-            // splitContainer1.Panel1
+            // m_GuiSplitContainer.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.m_GuiProjectTree);
-            this.splitContainer1.Size = new System.Drawing.Size(792, 520);
-            this.splitContainer1.SplitterDistance = 263;
-            this.splitContainer1.TabIndex = 30;
+            this.m_GuiSplitContainer.Panel1.Controls.Add(this.m_GuiProjectTree);
+            this.m_GuiSplitContainer.Size = new System.Drawing.Size(792, 520);
+            this.m_GuiSplitContainer.SplitterDistance = 263;
+            this.m_GuiSplitContainer.TabIndex = 30;
             // 
             // m_GuiProjectTree
             // 
@@ -210,13 +222,13 @@ namespace TSHOU.DataTierGenerator {
             this.m_GuiProjectTree.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_GuiProjectTree.Location = new System.Drawing.Point(0, 0);
             this.m_GuiProjectTree.Name = "m_GuiProjectTree";
-            treeNode3.Name = "Node0";
-            treeNode3.Text = "No project to display.";
-            treeNode4.Name = "Node1";
-            treeNode4.Text = "Please create new or open existing one.";
+            treeNode1.Name = "Node0";
+            treeNode1.Text = "No project to display.";
+            treeNode2.Name = "Node1";
+            treeNode2.Text = "Please create new or open existing one.";
             this.m_GuiProjectTree.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode3,
-            treeNode4});
+            treeNode1,
+            treeNode2});
             this.m_GuiProjectTree.Size = new System.Drawing.Size(263, 520);
             this.m_GuiProjectTree.TabIndex = 0;
             this.m_GuiProjectTree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.m_GuiProjectTree_AfterSelect);
@@ -229,23 +241,11 @@ namespace TSHOU.DataTierGenerator {
             this.statusStrip1.TabIndex = 31;
             this.statusStrip1.Text = "statusStrip1";
             // 
-            // m_GuiConfigurationToolStripMenuItem
-            // 
-            this.m_GuiConfigurationToolStripMenuItem.Name = "m_GuiConfigurationToolStripMenuItem";
-            this.m_GuiConfigurationToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
-            this.m_GuiConfigurationToolStripMenuItem.Text = "&Configuration...";
-            this.m_GuiConfigurationToolStripMenuItem.Click += new System.EventHandler(this.m_GuiConfigurationToolStripMenuItem_Click);
-            // 
-            // toolStripMenuItem4
-            // 
-            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(187, 6);
-            // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.ClientSize = new System.Drawing.Size(792, 566);
-            this.Controls.Add(this.splitContainer1);
+            this.Controls.Add(this.m_GuiSplitContainer);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.statusStrip1);
             this.MainMenuStrip = this.menuStrip1;
@@ -256,9 +256,9 @@ namespace TSHOU.DataTierGenerator {
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
+            this.m_GuiSplitContainer.Panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.m_GuiSplitContainer)).EndInit();
+            this.m_GuiSplitContainer.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -280,7 +280,7 @@ namespace TSHOU.DataTierGenerator {
         private System.Windows.Forms.ToolStripMenuItem projectToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem m_GuiConnectionSettingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem m_GuiOtherSettingsToolStripMenuItem;
-        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.SplitContainer m_GuiSplitContainer;
         private System.Windows.Forms.TreeView m_GuiProjectTree;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem m_GuiGenerateToolStripMenuItem;

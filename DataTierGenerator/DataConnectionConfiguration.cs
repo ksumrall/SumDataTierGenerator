@@ -11,7 +11,7 @@ using System.Text;
 using System.Xml.Linq;
 using Microsoft.Data.ConnectionUI;
 
-namespace TSHOU.DataTierGenerator
+namespace TotalSafety.DataTierGenerator
 {
 	/// <summary>
 	/// Provide a default implementation for the storage of DataConnection Dialog UI configuration.

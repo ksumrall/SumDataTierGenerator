@@ -7,9 +7,9 @@ using System.Text;
 using System.Windows.Forms;
 
 using Microsoft.Data.ConnectionUI;
-using TSHOU.DataTierGenerator.MVP;
+using TotalSafety.DataTierGenerator.MVP;
 
-namespace TSHOU.DataTierGenerator
+namespace TotalSafety.DataTierGenerator
 {
     public partial class MiscSettings : Form
     {
@@ -67,8 +67,6 @@ namespace TSHOU.DataTierGenerator
         private void m_GuiOkButton_Click(object sender, EventArgs e)
         {
 
-            miscSettingsModelBindingSource.EndEdit();
-
         }
 
         #endregion
@@ -85,8 +83,14 @@ namespace TSHOU.DataTierGenerator
             DataConnectionConfiguration dcs = new DataConnectionConfiguration(null);
             dcs.LoadConfiguration(dcd);
             DataConnectionDialog.Show(dcd);
+
+            m_GuiDbProviderTextBox.Text = dcd.SelectedDataProvider.Name;
             m_GuiConnectionString.Text = dcd.ConnectionString;
-            m_DbConnectionType = dcd.SelectedDataProvider.TargetConnectionType.ToString();
+
+            //m_DbConnectionType = dcd.SelectedDataProvider.TargetConnectionType.ToString();
+
+            miscSettingsModelBindingSource.EndEdit();
+
         }
 
         private void GetOutputDirectory()

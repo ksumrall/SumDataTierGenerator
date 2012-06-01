@@ -1,4 +1,4 @@
-namespace TSHOU.DataTierGenerator {
+namespace TotalSafety.DataTierGenerator {
     partial class MiscSettings {
         /// <summary>
         /// Required designer variable.
@@ -25,7 +25,6 @@ namespace TSHOU.DataTierGenerator {
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
             this.m_GuiDataLayerNamespaceTextBox = new System.Windows.Forms.TextBox();
-            this.miscSettingsModelBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.m_GuiDataLayerOutputDirectoryButton = new System.Windows.Forms.Button();
@@ -35,6 +34,9 @@ namespace TSHOU.DataTierGenerator {
             this.m_GuiConnectionStringDialogButton = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.m_GuiConnectionString = new System.Windows.Forms.TextBox();
+            this.miscSettingsModelBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.label4 = new System.Windows.Forms.Label();
+            this.m_GuiDbProviderTextBox = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.miscSettingsModelBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -43,19 +45,15 @@ namespace TSHOU.DataTierGenerator {
             this.m_GuiDataLayerNamespaceTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.m_GuiDataLayerNamespaceTextBox.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.miscSettingsModelBindingSource, "Namespace", true));
-            this.m_GuiDataLayerNamespaceTextBox.Location = new System.Drawing.Point(12, 76);
+            this.m_GuiDataLayerNamespaceTextBox.Location = new System.Drawing.Point(9, 115);
             this.m_GuiDataLayerNamespaceTextBox.Name = "m_GuiDataLayerNamespaceTextBox";
             this.m_GuiDataLayerNamespaceTextBox.Size = new System.Drawing.Size(431, 20);
             this.m_GuiDataLayerNamespaceTextBox.TabIndex = 16;
             // 
-            // miscSettingsModelBindingSource
-            // 
-            this.miscSettingsModelBindingSource.DataSource = typeof(TSHOU.DataTierGenerator.MVP.MiscSettingsModel);
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 57);
+            this.label1.Location = new System.Drawing.Point(9, 96);
             this.label1.Margin = new System.Windows.Forms.Padding(3);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(122, 13);
@@ -65,7 +63,7 @@ namespace TSHOU.DataTierGenerator {
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 102);
+            this.label2.Location = new System.Drawing.Point(9, 141);
             this.label2.Margin = new System.Windows.Forms.Padding(3);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(123, 13);
@@ -75,7 +73,7 @@ namespace TSHOU.DataTierGenerator {
             // m_GuiDataLayerOutputDirectoryButton
             // 
             this.m_GuiDataLayerOutputDirectoryButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_GuiDataLayerOutputDirectoryButton.Location = new System.Drawing.Point(419, 118);
+            this.m_GuiDataLayerOutputDirectoryButton.Location = new System.Drawing.Point(419, 157);
             this.m_GuiDataLayerOutputDirectoryButton.Name = "m_GuiDataLayerOutputDirectoryButton";
             this.m_GuiDataLayerOutputDirectoryButton.Size = new System.Drawing.Size(24, 24);
             this.m_GuiDataLayerOutputDirectoryButton.TabIndex = 22;
@@ -87,17 +85,17 @@ namespace TSHOU.DataTierGenerator {
             // 
             this.m_GuiDataLayerOutputDirectory.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_GuiDataLayerOutputDirectory.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.miscSettingsModelBindingSource, "GeneratedDataProjectPath", true));
-            this.m_GuiDataLayerOutputDirectory.Location = new System.Drawing.Point(12, 121);
+            this.m_GuiDataLayerOutputDirectory.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.miscSettingsModelBindingSource, "OutputPath", true));
+            this.m_GuiDataLayerOutputDirectory.Location = new System.Drawing.Point(9, 160);
             this.m_GuiDataLayerOutputDirectory.Name = "m_GuiDataLayerOutputDirectory";
-            this.m_GuiDataLayerOutputDirectory.Size = new System.Drawing.Size(401, 20);
+            this.m_GuiDataLayerOutputDirectory.Size = new System.Drawing.Size(404, 20);
             this.m_GuiDataLayerOutputDirectory.TabIndex = 21;
             // 
             // m_GuiOkButton
             // 
             this.m_GuiOkButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.m_GuiOkButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.m_GuiOkButton.Location = new System.Drawing.Point(287, 148);
+            this.m_GuiOkButton.Location = new System.Drawing.Point(284, 187);
             this.m_GuiOkButton.Name = "m_GuiOkButton";
             this.m_GuiOkButton.Size = new System.Drawing.Size(75, 23);
             this.m_GuiOkButton.TabIndex = 23;
@@ -109,7 +107,7 @@ namespace TSHOU.DataTierGenerator {
             // 
             this.m_GuiCancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.m_GuiCancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.m_GuiCancelButton.Location = new System.Drawing.Point(368, 148);
+            this.m_GuiCancelButton.Location = new System.Drawing.Point(365, 187);
             this.m_GuiCancelButton.Name = "m_GuiCancelButton";
             this.m_GuiCancelButton.Size = new System.Drawing.Size(75, 23);
             this.m_GuiCancelButton.TabIndex = 24;
@@ -120,7 +118,7 @@ namespace TSHOU.DataTierGenerator {
             // m_GuiConnectionStringDialogButton
             // 
             this.m_GuiConnectionStringDialogButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_GuiConnectionStringDialogButton.Location = new System.Drawing.Point(419, 28);
+            this.m_GuiConnectionStringDialogButton.Location = new System.Drawing.Point(419, 67);
             this.m_GuiConnectionStringDialogButton.Name = "m_GuiConnectionStringDialogButton";
             this.m_GuiConnectionStringDialogButton.Size = new System.Drawing.Size(24, 24);
             this.m_GuiConnectionStringDialogButton.TabIndex = 27;
@@ -131,7 +129,7 @@ namespace TSHOU.DataTierGenerator {
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 12);
+            this.label3.Location = new System.Drawing.Point(12, 51);
             this.label3.Margin = new System.Windows.Forms.Padding(3);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(94, 13);
@@ -143,10 +141,35 @@ namespace TSHOU.DataTierGenerator {
             this.m_GuiConnectionString.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.m_GuiConnectionString.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.miscSettingsModelBindingSource, "GeneratedDataProjectPath", true));
-            this.m_GuiConnectionString.Location = new System.Drawing.Point(12, 31);
+            this.m_GuiConnectionString.Location = new System.Drawing.Point(12, 70);
             this.m_GuiConnectionString.Name = "m_GuiConnectionString";
+            this.m_GuiConnectionString.ReadOnly = true;
             this.m_GuiConnectionString.Size = new System.Drawing.Size(401, 20);
             this.m_GuiConnectionString.TabIndex = 26;
+            // 
+            // miscSettingsModelBindingSource
+            // 
+            this.miscSettingsModelBindingSource.DataSource = typeof(TotalSafety.DataTierGenerator.MVP.MiscSettingsModel);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(12, 9);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(49, 13);
+            this.label4.TabIndex = 28;
+            this.label4.Text = "Provider:";
+            // 
+            // m_GuiDbProviderTextBox
+            // 
+            this.m_GuiDbProviderTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_GuiDbProviderTextBox.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.miscSettingsModelBindingSource, "DbConnectionType", true));
+            this.m_GuiDbProviderTextBox.Location = new System.Drawing.Point(12, 25);
+            this.m_GuiDbProviderTextBox.Name = "m_GuiDbProviderTextBox";
+            this.m_GuiDbProviderTextBox.ReadOnly = true;
+            this.m_GuiDbProviderTextBox.Size = new System.Drawing.Size(428, 20);
+            this.m_GuiDbProviderTextBox.TabIndex = 29;
             // 
             // MiscSettings
             // 
@@ -154,7 +177,9 @@ namespace TSHOU.DataTierGenerator {
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.m_GuiCancelButton;
-            this.ClientSize = new System.Drawing.Size(455, 183);
+            this.ClientSize = new System.Drawing.Size(455, 218);
+            this.Controls.Add(this.m_GuiDbProviderTextBox);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.m_GuiConnectionStringDialogButton);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.m_GuiConnectionString);
@@ -191,5 +216,7 @@ namespace TSHOU.DataTierGenerator {
         private System.Windows.Forms.Button m_GuiConnectionStringDialogButton;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox m_GuiConnectionString;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox m_GuiDbProviderTextBox;
     }
 }

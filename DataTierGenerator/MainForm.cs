@@ -12,9 +12,10 @@ using System.Xml.Serialization;
 
 using Microsoft.Win32;
 
-using TSHOU.DataTierGenerator.MVP;
+using TotalSafety.DataTierGenerator.Data;
+using TotalSafety.DataTierGenerator.MVP;
 
-namespace TSHOU.DataTierGenerator
+namespace TotalSafety.DataTierGenerator
 {
     /// <summary>
     /// Form used to collect the connection information for the code we're going to generate.
@@ -38,6 +39,8 @@ namespace TSHOU.DataTierGenerator
 
         private const string BaseTitle = "Data Tier Generator";
 
+        private Controls.ConfigurationView m_ConfigurationViewControl;
+
         #endregion
 
         #region constructors destructors
@@ -48,6 +51,23 @@ namespace TSHOU.DataTierGenerator
             // Required for Windows Form Designer support
             //
             InitializeComponent();
+        }
+
+        #endregion
+
+        #region
+
+        private Controls.ConfigurationView ConfigurationViewControl
+        {
+            get
+            {
+                if (m_ConfigurationViewControl == null)
+                {
+                    m_ConfigurationViewControl = new Controls.ConfigurationView(m_Project);
+                    m_ConfigurationViewControl.ConfigurationChanged += new EventHandler<Controls.ConfigurationView.ChangedEventArgs>(m_ConfigurationViewControl_ConfigurationChanged);
+                }
+                return m_ConfigurationViewControl;
+            }
         }
 
         #endregion
@@ -86,9 +106,8 @@ namespace TSHOU.DataTierGenerator
         {
             m_SqlConnectionSettingsModel = new SqlConnectionSettingsModel();
             m_MiscSettingsModel = new MiscSettingsModel();
-            m_Project = Project.Load();
-            m_Project.Changed += new EventHandler<ChangedEventArgs<Project>>(m_Project_Changed);
-            LoadTree();
+
+            LoadProject(new Project());
 
             m_TableList = new List<Table>();
 
@@ -165,47 +184,56 @@ namespace TSHOU.DataTierGenerator
 
             if (wizard.ShowDialog(this) == DialogResult.OK)
             {
-                m_Project = wizard.Project;
-                m_Project.Changed += new EventHandler<ChangedEventArgs<Project>>(m_Project_Changed);
-                m_GuiGenerateToolStripMenuItem.Enabled = true;
-
-                // Load the tree
-                m_IsProjectLoaded = true;
-                LoadTree();
+                Project project = wizard.Project;
+                if (project != null)
+                {
+                    LoadProject(project);
+                }
             }
         }
 
         void m_Project_Changed(object sender, ChangedEventArgs<Project> e)
         {
-            if (!m_Project.IsNew)
-            {
-                saveToolStripMenuItem.Enabled = true;
-            }
-
-            UpdateTitle();
+            UpdateApplicationFeaturesBasedOnRecentProjectChanges();
         }
 
         private void m_GuiProjectTree_AfterSelect(object sender, TreeViewEventArgs e)
         {
             if (m_IsProjectLoaded)
             {
-                switch (e.Node.Name)
+                switch ((TreeNodeTypes)e.Node.Tag)
                 {
-                    case "Root":
+                    case TreeNodeTypes.Configuration:
+                        m_GuiSplitContainer.Panel2.Controls.Clear();
+                        m_GuiSplitContainer.Panel2.Controls.Add(ConfigurationViewControl);
+                        ConfigurationViewControl.Dock = DockStyle.Fill;
                         break;
-                    case "Configuration":
+                    case TreeNodeTypes.Schema:
+                        m_GuiSplitContainer.Panel2.Controls.Clear();
                         break;
-                    case "Database":
+                    case TreeNodeTypes.Tables:
+                        m_GuiSplitContainer.Panel2.Controls.Clear();
                         break;
-                    case "Output":
+                    case TreeNodeTypes.Views:
+                        m_GuiSplitContainer.Panel2.Controls.Clear();
                         break;
-                    case "Schema":
+                    case TreeNodeTypes.Procedures:
+                        m_GuiSplitContainer.Panel2.Controls.Clear();
                         break;
-                    case "Tables":
+                    case TreeNodeTypes.Columns:
+                        m_GuiSplitContainer.Panel2.Controls.Clear();
                         break;
-                    case "Views":
+                    case TreeNodeTypes.Table:
+                        m_GuiSplitContainer.Panel2.Controls.Clear();
                         break;
-                    case "StoredProcedures":
+                    case TreeNodeTypes.View:
+                        m_GuiSplitContainer.Panel2.Controls.Clear();
+                        break;
+                    case TreeNodeTypes.Procedure:
+                        m_GuiSplitContainer.Panel2.Controls.Clear();
+                        break;
+                    case TreeNodeTypes.Column:
+                        m_GuiSplitContainer.Panel2.Controls.Clear();
                         break;
                 }
             }
@@ -252,9 +280,35 @@ namespace TSHOU.DataTierGenerator
             UpdateTitle();
         }
 
+        void m_ConfigurationViewControl_ConfigurationChanged(object sender, Controls.ConfigurationView.ChangedEventArgs e)
+        {
+            m_Project.DbProviderType = e.DbProvider;
+            m_Project.ConnectionString = e.ConnectionString;
+            m_Project.Namespace = e.Namespace;
+            m_Project.OutputPath = e.OutputPath;
+
+            UpdateApplicationFeaturesBasedOnRecentProjectChanges();
+        }
+
         #endregion
 
         #region private implementation
+
+        private void LoadProject(Project project)
+        {
+            m_Project = project;
+            m_Project.Changed += new EventHandler<ChangedEventArgs<Project>>(m_Project_Changed);
+            LoadTree();
+
+            if (m_Project.TableList.Count > 0 || m_Project.ViewList.Count > 0 || m_Project.ProcedureList.Count > 0)
+            {
+                m_GuiGenerateToolStripMenuItem.Enabled = true;
+            }
+            else
+            {
+                m_GuiGenerateToolStripMenuItem.Enabled = false;
+            }
+        }
 
         private void GenerateProject()
         {
@@ -303,35 +357,33 @@ namespace TSHOU.DataTierGenerator
             m_GuiProjectTree.Nodes.Clear();
 
             // Add Root
-            m_GuiProjectTree.Nodes.Add("Root", m_Project.ProjectName);
+            m_GuiProjectTree.Nodes.Add("Root", m_Project.ProjectName).Tag = TreeNodeTypes.Undefined;
 
             // Add Configuration
-            m_GuiProjectTree.Nodes["Root"].Nodes.Add("Configuration", "Configuration");
-            m_GuiProjectTree.Nodes["Root"].Nodes["Configuration"].Nodes.Add("Database", "Database");
-            m_GuiProjectTree.Nodes["Root"].Nodes["Configuration"].Nodes.Add("Output", "Output");
+            m_GuiProjectTree.Nodes["Root"].Nodes.Add("Configuration", "Configuration").Tag = TreeNodeTypes.Configuration;
 
             // Add Schema
-            m_GuiProjectTree.Nodes["Root"].Nodes.Add("Schema", "Schema");
+            m_GuiProjectTree.Nodes["Root"].Nodes.Add("Schema", "Schema").Tag = TreeNodeTypes.Schema;
 
             // Add Schema Tables
-            m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes.Add("Tables", "Tables");
+            m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes.Add("Tables", "Tables").Tag = TreeNodeTypes.Tables;
             foreach (Table table in m_Project.TableList)
             {
                 AddTableNode(m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes["Tables"], table);
             }
 
             // Add Schema Views
-            m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes.Add("Views", "Views");
-            foreach (View view in m_Project.ViewList)
+            m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes.Add("Views", "Views").Tag = TreeNodeTypes.Views;
+            foreach (Data.View view in m_Project.ViewList)
             {
                 AddViewNode(m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes["Views"], view);
             }
 
             // Add Schema Stored Procedures
-            m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes.Add("StoredProcedures", "Stored Procedures");
+            m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes.Add("Procedures", "Procedures").Tag = TreeNodeTypes.Procedures;
             foreach (Procedure procedure in m_Project.ProcedureList)
             {
-                AddProcedureNode(m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes["StoredProcedures"], procedure);
+                AddProcedureNode(m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes["rocedures"], procedure);
             }
 
             // End
@@ -341,29 +393,31 @@ namespace TSHOU.DataTierGenerator
 
         }
 
-        private void AddTableNode(TreeNode node, Table table)
+        private void AddTableNode(TreeNode treeNnode, Table table)
         {
 
-            TreeNode tableNode;
+            TreeNode node;
 
-            tableNode = new TreeNode(table.Name);
+            node = new TreeNode(table.Name);
+            node.Tag = TreeNodeTypes.Table;
             //table.Columns.Sort (new Comparison<Column> (Column.CompareByProgrammaticAlias));
 
             foreach (Column column in table.Columns)
             {
-                AddColumnNode(tableNode, column);
+                AddColumnNode(node, column);
             }
 
-            node.Nodes.Add(tableNode);
+            treeNnode.Nodes.Add(node);
 
         }
 
-        private void AddViewNode(TreeNode treeNode, View view)
+        private void AddViewNode(TreeNode treeNode, Data.View view)
         {
 
             TreeNode node;
 
             node = new TreeNode(view.Name);
+            node.Tag = TreeNodeTypes.View;
 
             foreach (Column column in view.Columns)
             {
@@ -378,14 +432,15 @@ namespace TSHOU.DataTierGenerator
         {
         }
 
-        private void AddColumnNode(TreeNode node, Column column)
+        private void AddColumnNode(TreeNode treeNode, Column column)
         {
 
-            TreeNode columnNode;
+            TreeNode node;
 
-            columnNode = new TreeNode(column.PropertyName);
+            node = new TreeNode(column.PropertyName);
+            node.Tag = TreeNodeTypes.Column;
 
-            node.Nodes.Add(columnNode);
+            treeNode.Nodes.Add(node);
         }
 
         private void GetOutputDirectory(TextBox txt)
@@ -419,7 +474,7 @@ namespace TSHOU.DataTierGenerator
 
         private void StoreApplicationValues(string projectFileName)
         {
-            RegistryKey rkey = Registry.CurrentUser.OpenSubKey("Software\\TSHOU\\DataTierGenerator", true);
+            RegistryKey rkey = Registry.CurrentUser.OpenSubKey("Software\\TotalSafety\\DataTierGenerator", true);
 
             rkey.SetValue("Xpos", this.Left);
             rkey.SetValue("Ypos", this.Top);
@@ -442,11 +497,11 @@ namespace TSHOU.DataTierGenerator
 
         private void LoadPreviousValues()
         {
-            RegistryKey rkey = Registry.CurrentUser.OpenSubKey("Software\\TSHOU\\DataTierGenerator");
+            RegistryKey rkey = Registry.CurrentUser.OpenSubKey("Software\\TotalSafety\\DataTierGenerator");
 
             if (rkey == null)
             {
-                rkey = Registry.CurrentUser.CreateSubKey("Software\\TSHOU\\DataTierGenerator");
+                rkey = Registry.CurrentUser.CreateSubKey("Software\\TotalSafety\\DataTierGenerator");
             }
 
             if (rkey.GetValue("Xpos") != null)
@@ -524,6 +579,25 @@ namespace TSHOU.DataTierGenerator
 
             return xmlDoc;
 
+        }
+
+        private void UpdateApplicationFeaturesBasedOnRecentProjectChanges()
+        {
+            if (!m_Project.IsNew)
+            {
+                saveToolStripMenuItem.Enabled = true;
+            }
+
+            if (m_Project.TableList.Count > 0 || m_Project.ViewList.Count > 0 || m_Project.ProcedureList.Count > 0)
+            {
+                m_GuiGenerateToolStripMenuItem.Enabled = true;
+            }
+            else
+            {
+                m_GuiGenerateToolStripMenuItem.Enabled = false;
+            }
+
+            UpdateTitle();
         }
 
         private void UpdateTitle()

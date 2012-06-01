@@ -6,9 +6,9 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-using TSHOU.DataTierGenerator.MVP;
+using TotalSafety.DataTierGenerator.MVP;
 
-namespace TSHOU.DataTierGenerator {
+namespace TotalSafety.DataTierGenerator {
 
     public partial class DatabaseConnectionSettings : Form {
 

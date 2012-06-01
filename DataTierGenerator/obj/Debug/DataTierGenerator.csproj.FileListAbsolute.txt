@@ -23,11 +23,6 @@ C:\_TFSProjects\DataTierGenerator\DataTierGenerator\bin\Debug\DataTierGenerator.
 C:\_TFSProjects\DataTierGenerator\DataTierGenerator\obj\Debug\DataTierGenerator.exe
 C:\_TFSProjects\DataTierGenerator\DataTierGenerator\obj\Debug\DataTierGenerator.pdb
 C:\_TFSProjects\DataTierGenerator\DataTierGenerator\obj\Debug\ResolveAssemblyReference.cache
-C:\_TFSProjects\DataTierGenerator\DataTierGenerator\obj\Debug\TSHOU.DataTierGenerator.Controls.SqlServerLogin.resources
-C:\_TFSProjects\DataTierGenerator\DataTierGenerator\obj\Debug\TSHOU.DataTierGenerator.DatabaseConnectionSettings.resources
-C:\_TFSProjects\DataTierGenerator\DataTierGenerator\obj\Debug\TSHOU.DataTierGenerator.MiscSettings.resources
-C:\_TFSProjects\DataTierGenerator\DataTierGenerator\obj\Debug\TSHOU.DataTierGenerator.NewProjectWizard.resources
-C:\_TFSProjects\DataTierGenerator\DataTierGenerator\obj\Debug\TSHOU.DataTierGenerator.MainForm.resources
 C:\_TFSProjects\DataTierGenerator\DataTierGenerator\obj\Debug\GenerateResource.read.1.tlog
 C:\_TFSProjects\DataTierGenerator\DataTierGenerator\obj\Debug\ResGen.read.1.tlog
 C:\_TFSProjects\DataTierGenerator\DataTierGenerator\obj\Debug\GenerateResource.write.1.tlog
@@ -43,4 +38,12 @@ C:\_TFSProjects\DataTierGenerator\DataTierGenerator\bin\Debug\UtilityLibrary.Win
 C:\_TFSProjects\DataTierGenerator\DataTierGenerator\bin\Debug\Microsoft.Data.ConnectionUI.pdb
 C:\_TFSProjects\DataTierGenerator\DataTierGenerator\bin\Debug\Microsoft.Data.ConnectionUI.Dialog.pdb
 C:\_TFSProjects\DataTierGenerator\DataTierGenerator\bin\Debug\Microsoft.Data.ConnectionUI.SqlCeDataProvider.pdb
-C:\_TFSProjects\DataTierGenerator\DataTierGenerator\obj\Debug\TSHOU.DataTierGenerator.Properties.Resources.resources
+C:\_TFSProjects\DataTierGenerator\DataTierGenerator\obj\Debug\TotalSafety.DataTierGenerator.Properties.Resources.resources
+C:\_TFSProjects\DataTierGenerator\DataTierGenerator\obj\Debug\TotalSafety.DataTierGenerator.Controls.SqlServerLogin.resources
+C:\_TFSProjects\DataTierGenerator\DataTierGenerator\obj\Debug\TotalSafety.DataTierGenerator.DatabaseConnectionSettings.resources
+C:\_TFSProjects\DataTierGenerator\DataTierGenerator\obj\Debug\TotalSafety.DataTierGenerator.MiscSettings.resources
+C:\_TFSProjects\DataTierGenerator\DataTierGenerator\obj\Debug\TotalSafety.DataTierGenerator.NewProjectWizard.resources
+C:\_TFSProjects\DataTierGenerator\DataTierGenerator\obj\Debug\TotalSafety.DataTierGenerator.MainForm.resources
+C:\_TFSProjects\DataTierGenerator\DataTierGenerator\bin\Debug\DataTierGenerator.Data.dll
+C:\_TFSProjects\DataTierGenerator\DataTierGenerator\bin\Debug\DataTierGenerator.Data.pdb
+C:\_TFSProjects\DataTierGenerator\DataTierGenerator\obj\Debug\TotalSafety.DataTierGenerator.Controls.ConfigurationView.resources

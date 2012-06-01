@@ -2,7 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace TSHOU.DataTierGenerator.Generator {
+using TotalSafety.DataTierGenerator.Data;
+
+namespace TotalSafety.DataTierGenerator.Generator
+{
 
     class UserGateway : GeneratorBase {
 

@@ -5,7 +5,9 @@ using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
-namespace TSHOU.DataTierGenerator
+using TotalSafety.DataTierGenerator.Data;
+
+namespace TotalSafety.DataTierGenerator
 {
 	internal sealed class Utility
 	{
@@ -33,8 +35,8 @@ namespace TSHOU.DataTierGenerator
 		/// <returns>The value of the specified manifest resource.</returns>
 		internal static string GetResource(string name)
 		{
-            if (name.IndexOf("TSHOU.DataTierGenerator.Resource.") == -1) {
-                name = "TSHOU.DataTierGenerator.Resource." + name;
+            if (name.IndexOf("TotalSafety.DataTierGenerator.Resource.") == -1) {
+                name = "TotalSafety.DataTierGenerator.Resource." + name;
             }
 
 			using (StreamReader streamReader = 
@@ -60,8 +62,8 @@ namespace TSHOU.DataTierGenerator
 
         internal static void SaveResourceFile(string resourceFileName, string fullPathName) {
 
-            if ( resourceFileName.IndexOf( "TSHOU.DataTierGenerator.Resource." ) == -1 ) {
-                resourceFileName = "TSHOU.DataTierGenerator.Resource." + resourceFileName;
+            if ( resourceFileName.IndexOf( "TotalSafety.DataTierGenerator.Resource." ) == -1 ) {
+                resourceFileName = "TotalSafety.DataTierGenerator.Resource." + resourceFileName;
             }
 
             using (FileStream fileStream = File.Create(fullPathName)){
@@ -92,8 +94,8 @@ namespace TSHOU.DataTierGenerator
 		/// <returns>The query that should be used for retrieving the list of tables for the specified database.</returns>
 		internal static string GetTableQuery(string databaseName)
 		{
-            //return GetResource("TSHOU.DataTierGenerator.Resource.TableQuery.sql", "#DatabaseName#", databaseName);
-            return GetResource("TSHOU.DataTierGenerator.Resource.ExtractDatabaseTableSchema.sql");
+            //return GetResource("TotalSafety.DataTierGenerator.Resource.TableQuery.sql", "#DatabaseName#", databaseName);
+            return GetResource("TotalSafety.DataTierGenerator.Resource.ExtractDatabaseTableSchema.sql");
         }
 
 		/// <summary>
@@ -103,7 +105,7 @@ namespace TSHOU.DataTierGenerator
 		/// <returns>The query that should be used for retrieving the list of columns for the specified table.</returns>
 		internal static string GetColumnQuery(string tableSchema, string tableName)
 		{
-            string returnValue = GetResource("TSHOU.DataTierGenerator.Resource.ExtractDatabaseColumnSchema.sql");
+            string returnValue = GetResource("TotalSafety.DataTierGenerator.Resource.ExtractDatabaseColumnSchema.sql");
             returnValue = returnValue.Replace("#TableSchema#", tableSchema);
             returnValue = returnValue.Replace("#TableName#", tableName);
             return returnValue;
@@ -118,7 +120,7 @@ namespace TSHOU.DataTierGenerator
 		/// <returns>The queries that should be used to create the specified database login.</returns>
 		internal static string GetUserQueries(string databaseName, string grantLoginName)
 		{
-            string returnValue = GetResource( "TSHOU.DataTierGenerator.Resource.User.sql" );
+            string returnValue = GetResource( "TotalSafety.DataTierGenerator.Resource.User.sql" );
 			returnValue = returnValue.Replace("#DatabaseName#", databaseName);
 			returnValue = returnValue.Replace("#UserName#", grantLoginName);
 			return returnValue;
@@ -131,7 +133,7 @@ namespace TSHOU.DataTierGenerator
 		/// <returns>The query that should be used for retrieving the list of tables for the specified database.</returns>
 		internal static string Get(string databaseName)
 		{
-			return GetResource("TSHOU.DataTierGenerator.TableQuery.sql", "#DatabaseName#", databaseName);
+			return GetResource("TotalSafety.DataTierGenerator.TableQuery.sql", "#DatabaseName#", databaseName);
 		}
 
 		/// <summary>

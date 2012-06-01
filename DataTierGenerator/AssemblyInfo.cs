@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly : AssemblyTitle("Data Tier Generator - Enterprise Library Edition")]
 [assembly : AssemblyDescription("Microsoft .NET project that generates C# classes using the Enterprise Library to access those stored procedures.")]
 [assembly : AssemblyConfiguration("")]
-[assembly : AssemblyCompany("TSHOU")]
+[assembly : AssemblyCompany("TotalSafety")]
 [assembly : AssemblyProduct("")]
 [assembly : AssemblyCopyright("GNU General Public License (GPL)")]
 [assembly : AssemblyTrademark("")]

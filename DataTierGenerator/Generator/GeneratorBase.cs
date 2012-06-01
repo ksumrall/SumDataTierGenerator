@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace TSHOU.DataTierGenerator.Generator {
+using TotalSafety.DataTierGenerator.Data;
+
+namespace TotalSafety.DataTierGenerator.Generator
+{
 
     class GeneratorBase {
 
