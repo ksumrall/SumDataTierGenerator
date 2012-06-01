@@ -1,0 +1,295 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{133398E8-37F1-4D54-AB03-061E8A3AC087}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>Resource\App.ico</ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>DataTierGenerator</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>TSHOU.DataTierGenerator</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Data.ConnectionUI">
+      <HintPath>..\Reference Files\Microsoft.Data.ConnectionUI.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Data.ConnectionUI.Dialog">
+      <HintPath>..\Reference Files\Microsoft.Data.ConnectionUI.Dialog.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Data.ConnectionUI.SqlCeDataProvider">
+      <HintPath>..\Reference Files\Microsoft.Data.ConnectionUI.SqlCeDataProvider.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="UtilityLibrary, Version=1.0.4.0, Culture=neutral, PublicKeyToken=fe06e967d3cf723d, processorArchitecture=MSIL">
+      <HintPath>..\Reference Files\UtilityLibrary.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Procedure.cs" />
+    <Compile Include="View.cs" />
+    <Content Include="Deps\UtilityLibrary.Designers.dll" />
+    <Content Include="Deps\UtilityLibrary.dll" />
+    <Content Include="Deps\UtilityLibrary.Win32.WindowsAPI.dll" />
+    <Content Include="Resource\App.ico" />
+    <EmbeddedResource Include="Resource\Microsoft.Practices.EnterpriseLibrary.Common.dll" />
+    <EmbeddedResource Include="Resource\Microsoft.Practices.EnterpriseLibrary.Data.dll" />
+    <EmbeddedResource Include="Resource\Microsoft.Practices.ObjectBuilder.dll" />
+    <EmbeddedResource Include="Resource\ProjectTemplate.csproj" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Include="DatabaseConnectionSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DatabaseConnectionSettings.Designer.cs">
+      <DependentUpon>DatabaseConnectionSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataConnectionConfiguration.cs" />
+    <Compile Include="Enumerations.cs" />
+    <Compile Include="Generator\GeneratedDataObject.cs" />
+    <Compile Include="Generator\GeneratedGateway.cs" />
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Column.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Generator\UserGateway.cs" />
+    <EmbeddedResource Include="Controls\SqlServerLogin.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SqlServerLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DatabaseConnectionSettings.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DatabaseConnectionSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MiscSettings.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MiscSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NewProjectWizard.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>NewProjectWizard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resource\GatewayHelper.cs" />
+    <Compile Include="IDataConnectionConfiguration.cs" />
+    <Compile Include="Project.cs" />
+    <Compile Include="SchemaGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Generator\GeneratorBase.cs" />
+    <Compile Include="Schema\project.cs">
+      <DependentUpon>project.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Table.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <EmbeddedResource Include="Resource\ExtractDatabaseColumnSchema.sql" />
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resource\DataMapping.xml" />
+    <EmbeddedResource Include="Resource\FieldDefinition.cs">
+      <SubType>Code</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resource\TypeDefaultValue.cs">
+      <SubType>Code</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resource\ExtractDatabaseTableSchema.sql" />
+    <EmbeddedResource Include="Resource\User.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ClassGeneratorObject.cs" />
+    <Compile Include="Controls\SqlServerLogin.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\SqlServerLogin.Designer.cs">
+      <DependentUpon>SqlServerLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DalProjectGenerator.cs" />
+    <EmbeddedResource Include="Resource\IDataObject.cs" />
+    <EmbeddedResource Include="Resource\IGateway.cs" />
+    <EmbeddedResource Include="Resource\IFieldValues.cs" />
+    <Compile Include="MonitoredList.cs" />
+    <Compile Include="SchemaExtractor.cs" />
+    <Compile Include="ForeignKeyIndex.cs" />
+    <Compile Include="Index.cs" />
+    <Compile Include="MiscSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MiscSettings.Designer.cs">
+      <DependentUpon>MiscSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MVP\MiscSettingsModel.cs" />
+    <Compile Include="MVP\SqlConnectionSettingsModel.cs" />
+    <Compile Include="NewProjectWizard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NewProjectWizard.Designer.cs">
+      <DependentUpon>NewProjectWizard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Properties\DataSources\PriorityIt.DataTierGenerator.MVP.MiscSettingsModel.datasource" />
+    <None Include="Properties\DataSources\PriorityIt.DataTierGenerator.MVP.SqlConnectionSettingsModel.datasource" />
+    <None Include="Schema\project.xsx">
+      <DependentUpon>project.xsd</DependentUpon>
+    </None>
+    <EmbeddedResource Include="Resource\ExtractDatabaseTableAndColumnSchema1.sql" />
+    <EmbeddedResource Include="Resource\ExtractDatabaseForeignKeySchema.sql" />
+    <EmbeddedResource Include="Resource\ExtractDatabasePrimaryKeySchema.sql" />
+    <EmbeddedResource Include="Resource\ExtractDatabaseTableAndColumnSchema.sql" />
+    <EmbeddedResource Include="Resource\ExtractDatabaseViewSchema.sql" />
+    <EmbeddedResource Include="Resource\ExtractDatabaseStoredProcedureSchema.sql" />
+    <EmbeddedResource Include="Schema\project.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>"C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Bin\NETFX 4.0 Tools\x64\xsd.exe" "$(ProjectDir)Schema\project.xsd" /classes /namespace:$(RootNameSpace).Schema /out:"$(ProjectDir)Schema"</PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>
