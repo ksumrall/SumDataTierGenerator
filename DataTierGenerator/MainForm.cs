@@ -12,7 +12,8 @@ using System.Xml.Serialization;
 
 using Microsoft.Win32;
 
-using TotalSafety.DataTierGenerator.Data;
+using TotalSafety.DataTierGenerator.Common;
+using TotalSafety.DataTierGenerator.Factory;
 using TotalSafety.DataTierGenerator.MVP;
 
 namespace TotalSafety.DataTierGenerator
@@ -126,14 +127,16 @@ namespace TotalSafety.DataTierGenerator
             //StoreApplicationValues();
         }
 
-        private void closeButton_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
+        #region menu events
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveAs();
+        }
+
+        private void closeButton_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -143,28 +146,17 @@ namespace TotalSafety.DataTierGenerator
 
         private void m_GuiConfigurationToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MiscSettings miscSettingsDlg = new MiscSettings();
-            miscSettingsDlg.Model = m_MiscSettingsModel;
+            Shell dlg = new Shell();
+            dlg.ClientSize = ConfigurationViewControl.Size;
+            dlg.Controls.Add(ConfigurationViewControl);
+            ConfigurationViewControl.Dock = DockStyle.Fill;
+            dlg.ShowDialog();
 
-            miscSettingsDlg.ShowDialog(this);
-            UpdateTitle();
-        }
+            //MiscSettings miscSettingsDlg = new MiscSettings();
+            //miscSettingsDlg.Model = m_MiscSettingsModel;
 
-        private void m_GuiConnectionSettingsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-            GetConnectionSettings();
-
-        }
-
-        private void m_GuiOtherSettingsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-            MiscSettings miscSettingsDlg = new MiscSettings();
-            miscSettingsDlg.Model = m_MiscSettingsModel;
-
-            miscSettingsDlg.ShowDialog(this);
-            UpdateTitle();
+            //miscSettingsDlg.ShowDialog(this);
+            //UpdateTitle();
         }
 
         private void generateToolStripMenuItem_Click(object sender, EventArgs e)
@@ -172,7 +164,7 @@ namespace TotalSafety.DataTierGenerator
             GenerateProject();
         }
 
-        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        private void m_GuiOpenToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenProjectFromOpenDialog();
         }
@@ -188,53 +180,6 @@ namespace TotalSafety.DataTierGenerator
                 if (project != null)
                 {
                     LoadProject(project);
-                }
-            }
-        }
-
-        void m_Project_Changed(object sender, ChangedEventArgs<Project> e)
-        {
-            UpdateApplicationFeaturesBasedOnRecentProjectChanges();
-        }
-
-        private void m_GuiProjectTree_AfterSelect(object sender, TreeViewEventArgs e)
-        {
-            if (m_IsProjectLoaded)
-            {
-                switch ((TreeNodeTypes)e.Node.Tag)
-                {
-                    case TreeNodeTypes.Configuration:
-                        m_GuiSplitContainer.Panel2.Controls.Clear();
-                        m_GuiSplitContainer.Panel2.Controls.Add(ConfigurationViewControl);
-                        ConfigurationViewControl.Dock = DockStyle.Fill;
-                        break;
-                    case TreeNodeTypes.Schema:
-                        m_GuiSplitContainer.Panel2.Controls.Clear();
-                        break;
-                    case TreeNodeTypes.Tables:
-                        m_GuiSplitContainer.Panel2.Controls.Clear();
-                        break;
-                    case TreeNodeTypes.Views:
-                        m_GuiSplitContainer.Panel2.Controls.Clear();
-                        break;
-                    case TreeNodeTypes.Procedures:
-                        m_GuiSplitContainer.Panel2.Controls.Clear();
-                        break;
-                    case TreeNodeTypes.Columns:
-                        m_GuiSplitContainer.Panel2.Controls.Clear();
-                        break;
-                    case TreeNodeTypes.Table:
-                        m_GuiSplitContainer.Panel2.Controls.Clear();
-                        break;
-                    case TreeNodeTypes.View:
-                        m_GuiSplitContainer.Panel2.Controls.Clear();
-                        break;
-                    case TreeNodeTypes.Procedure:
-                        m_GuiSplitContainer.Panel2.Controls.Clear();
-                        break;
-                    case TreeNodeTypes.Column:
-                        m_GuiSplitContainer.Panel2.Controls.Clear();
-                        break;
                 }
             }
         }
@@ -280,6 +225,68 @@ namespace TotalSafety.DataTierGenerator
             UpdateTitle();
         }
 
+        #endregion
+
+        #region tree node events
+
+        private void m_GuiProjectTree_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            if (m_IsProjectLoaded)
+            {
+                switch ((TreeNodeTypes)e.Node.Tag)
+                {
+                    case TreeNodeTypes.Undefined:
+                        //m_GuiSplitContainer.Panel2.Controls.Clear();
+                        break;
+                    case TreeNodeTypes.Project:
+                        //m_GuiSplitContainer.Panel2.Controls.Clear();
+                        break;
+                    case TreeNodeTypes.Configuration:
+                        if (!m_GuiDetailPaneTabCollection.TabPages.ContainsKey("Configuration"))
+                        {
+                            m_GuiDetailPaneTabCollection.TabPages.Add("Configuration", "Configuration");
+                            m_GuiDetailPaneTabCollection.TabPages["Configuration"].Controls.Add(ConfigurationViewControl);
+                            ConfigurationViewControl.Dock = DockStyle.Fill;
+                        }
+                        break;
+                    case TreeNodeTypes.Schema:
+                        //m_GuiSplitContainer.Panel2.Controls.Clear();
+                        break;
+                    case TreeNodeTypes.Tables:
+                        //m_GuiSplitContainer.Panel2.Controls.Clear();
+                        break;
+                    case TreeNodeTypes.Views:
+                        //m_GuiSplitContainer.Panel2.Controls.Clear();
+                        break;
+                    case TreeNodeTypes.Procedures:
+                        //m_GuiSplitContainer.Panel2.Controls.Clear();
+                        break;
+                    case TreeNodeTypes.Columns:
+                        //m_GuiSplitContainer.Panel2.Controls.Clear();
+                        break;
+                    case TreeNodeTypes.Table:
+                        //m_GuiSplitContainer.Panel2.Controls.Clear();
+                        break;
+                    case TreeNodeTypes.View:
+                        //m_GuiSplitContainer.Panel2.Controls.Clear();
+                        break;
+                    case TreeNodeTypes.Procedure:
+                        //m_GuiSplitContainer.Panel2.Controls.Clear();
+                        break;
+                    case TreeNodeTypes.Column:
+                        //m_GuiSplitContainer.Panel2.Controls.Clear();
+                        break;
+                }
+            }
+        }
+
+        #endregion
+
+        void m_Project_Changed(object sender, ChangedEventArgs<Project> e)
+        {
+            UpdateApplicationFeaturesBasedOnRecentProjectChanges();
+        }
+
         void m_ConfigurationViewControl_ConfigurationChanged(object sender, Controls.ConfigurationView.ChangedEventArgs e)
         {
             m_Project.DbProviderType = e.DbProvider;
@@ -287,28 +294,18 @@ namespace TotalSafety.DataTierGenerator
             m_Project.Namespace = e.Namespace;
             m_Project.OutputPath = e.OutputPath;
 
+            if (m_ConfigurationViewControl.Parent is Form)
+            {
+                //((Form)m_ConfigurationViewControl.Parent).Controls.Remove(m_ConfigurationViewControl);
+                //((Form)m_ConfigurationViewControl.Parent).Dispose();
+            }
+
             UpdateApplicationFeaturesBasedOnRecentProjectChanges();
         }
 
         #endregion
 
         #region private implementation
-
-        private void LoadProject(Project project)
-        {
-            m_Project = project;
-            m_Project.Changed += new EventHandler<ChangedEventArgs<Project>>(m_Project_Changed);
-            LoadTree();
-
-            if (m_Project.TableList.Count > 0 || m_Project.ViewList.Count > 0 || m_Project.ProcedureList.Count > 0)
-            {
-                m_GuiGenerateToolStripMenuItem.Enabled = true;
-            }
-            else
-            {
-                m_GuiGenerateToolStripMenuItem.Enabled = false;
-            }
-        }
 
         private void GenerateProject()
         {
@@ -320,10 +317,6 @@ namespace TotalSafety.DataTierGenerator
                 DalProjectGenerator dpg = new DalProjectGenerator();
 
                 dpg.DalNamespace = m_Project.Namespace;
-                if (!m_Project.OutputPath.EndsWith("\\"))
-                {
-                    m_Project.OutputPath += "\\";
-                }
                 dpg.DalProjectDirectory = m_Project.OutputPath;
 
                 foreach (Table table in m_Project.TableList)
@@ -357,33 +350,39 @@ namespace TotalSafety.DataTierGenerator
             m_GuiProjectTree.Nodes.Clear();
 
             // Add Root
-            m_GuiProjectTree.Nodes.Add("Root", m_Project.ProjectName).Tag = TreeNodeTypes.Undefined;
+            m_GuiProjectTree.Nodes.Add("Root", m_Project.ProjectName).Tag = TreeNodeTypes.Project;
 
             // Add Configuration
-            m_GuiProjectTree.Nodes["Root"].Nodes.Add("Configuration", "Configuration").Tag = TreeNodeTypes.Configuration;
+            //m_GuiProjectTree.Nodes["Root"].Nodes.Add("Configuration", "Configuration").Tag = TreeNodeTypes.Configuration;
 
             // Add Schema
-            m_GuiProjectTree.Nodes["Root"].Nodes.Add("Schema", "Schema").Tag = TreeNodeTypes.Schema;
+            //m_GuiProjectTree.Nodes["Root"].Nodes.Add("Schema", "Schema").Tag = TreeNodeTypes.Schema;
 
             // Add Schema Tables
-            m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes.Add("Tables", "Tables").Tag = TreeNodeTypes.Tables;
+            //m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes.Add("Tables", "Tables").Tag = TreeNodeTypes.Tables;
+            m_GuiProjectTree.Nodes["Root"].Nodes.Add("Tables", "Tables").Tag = TreeNodeTypes.Tables;
             foreach (Table table in m_Project.TableList)
             {
-                AddTableNode(m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes["Tables"], table);
+                //AddTableNode(m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes["Tables"], table);
+                AddTableNode(m_GuiProjectTree.Nodes["Root"].Nodes["Tables"], table);
             }
 
             // Add Schema Views
-            m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes.Add("Views", "Views").Tag = TreeNodeTypes.Views;
-            foreach (Data.View view in m_Project.ViewList)
+            //m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes.Add("Views", "Views").Tag = TreeNodeTypes.Views;
+            m_GuiProjectTree.Nodes["Root"].Nodes.Add("Views", "Views").Tag = TreeNodeTypes.Views;
+            foreach (Common.View view in m_Project.ViewList)
             {
-                AddViewNode(m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes["Views"], view);
+                //AddViewNode(m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes["Views"], view);
+                AddViewNode(m_GuiProjectTree.Nodes["Root"].Nodes["Views"], view);
             }
 
             // Add Schema Stored Procedures
-            m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes.Add("Procedures", "Procedures").Tag = TreeNodeTypes.Procedures;
+            //m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes.Add("Procedures", "Procedures").Tag = TreeNodeTypes.Procedures;
+            m_GuiProjectTree.Nodes["Root"].Nodes.Add("Procedures", "Procedures").Tag = TreeNodeTypes.Procedures;
             foreach (Procedure procedure in m_Project.ProcedureList)
             {
-                AddProcedureNode(m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes["rocedures"], procedure);
+                //AddProcedureNode(m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes["rocedures"], procedure);
+                AddProcedureNode(m_GuiProjectTree.Nodes["Root"].Nodes["rocedures"], procedure);
             }
 
             // End
@@ -411,7 +410,7 @@ namespace TotalSafety.DataTierGenerator
 
         }
 
-        private void AddViewNode(TreeNode treeNode, Data.View view)
+        private void AddViewNode(TreeNode treeNode, Common.View view)
         {
 
             TreeNode node;
@@ -548,25 +547,6 @@ namespace TotalSafety.DataTierGenerator
 
         }
 
-        private void GetConnectionSettings()
-        {
-
-            DatabaseConnectionSettings dbConnSettingsDlg = new DatabaseConnectionSettings();
-            dbConnSettingsDlg.Model = m_SqlConnectionSettingsModel;
-
-            dbConnSettingsDlg.ShowDialog(this);
-
-            if (m_SqlConnectionSettingsModel.DatabaseName != "")
-            {
-                m_GuiGenerateToolStripMenuItem.Enabled = true;
-            }
-            else
-            {
-                m_GuiGenerateToolStripMenuItem.Enabled = false;
-            }
-
-        }
-
         private XmlDocument GenerateProjectXmlDocument()
         {
 
@@ -626,7 +606,7 @@ namespace TotalSafety.DataTierGenerator
 
         #endregion
 
-        #region load project from file implementation
+        #region load project implementation
 
         private void OpenProjectFromOpenDialog()
         {
@@ -658,13 +638,23 @@ namespace TotalSafety.DataTierGenerator
 
         private void LoadProjectFile(string filePathName)
         {
-            m_Project = Project.Load(filePathName);
-            m_Project.Changed += new EventHandler<ChangedEventArgs<Project>>(m_Project_Changed);
-            UpdateTitle();
+            LoadProject(Project.Load(filePathName));
+        }
 
-            // Load the tree
-            m_IsProjectLoaded = true;
+        private void LoadProject(Project project)
+        {
+            m_Project = project;
+            m_Project.Changed += new EventHandler<ChangedEventArgs<Project>>(m_Project_Changed);
             LoadTree();
+
+            if (m_Project.TableList.Count > 0 || m_Project.ViewList.Count > 0 || m_Project.ProcedureList.Count > 0)
+            {
+                m_GuiGenerateToolStripMenuItem.Enabled = true;
+            }
+            else
+            {
+                m_GuiGenerateToolStripMenuItem.Enabled = false;
+            }
         }
 
         private void LoadTableFromNode(XmlNode xmlNode)

@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-using TotalSafety.DataTierGenerator.Data;
+using TotalSafety.DataTierGenerator.Common;
 using TotalSafety.DataTierGenerator.MVP;
 
 namespace TotalSafety.DataTierGenerator {

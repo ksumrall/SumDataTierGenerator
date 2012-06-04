@@ -47,3 +47,5 @@ C:\_TFSProjects\DataTierGenerator\DataTierGenerator\obj\Debug\TotalSafety.DataTi
 C:\_TFSProjects\DataTierGenerator\DataTierGenerator\bin\Debug\DataTierGenerator.Data.dll
 C:\_TFSProjects\DataTierGenerator\DataTierGenerator\bin\Debug\DataTierGenerator.Data.pdb
 C:\_TFSProjects\DataTierGenerator\DataTierGenerator\obj\Debug\TotalSafety.DataTierGenerator.Controls.ConfigurationView.resources
+C:\_TFSProjects\DataTierGenerator\DataTierGenerator\bin\Debug\DataTierGenerator.Engine.dll
+C:\_TFSProjects\DataTierGenerator\DataTierGenerator\bin\Debug\DataTierGenerator.Engine.pdb

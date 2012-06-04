@@ -6,13 +6,13 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Xml;
 
-using TotalSafety.DataTierGenerator.Data;
-using TotalSafety.DataTierGenerator.Generator;
+using TotalSafety.DataTierGenerator.Common;
+using TotalSafety.DataTierGenerator.Factory;
 
 namespace TotalSafety.DataTierGenerator
 {
-	public sealed class SchemaExtractor
-	{
+    public sealed class SchemaExtractor
+    {
 
         #region private / protected member variables
 
@@ -30,7 +30,7 @@ namespace TotalSafety.DataTierGenerator
 
         #region constructors / desturctors
 
-		public SchemaExtractor() {
+        public SchemaExtractor() {
 
             string dataMapping = Utility.GetResource("TotalSafety.DataTierGenerator.Resource.DataMapping.xml");
 
@@ -624,5 +624,5 @@ namespace TotalSafety.DataTierGenerator
 
         #endregion
 
-	}
+    }
 }

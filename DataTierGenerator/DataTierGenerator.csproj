@@ -158,12 +158,9 @@
     </Compile>
     <Compile Include="DataConnectionConfiguration.cs" />
     <Compile Include="Enumerations.cs" />
-    <Compile Include="Generator\GeneratedDataObject.cs" />
-    <Compile Include="Generator\GeneratedGateway.cs" />
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Generator\UserGateway.cs" />
     <EmbeddedResource Include="Controls\SqlServerLogin.resx">
       <SubType>Designer</SubType>
       <DependentUpon>SqlServerLogin.cs</DependentUpon>
@@ -182,7 +179,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Resource\GatewayHelper.cs" />
     <Compile Include="IDataConnectionConfiguration.cs" />
-    <Compile Include="Project.cs" />
     <Compile Include="SchemaGenerator.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -192,12 +188,11 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Generator\GeneratorBase.cs" />
-    <Compile Include="Schema\project.cs">
-      <DependentUpon>project.xsd</DependentUpon>
+    <Compile Include="Shell.cs">
+      <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Utility.cs">
-      <SubType>Code</SubType>
+    <Compile Include="Shell.Designer.cs">
+      <DependentUpon>Shell.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Resource\ExtractDatabaseColumnSchema.sql" />
     <EmbeddedResource Include="MainForm.resx">
@@ -222,11 +217,9 @@
     <Compile Include="Controls\SqlServerLogin.Designer.cs">
       <DependentUpon>SqlServerLogin.cs</DependentUpon>
     </Compile>
-    <Compile Include="DalProjectGenerator.cs" />
     <EmbeddedResource Include="Resource\IDataObject.cs" />
     <EmbeddedResource Include="Resource\IGateway.cs" />
     <EmbeddedResource Include="Resource\IFieldValues.cs" />
-    <Compile Include="MonitoredList.cs" />
     <Compile Include="SchemaExtractor.cs" />
     <Compile Include="MiscSettings.cs">
       <SubType>Form</SubType>
@@ -252,18 +245,12 @@
     <None Include="app.config" />
     <None Include="Properties\DataSources\PriorityIt.DataTierGenerator.MVP.MiscSettingsModel.datasource" />
     <None Include="Properties\DataSources\PriorityIt.DataTierGenerator.MVP.SqlConnectionSettingsModel.datasource" />
-    <None Include="Schema\project.xsx">
-      <DependentUpon>project.xsd</DependentUpon>
-    </None>
     <EmbeddedResource Include="Resource\ExtractDatabaseTableAndColumnSchema1.sql" />
     <EmbeddedResource Include="Resource\ExtractDatabaseForeignKeySchema.sql" />
     <EmbeddedResource Include="Resource\ExtractDatabasePrimaryKeySchema.sql" />
     <EmbeddedResource Include="Resource\ExtractDatabaseTableAndColumnSchema.sql" />
     <EmbeddedResource Include="Resource\ExtractDatabaseViewSchema.sql" />
     <EmbeddedResource Include="Resource\ExtractDatabaseStoredProcedureSchema.sql" />
-    <EmbeddedResource Include="Schema\project.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -283,9 +270,13 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DataTierGenerator.Data\DataTierGenerator.Data.csproj">
+    <ProjectReference Include="..\DataTierGenerator.Common\DataTierGenerator.Common.csproj">
       <Project>{187A5025-7CDB-490C-B03C-9F13CAF1715D}</Project>
-      <Name>DataTierGenerator.Data</Name>
+      <Name>DataTierGenerator.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataTierGenerator.Factory\DataTierGenerator.Factory.csproj">
+      <Project>{5E14A9B5-8CAE-416E-9157-CAEB30C8B569}</Project>
+      <Name>DataTierGenerator.Factory</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

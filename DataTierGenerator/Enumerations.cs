@@ -7,6 +7,7 @@ public enum SqlServerAuthenticationTypeEnumeration
 public enum TreeNodeTypes
 {
     Undefined,
+    Project,
     Configuration,
     Schema,
     Tables,
