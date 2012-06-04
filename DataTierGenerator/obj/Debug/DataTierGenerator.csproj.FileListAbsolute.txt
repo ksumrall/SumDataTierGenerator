@@ -44,8 +44,8 @@ C:\_TFSProjects\DataTierGenerator\DataTierGenerator\obj\Debug\TotalSafety.DataTi
 C:\_TFSProjects\DataTierGenerator\DataTierGenerator\obj\Debug\TotalSafety.DataTierGenerator.MiscSettings.resources
 C:\_TFSProjects\DataTierGenerator\DataTierGenerator\obj\Debug\TotalSafety.DataTierGenerator.NewProjectWizard.resources
 C:\_TFSProjects\DataTierGenerator\DataTierGenerator\obj\Debug\TotalSafety.DataTierGenerator.MainForm.resources
-C:\_TFSProjects\DataTierGenerator\DataTierGenerator\bin\Debug\DataTierGenerator.Data.dll
-C:\_TFSProjects\DataTierGenerator\DataTierGenerator\bin\Debug\DataTierGenerator.Data.pdb
 C:\_TFSProjects\DataTierGenerator\DataTierGenerator\obj\Debug\TotalSafety.DataTierGenerator.Controls.ConfigurationView.resources
-C:\_TFSProjects\DataTierGenerator\DataTierGenerator\bin\Debug\DataTierGenerator.Engine.dll
-C:\_TFSProjects\DataTierGenerator\DataTierGenerator\bin\Debug\DataTierGenerator.Engine.pdb
+C:\_TFSProjects\DataTierGenerator\DataTierGenerator\bin\Debug\DataTierGenerator.Common.dll
+C:\_TFSProjects\DataTierGenerator\DataTierGenerator\bin\Debug\DataTierGenerator.Factory.dll
+C:\_TFSProjects\DataTierGenerator\DataTierGenerator\bin\Debug\DataTierGenerator.Common.pdb
+C:\_TFSProjects\DataTierGenerator\DataTierGenerator\bin\Debug\DataTierGenerator.Factory.pdb

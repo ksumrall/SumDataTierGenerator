@@ -33,12 +33,20 @@ namespace TotalSafety.DataTierGenerator.Common
         /// <returns>The value of the specified manifest resource.</returns>
         public static string GetResource(string name)
         {
-            if (name.IndexOf("TotalSafety.DataTierGenerator.Resource.") == -1) {
-                name = "TotalSafety.DataTierGenerator.Resource." + name;
-            }
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            return GetResource(assembly, name);
+        }
 
-            using (StreamReader streamReader = 
-                new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream(name))) {
+        /// <summary>
+        /// Retrieves the specified manifest resource stream from the executing assembly as a string.
+        /// </summary>
+        /// <param name="name">Name of the resource to retrieve.</param>
+        /// <returns>The value of the specified manifest resource.</returns>
+        public static string GetResource(Assembly assembly, string name)
+        {
+            using (StreamReader streamReader =
+                new StreamReader(assembly.GetManifestResourceStream(name)))
+            {
 
                 return streamReader.ReadToEnd();
 
@@ -61,29 +69,33 @@ namespace TotalSafety.DataTierGenerator.Common
         public static void SaveResourceFile(string resourceFileName, string fullPathName)
         {
 
-            if ( resourceFileName.IndexOf( "TotalSafety.DataTierGenerator.Resource." ) == -1 ) {
-                resourceFileName = "TotalSafety.DataTierGenerator.Resource." + resourceFileName;
-            }
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            SaveResourceFile(assembly, resourceFileName, fullPathName);
 
-            using (FileStream fileStream = File.Create(fullPathName)){
-                
+        }
+
+        public static void SaveResourceFile(Assembly assembly, string resourceFileName, string fullPathName)
+        {
+            using (FileStream fileStream = File.Create(fullPathName))
+            {
+
                 byte[] byteArray = new byte[1024];
 
-                BinaryReader binaryReader = new BinaryReader( Assembly.GetExecutingAssembly().GetManifestResourceStream( resourceFileName ) );
-                BinaryWriter binaryWriter = new BinaryWriter( fileStream );
+                BinaryReader binaryReader = new BinaryReader(assembly.GetManifestResourceStream(resourceFileName));
+                BinaryWriter binaryWriter = new BinaryWriter(fileStream);
 
-                do{
+                do
+                {
                     byteArray = binaryReader.ReadBytes(1024);
-                    binaryWriter.Write( byteArray );
+                    binaryWriter.Write(byteArray);
                     //fileStream.Write(byteArray, 0, byteArray.Length);
-                }while(byteArray.Length == 1024);
+                } while (byteArray.Length == 1024);
 
                 binaryWriter.Flush();
 
                 binaryWriter.Close();
                 binaryReader.Close();
             }
-
         }
 
         /// <summary>

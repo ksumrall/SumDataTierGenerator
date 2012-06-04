@@ -2,7 +2,7 @@ C:\_TFSProjects\DataTierGenerator\DataTierGenerator.Common\obj\x86\Debug\Resolve
 C:\_TFSProjects\DataTierGenerator\DataTierGenerator.Common\obj\x86\Debug\TotalSafety.DataTierGenerator.Common.Properties.Resources.resources
 C:\_TFSProjects\DataTierGenerator\DataTierGenerator.Common\obj\x86\Debug\GenerateResource.read.1.tlog
 C:\_TFSProjects\DataTierGenerator\DataTierGenerator.Common\obj\x86\Debug\GenerateResource.write.1.tlog
-C:\_TFSProjects\DataTierGenerator\DataTierGenerator.Common\obj\x86\Debug\DataTierGenerator.Data.dll
-C:\_TFSProjects\DataTierGenerator\DataTierGenerator.Common\obj\x86\Debug\DataTierGenerator.Data.pdb
-C:\_TFSProjects\DataTierGenerator\DataTierGenerator.Common\bin\Debug\DataTierGenerator.Data.dll
-C:\_TFSProjects\DataTierGenerator\DataTierGenerator.Common\bin\Debug\DataTierGenerator.Data.pdb
+C:\_TFSProjects\DataTierGenerator\DataTierGenerator.Common\bin\Debug\DataTierGenerator.Common.dll
+C:\_TFSProjects\DataTierGenerator\DataTierGenerator.Common\bin\Debug\DataTierGenerator.Common.pdb
+C:\_TFSProjects\DataTierGenerator\DataTierGenerator.Common\obj\x86\Debug\DataTierGenerator.Common.dll
+C:\_TFSProjects\DataTierGenerator\DataTierGenerator.Common\obj\x86\Debug\DataTierGenerator.Common.pdb

@@ -20,8 +20,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>TotalSafety.DataTierGenerator</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-    <StartupObject>
-    </StartupObject>
+    <StartupObject>TotalSafety.DataTierGenerator.Program</StartupObject>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -135,10 +134,6 @@
     <EmbeddedResource Include="Controls\ConfigurationView.resx">
       <DependentUpon>ConfigurationView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resource\Microsoft.Practices.EnterpriseLibrary.Common.dll" />
-    <EmbeddedResource Include="Resource\Microsoft.Practices.EnterpriseLibrary.Data.dll" />
-    <EmbeddedResource Include="Resource\Microsoft.Practices.ObjectBuilder.dll" />
-    <EmbeddedResource Include="Resource\ProjectTemplate.csproj" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
@@ -177,8 +172,8 @@
       <SubType>Designer</SubType>
       <DependentUpon>NewProjectWizard.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resource\GatewayHelper.cs" />
     <Compile Include="IDataConnectionConfiguration.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="SchemaGenerator.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -199,14 +194,6 @@
       <DependentUpon>MainForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resource\DataMapping.xml" />
-    <EmbeddedResource Include="Resource\FieldDefinition.cs">
-      <SubType>Code</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resource\TypeDefaultValue.cs">
-      <SubType>Code</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resource\ExtractDatabaseTableSchema.sql" />
     <EmbeddedResource Include="Resource\User.sql" />
   </ItemGroup>
   <ItemGroup>
@@ -217,9 +204,6 @@
     <Compile Include="Controls\SqlServerLogin.Designer.cs">
       <DependentUpon>SqlServerLogin.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Resource\IDataObject.cs" />
-    <EmbeddedResource Include="Resource\IGateway.cs" />
-    <EmbeddedResource Include="Resource\IFieldValues.cs" />
     <Compile Include="SchemaExtractor.cs" />
     <Compile Include="MiscSettings.cs">
       <SubType>Form</SubType>
@@ -281,7 +265,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>"C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Bin\NETFX 4.0 Tools\x64\xsd.exe" "$(ProjectDir)Schema\project.xsd" /classes /namespace:$(RootNameSpace).Schema /out:"$(ProjectDir)Schema"</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
