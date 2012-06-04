@@ -1,0 +1,7 @@
+C:\_TFSProjects\DataTierGenerator\DataTierGenerator.Engine\obj\Debug\ResolveAssemblyReference.cache
+C:\_TFSProjects\DataTierGenerator\DataTierGenerator.Engine\bin\Debug\DataTierGenerator.Engine.dll
+C:\_TFSProjects\DataTierGenerator\DataTierGenerator.Engine\bin\Debug\DataTierGenerator.Engine.pdb
+C:\_TFSProjects\DataTierGenerator\DataTierGenerator.Engine\bin\Debug\DataTierGenerator.Data.dll
+C:\_TFSProjects\DataTierGenerator\DataTierGenerator.Engine\bin\Debug\DataTierGenerator.Data.pdb
+C:\_TFSProjects\DataTierGenerator\DataTierGenerator.Engine\obj\Debug\DataTierGenerator.Engine.dll
+C:\_TFSProjects\DataTierGenerator\DataTierGenerator.Engine\obj\Debug\DataTierGenerator.Engine.pdb

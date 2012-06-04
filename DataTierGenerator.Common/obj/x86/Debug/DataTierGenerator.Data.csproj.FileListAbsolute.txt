@@ -1,0 +1,8 @@
+C:\_TFSProjects\DataTierGenerator\DataTierGenerator.Data\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\_TFSProjects\DataTierGenerator\DataTierGenerator.Data\obj\x86\Debug\TotalSafety.DataTierGenerator.Data.Properties.Resources.resources
+C:\_TFSProjects\DataTierGenerator\DataTierGenerator.Data\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\_TFSProjects\DataTierGenerator\DataTierGenerator.Data\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\_TFSProjects\DataTierGenerator\DataTierGenerator.Data\bin\Debug\DataTierGenerator.Data.dll
+C:\_TFSProjects\DataTierGenerator\DataTierGenerator.Data\bin\Debug\DataTierGenerator.Data.pdb
+C:\_TFSProjects\DataTierGenerator\DataTierGenerator.Data\obj\x86\Debug\DataTierGenerator.Data.dll
+C:\_TFSProjects\DataTierGenerator\DataTierGenerator.Data\obj\x86\Debug\DataTierGenerator.Data.pdb
