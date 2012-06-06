@@ -291,6 +291,5 @@ namespace TotalSafety.DataTierGenerator.Common
 
         #endregion
 
-
     }
 }

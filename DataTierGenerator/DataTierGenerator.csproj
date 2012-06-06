@@ -258,9 +258,9 @@
       <Project>{187A5025-7CDB-490C-B03C-9F13CAF1715D}</Project>
       <Name>DataTierGenerator.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DataTierGenerator.Factory\DataTierGenerator.Factory.csproj">
+    <ProjectReference Include="..\DataTierGenerator.Factory\DataTierGenerator.CodeGenerationFactory.csproj">
       <Project>{5E14A9B5-8CAE-416E-9157-CAEB30C8B569}</Project>
-      <Name>DataTierGenerator.Factory</Name>
+      <Name>DataTierGenerator.CodeGenerationFactory</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

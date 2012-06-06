@@ -13,7 +13,7 @@ using System.Xml.Serialization;
 using Microsoft.Win32;
 
 using TotalSafety.DataTierGenerator.Common;
-using TotalSafety.DataTierGenerator.Factory;
+using TotalSafety.DataTierGenerator.CodeGenerationFactory;
 using TotalSafety.DataTierGenerator.MVP;
 
 namespace TotalSafety.DataTierGenerator

@@ -50,9 +50,6 @@ namespace TotalSafety.DataTierGenerator.Common
 
         #endregion
 
-        #region internal structured members
-        #endregion
-
         #region constructors / desturctors
 
         /// <summary>
@@ -181,10 +178,6 @@ namespace TotalSafety.DataTierGenerator.Common
 
         #endregion
 
-        #region event handlers / overrides
-
-        #endregion
-
         #region public methods
 
         public XmlNode GetNode(XmlDocument xmlDoc)
@@ -194,10 +187,6 @@ namespace TotalSafety.DataTierGenerator.Common
 
             return node;
         }
-
-        #endregion
-
-        #region private implementation
 
         #endregion
 

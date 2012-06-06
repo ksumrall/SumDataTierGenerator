@@ -9,7 +9,7 @@ using System.Web;
 using System.Xml;
 using TotalSafety.DataTierGenerator.Common;
 
-namespace TotalSafety.DataTierGenerator.Factory
+namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
 {
 
     public class DalProjectGenerator
@@ -93,7 +93,7 @@ namespace TotalSafety.DataTierGenerator.Factory
             {
                 StringBuilder itemGroup;
 
-                dataMapping = Utility.GetResource(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.Factory.EmbeddedResources.DataMapping.xml");
+                dataMapping = Utility.GetResource(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.CodeGenerationFactory.EmbeddedResources.DataMapping.xml");
 
                 m_DataMappingXml = new XmlDocument();
                 m_DataMappingXml.LoadXml(dataMapping);
@@ -107,7 +107,7 @@ namespace TotalSafety.DataTierGenerator.Factory
                 if (m_GenProjectFile)
                 {
                     // create Project File
-                    projectFile = Utility.GetResource(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.Factory.EmbeddedResources.ProjectTemplate.csproj");
+                    projectFile = Utility.GetResource(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.CodeGenerationFactory.EmbeddedResources.ProjectTemplate.csproj");
                     projectFile = projectFile.Replace("$guid1$", Guid.NewGuid().ToString());
                     projectFile = projectFile.Replace("$safeprojectname$", m_DalNamespace);
                     projectFile = projectFile.Replace("$CompileItem$", itemGroup.ToString());
@@ -152,45 +152,45 @@ namespace TotalSafety.DataTierGenerator.Factory
             string fileContents;
 
             // create FieldDefinition
-            fileContents = Utility.GetResource(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.Factory.EmbeddedResources.FieldDefinition.cs");
+            fileContents = Utility.GetResource(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.CodeGenerationFactory.EmbeddedResources.FieldDefinition.cs");
             fileContents = fileContents.Replace("#ROOT_NAMESPACE#", m_DalNamespace);
             File.WriteAllText(m_DalProjectDirectory + "Common\\FieldDefinition.cs", fileContents);
 
             // create the TypeDefaultValue
-            fileContents = Utility.GetResource(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.Factory.EmbeddedResources.TypeDefaultValue.cs");
+            fileContents = Utility.GetResource(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.CodeGenerationFactory.EmbeddedResources.TypeDefaultValue.cs");
             fileContents = fileContents.Replace("#ROOT_NAMESPACE#", m_DalNamespace);
             File.WriteAllText(m_DalProjectDirectory + "Common\\TypeDefaultValue.cs", fileContents);
 
             // create the GatewayHelper
-            fileContents = Utility.GetResource(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.Factory.EmbeddedResources.GatewayHelper.cs");
+            fileContents = Utility.GetResource(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.CodeGenerationFactory.EmbeddedResources.GatewayHelper.cs");
             fileContents = fileContents.Replace("#ROOT_NAMESPACE#", m_DalNamespace);
             File.WriteAllText(m_DalProjectDirectory + "Common\\GatewayHelper.cs", fileContents);
 
             // create the IGateway
-            fileContents = Utility.GetResource(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.Factory.EmbeddedResources.IGateway.cs");
+            fileContents = Utility.GetResource(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.CodeGenerationFactory.EmbeddedResources.IGateway.cs");
             fileContents = fileContents.Replace("#ROOT_NAMESPACE#", m_DalNamespace);
             File.WriteAllText(m_DalProjectDirectory + "Common\\IGateway.cs", fileContents);
 
             // create the IDataObject
-            fileContents = Utility.GetResource(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.Factory.EmbeddedResources.IFieldValues.cs");
+            fileContents = Utility.GetResource(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.CodeGenerationFactory.EmbeddedResources.IFieldValues.cs");
             fileContents = fileContents.Replace("#ROOT_NAMESPACE#", m_DalNamespace);
             File.WriteAllText(m_DalProjectDirectory + "Common\\IFieldValues.cs", fileContents);
 
             // create the IDataObject
-            fileContents = Utility.GetResource(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.Factory.EmbeddedResources.IDataObject.cs");
+            fileContents = Utility.GetResource(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.CodeGenerationFactory.EmbeddedResources.IDataObject.cs");
             fileContents = fileContents.Replace("#ROOT_NAMESPACE#", m_DalNamespace);
             File.WriteAllText(m_DalProjectDirectory + "Common\\IDataObject.cs", fileContents);
 
             // create the Microsoft.Practices.EnterpriseLibrary.Common.dll
-            Utility.SaveResourceFile(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.Factory.EmbeddedResources.Microsoft.Practices.EnterpriseLibrary.Common.dll"
+            Utility.SaveResourceFile(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.CodeGenerationFactory.EmbeddedResources.Microsoft.Practices.EnterpriseLibrary.Common.dll"
                 , m_DalProjectDirectory + "bin\\Microsoft.Practices.EnterpriseLibrary.Common.dll");
 
             // create the Microsoft.Practices.EnterpriseLibrary.Data.dll
-            Utility.SaveResourceFile(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.Factory.EmbeddedResources.Microsoft.Practices.EnterpriseLibrary.Data.dll"
+            Utility.SaveResourceFile(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.CodeGenerationFactory.EmbeddedResources.Microsoft.Practices.EnterpriseLibrary.Data.dll"
                 , m_DalProjectDirectory + "bin\\Microsoft.Practices.EnterpriseLibrary.Data.dll");
 
             // create the Microsoft.Practices.EnterpriseLibrary.ObjectBuilder.dll
-            Utility.SaveResourceFile(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.Factory.EmbeddedResources.Microsoft.Practices.ObjectBuilder.dll"
+            Utility.SaveResourceFile(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.CodeGenerationFactory.EmbeddedResources.Microsoft.Practices.ObjectBuilder.dll"
                 , m_DalProjectDirectory + "bin\\Microsoft.Practices.ObjectBuilder.dll");
 
         }

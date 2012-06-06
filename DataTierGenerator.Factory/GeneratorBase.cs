@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 using TotalSafety.DataTierGenerator.Common;
 
-namespace TotalSafety.DataTierGenerator.Factory
+namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
 {
 
     public class GeneratorBase {

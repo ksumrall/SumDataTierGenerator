@@ -4,7 +4,7 @@ using System.Text;
 
 using TotalSafety.DataTierGenerator.Common;
 
-namespace TotalSafety.DataTierGenerator.Factory
+namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
 {
 
     public class GeneratedDataObject : GeneratorBase {

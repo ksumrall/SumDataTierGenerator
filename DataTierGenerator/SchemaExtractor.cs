@@ -7,7 +7,7 @@ using System.IO;
 using System.Xml;
 
 using TotalSafety.DataTierGenerator.Common;
-using TotalSafety.DataTierGenerator.Factory;
+using TotalSafety.DataTierGenerator.CodeGenerationFactory;
 
 namespace TotalSafety.DataTierGenerator
 {

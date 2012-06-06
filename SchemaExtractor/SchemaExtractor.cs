@@ -7,11 +7,10 @@ using System.IO;
 using System.Xml;
 
 using TotalSafety.DataTierGenerator.Common;
-using TotalSafety.DataTierGenerator.CodeGenerationFactory;
 
-namespace TotalSafety.DataTierGenerator
+namespace TotalSafety.DataTierGenerator.SchemaExtractor
 {
-    public sealed class SchemaGenerator
+    public sealed class SchemaExtractor
     {
 
         #region private / protected member variables
@@ -20,7 +19,6 @@ namespace TotalSafety.DataTierGenerator
         private TableList m_TableList;
         private List<Object> m_ViewList;
         private List<Object> m_StoredProcedureList;
-        private string m_SqlMessage;
 
         XmlDocument m_DataMappingXml;
 
@@ -31,8 +29,7 @@ namespace TotalSafety.DataTierGenerator
 
         #region constructors / desturctors
 
-        public SchemaGenerator()
-        {
+        public SchemaExtractor() {
 
             string dataMapping = Utility.GetResource("TotalSafety.DataTierGenerator.Resource.DataMapping.xml");
 
@@ -45,9 +42,8 @@ namespace TotalSafety.DataTierGenerator
 
         }
 
-        public SchemaGenerator(string connectionString)
-            : this()
-        {
+        public SchemaExtractor(string connectionString)
+            : this() {
 
             m_ConnectionString = connectionString;
 
@@ -57,50 +53,38 @@ namespace TotalSafety.DataTierGenerator
 
         #region public properties
 
-        public string ConnectionString
-        {
-            get
-            {
+        public string ConnectionString {
+            get {
                 return m_ConnectionString;
             }
-            set
-            {
+            set {
                 m_ConnectionString = value;
             }
         }
 
-        public TableList TableList
-        {
-            get
-            {
+        public TableList TableList {
+            get {
                 return m_TableList;
             }
-            set
-            {
+            set {
                 m_TableList = value;
             }
         }
 
-        public List<Object> ViewList
-        {
-            get
-            {
+        public List<Object> ViewList {
+            get {
                 return m_ViewList;
             }
-            set
-            {
+            set {
                 m_ViewList = value;
             }
         }
 
-        public List<Object> StoredProcedureList
-        {
-            get
-            {
+        public List<Object> StoredProcedureList {
+            get {
                 return m_StoredProcedureList;
             }
-            set
-            {
+            set {
                 m_StoredProcedureList = value;
             }
         }
@@ -154,8 +138,7 @@ namespace TotalSafety.DataTierGenerator
 
         #region public methods
 
-        public void ExtractSchema()
-        {
+        public void ExtractSchema() {
 
             string query;
 
@@ -167,26 +150,15 @@ namespace TotalSafety.DataTierGenerator
 
             SqlDataAdapter dataAdapter;
 
-            if (string.IsNullOrEmpty(m_ConnectionString))
-            {
+            if (string.IsNullOrEmpty(m_ConnectionString)) {
                 throw new Exception("The connection string is not set. The connection string needs to be set in order to communicate with the database.");
             }
 
             #region get all the schemas needed for processing
 
-            using (SqlConnection connection = new SqlConnection(m_ConnectionString))
-            {
+            using (SqlConnection connection = new SqlConnection(m_ConnectionString)) {
 
-                connection.InfoMessage += new SqlInfoMessageEventHandler(connection_InfoMessage);
                 connection.Open();
-
-                query = "exec sp_dbcmptlevel " + connection.Database;
-
-                SqlCommand cmd = connection.CreateCommand();
-                cmd.CommandText = query;
-                cmd.CommandType = CommandType.Text;
-
-                cmd.ExecuteScalar();
 
                 // Table and Column Schema
                 tableAndColumnSchema = new DataTable();
@@ -234,13 +206,7 @@ namespace TotalSafety.DataTierGenerator
 
         }
 
-        void connection_InfoMessage(object sender, SqlInfoMessageEventArgs e)
-        {
-            m_SqlMessage = e.Message;
-        }
-
-        public void ExtractSchema(string connectionString)
-        {
+        public void ExtractSchema(string connectionString) {
 
             m_ConnectionString = connectionString;
 
@@ -409,8 +375,7 @@ namespace TotalSafety.DataTierGenerator
         #region private implementation
 
         private void BuildTableList(DataTable tableAndColumnSchema
-            , DataTable tablePrimaryKeySchema, DataTable tableForeignKeySchema)
-        {
+            , DataTable tablePrimaryKeySchema, DataTable tableForeignKeySchema) {
 
             string curSchemaName = "";
             string curTableName = "";
@@ -429,49 +394,44 @@ namespace TotalSafety.DataTierGenerator
             bldr = new SqlConnectionStringBuilder(m_ConnectionString);
 
             // add a new table to the table list for each table schema row in the datatable
-            foreach (DataRow dataRow in tableAndColumnSchema.Rows)
-            {
+            foreach (DataRow dataRow in tableAndColumnSchema.Rows) {
 
                 curSchemaName = (string)dataRow["SchemaName"];
                 curTableName = (string)dataRow["TableName"];
 
-                if (!curSchemaName.Equals(prevSchemaName) || !curTableName.Equals(prevTableName))
-                {
+                if (!curSchemaName.Equals(prevSchemaName) || !curTableName.Equals(prevTableName)) {
 
                     prevSchemaName = curSchemaName;
                     prevTableName = curTableName;
 
                     tableColumnView = tableAndColumnSchema.DefaultView;
-                    tableColumnView.RowFilter =
+                    tableColumnView.RowFilter = 
                         "SchemaName=\'" + curSchemaName + "\' And TableName=\'" + curTableName + "\'";
 
                     primaryKeyView = tablePrimaryKeySchema.DefaultView;
                     primaryKeyView.RowFilter =
                         "SchemaName=\'" + curSchemaName + "\' And TableName=\'" + curTableName + "\'";
 
-                    table = CreateTable(bldr.InitialCatalog, tableColumnView);
+                    table = CreateTable(bldr.DataSource, tableColumnView);
 
-                    if (primaryKeyView.Count > 0)
-                    {
+                    if (primaryKeyView.Count > 0) {
                         AddPrimaryKey(table, primaryKeyView);
                     }
 
                     m_TableList.Add(table);
                 }
-
+                
             }
 
             prevSchemaName = "";
             prevTableName = "";
 
-            foreach (Table curTable in m_TableList)
-            {
+            foreach (Table curTable in m_TableList) {
 
                 curSchemaName = curTable.Schema;
                 curTableName = curTable.Name;
 
-                if (!curSchemaName.Equals(prevSchemaName) || !curTableName.Equals(prevTableName))
-                {
+                if (!curSchemaName.Equals(prevSchemaName) || !curTableName.Equals(prevTableName)) {
 
                     prevSchemaName = curSchemaName;
                     prevTableName = curTableName;
@@ -480,8 +440,7 @@ namespace TotalSafety.DataTierGenerator
                     foreignKeyView.RowFilter =
                         "SchemaName=\'" + curSchemaName + "\' And TableName=\'" + curTableName + "\'";
 
-                    if (foreignKeyView.Count > 0)
-                    {
+                    if (foreignKeyView.Count > 0) {
                         AddForeignKeyList(curTable, foreignKeyView);
                     }
 
@@ -491,30 +450,25 @@ namespace TotalSafety.DataTierGenerator
 
         }
 
-        private void ExtractViewSchema()
-        {
+        private void ExtractViewSchema() {
         }
 
-        private void ExtractStoredProcedureSchema()
-        {
+        private void ExtractStoredProcedureSchema() {
         }
 
-        private Table CreateTable(string database, DataView tableColumnView)
-        {
+        private Table CreateTable(string dataSource, DataView tableColumnView) {
 
             Table table = new Table();
 
-            table.DatabaseName = database;
+            table.DatabaseName = dataSource;
             table.Schema = (string)tableColumnView[0]["SchemaName"];
             table.Name = (string)tableColumnView[0]["TableName"];
 
-            if (tableColumnView[0]["TableDescription"] != DBNull.Value)
-            {
+            if (tableColumnView[0]["TableDescription"] != DBNull.Value) {
                 table.Description = (string)tableColumnView[0]["TableDescription"];
             }
 
-            foreach (DataRowView drv in tableColumnView)
-            {
+            foreach (DataRowView drv in tableColumnView) {
                 table.Columns.Add(CreateColumn(drv));
             }
 
@@ -522,8 +476,7 @@ namespace TotalSafety.DataTierGenerator
 
         }
 
-        private Column CreateColumn(DataRowView tableColumnRowView)
-        {
+        private Column CreateColumn(DataRowView tableColumnRowView) {
 
             Column column = new Column();
 
@@ -558,8 +511,7 @@ namespace TotalSafety.DataTierGenerator
             column.LanguageType = node.Attributes["Value"].Value;
 
             // Determine the column's extended name
-            if (tableColumnRowView["ColumnDescription"] != DBNull.Value)
-            {
+            if (tableColumnRowView["ColumnDescription"] != DBNull.Value) {
                 column.Description = tableColumnRowView["ColumnDescription"].ToString();
             }
 
@@ -579,21 +531,17 @@ namespace TotalSafety.DataTierGenerator
             column.IsComputed = (bool)tableColumnRowView["IsComputed"];
 
             // does tableColumnRowView have a default value?
-            if (tableColumnRowView["DefaultValue"] != DBNull.Value)
-            {
+            if (tableColumnRowView["DefaultValue"] != DBNull.Value) {
                 column.DefaultValue = (string)tableColumnRowView["DefaultValue"];
-            }
-            else
-            {
+            } else {
                 column.DefaultValue = "";
             }
 
             return column;
-
+        
         }
 
-        private void AddPrimaryKey(Table table, DataView primaryKeyView)
-        {
+        private void AddPrimaryKey(Table table, DataView primaryKeyView) {
 
             Index pkIndex;
 
@@ -604,14 +552,11 @@ namespace TotalSafety.DataTierGenerator
 
             primaryKeyView.Sort = "Ordinal";
 
-            foreach (DataRowView drv in primaryKeyView)
-            {
+            foreach (DataRowView drv in primaryKeyView) {
 
-                foreach (Column column in table.Columns)
-                {
+                foreach (Column column in table.Columns) {
 
-                    if (column.Name.Equals((string)drv["ColumnName"]))
-                    {
+                    if (column.Name.Equals((string)drv["ColumnName"])) {
                         pkIndex.Columns.Add(column);
                     }
 
@@ -623,13 +568,11 @@ namespace TotalSafety.DataTierGenerator
 
         }
 
-        private void AddForeignKeyList(Table table, DataView foreignKeyView)
-        {
+        private void AddForeignKeyList(Table table, DataView foreignKeyView) {
 
             ForeignKeyIndex fkIndex;
 
-            if (foreignKeyView != null && foreignKeyView.Count > 0)
-            {
+            if (foreignKeyView != null && foreignKeyView.Count > 0) {
 
                 #region create the first index from the first foreign key record
 
@@ -641,19 +584,15 @@ namespace TotalSafety.DataTierGenerator
 
                 // cycle through the remaining records either creating an new index or
                 // adding additional columns to the current index
-                for (int index = 1; index < foreignKeyView.Count; index++)
-                {
+                for (int index = 1; index < foreignKeyView.Count; index++) {
 
-                    if (fkIndex.Name != (string)foreignKeyView[index]["IndexName"])
-                    {
+                    if (fkIndex.Name != (string)foreignKeyView[index]["IndexName"]) {
 
                         fkIndex = CreateForeignKeyIndex(table, foreignKeyView[index]);
 
                         table.ForeignKeys.Add(fkIndex);
-
-                    }
-                    else
-                    {
+                    
+                    } else {
                         fkIndex.Columns.Add(table.Columns[(string)foreignKeyView[index]["ColumnName"]]);
                     }
 
@@ -663,14 +602,13 @@ namespace TotalSafety.DataTierGenerator
 
         }
 
-        private ForeignKeyIndex CreateForeignKeyIndex(Table table, DataRowView foreignKeyRowView)
-        {
+        private ForeignKeyIndex CreateForeignKeyIndex(Table table, DataRowView foreignKeyRowView) {
 
             ForeignKeyIndex fkIndex;
 
             fkIndex = new ForeignKeyIndex();
 
-            fkIndex.Name = (string)foreignKeyRowView["IndexName"]; ;
+            fkIndex.Name = (string)foreignKeyRowView["IndexName"];;
             fkIndex.ParentTable = table;
             fkIndex.ReferencedTable =
                 m_TableList.FindTable((string)foreignKeyRowView["ReferencedSchemaName"]
