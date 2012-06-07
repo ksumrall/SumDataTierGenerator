@@ -168,10 +168,6 @@
       <SubType>Designer</SubType>
       <DependentUpon>MiscSettings.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="NewProjectWizard.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>NewProjectWizard.cs</DependentUpon>
-    </EmbeddedResource>
     <Compile Include="IDataConnectionConfiguration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="SchemaGenerator.cs">
@@ -213,12 +209,6 @@
     </Compile>
     <Compile Include="MVP\MiscSettingsModel.cs" />
     <Compile Include="MVP\SqlConnectionSettingsModel.cs" />
-    <Compile Include="NewProjectWizard.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="NewProjectWizard.Designer.cs">
-      <DependentUpon>NewProjectWizard.cs</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

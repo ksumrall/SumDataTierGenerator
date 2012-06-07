@@ -1,7 +1,0 @@
-C:\_TFSProjects\DataTierGenerator\SchemaExtractor\bin\Debug\DataTierGenerator.SchemaExtractor.dll
-C:\_TFSProjects\DataTierGenerator\SchemaExtractor\bin\Debug\DataTierGenerator.SchemaExtractor.pdb
-C:\_TFSProjects\DataTierGenerator\SchemaExtractor\bin\Debug\DataTierGenerator.Common.dll
-C:\_TFSProjects\DataTierGenerator\SchemaExtractor\bin\Debug\DataTierGenerator.Common.pdb
-C:\_TFSProjects\DataTierGenerator\SchemaExtractor\obj\Debug\ResolveAssemblyReference.cache
-C:\_TFSProjects\DataTierGenerator\SchemaExtractor\obj\Debug\DataTierGenerator.SchemaExtractor.dll
-C:\_TFSProjects\DataTierGenerator\SchemaExtractor\obj\Debug\DataTierGenerator.SchemaExtractor.pdb
