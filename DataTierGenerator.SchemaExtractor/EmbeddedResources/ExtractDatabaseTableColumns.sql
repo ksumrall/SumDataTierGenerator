@@ -24,8 +24,10 @@ SELECT SCHEMA_NAME(t.schema_id) AS schema_name
     ,c.[is_sparse]
     ,c.[is_column_set]
     ,ep.value AS [Description]
+    ,dc.definition AS default_definition
 FROM sys.columns c
 INNER JOIN sys.tables t ON c.object_id = t.object_id
 LEFT JOIN sys.extended_properties ep ON c.object_id = ep.major_id
     AND c.column_id = ep.minor_id
     AND ep.NAME = 'MS_Description'
+LEFT JOIN sys.default_constraints dc ON c.default_object_id = dc.object_id

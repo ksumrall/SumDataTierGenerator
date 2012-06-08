@@ -1,4 +1,4 @@
-SELECT SCHEMA_NAME(t.schema_id) AS [schema_name]
+SELECT SCHEMA_NAME(t.schema_id) AS schema_name
     ,t.NAME table_name
     ,i.NAME AS index_name
     ,c.NAME AS column_name
@@ -11,3 +11,4 @@ INNER JOIN sys.columns AS c ON ic.object_id = c.object_id
     AND c.column_id = ic.column_id
 WHERE i.is_primary_key = 1
     AND i.is_disabled = 0
+ORDER BY key_ordinal

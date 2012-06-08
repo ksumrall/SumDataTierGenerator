@@ -11,3 +11,7 @@ SELECT SCHEMA_NAME(t.schema_id) AS schema_name
 FROM sys.foreign_keys AS f
 INNER JOIN sys.tables t ON f.parent_object_id = t.object_id
 INNER JOIN sys.foreign_key_columns AS fc ON f.object_id = fc.constraint_object_id
+ORDER BY schema_name
+    ,table_name
+    ,foreign_key_name
+    ,constraint_column_id

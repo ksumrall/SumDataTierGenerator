@@ -11,8 +11,9 @@ namespace TotalSafety.DataTierGenerator.SchemaExtractor
         [STAThread]
         static void Main()
         {
-            SchemaExtractor s = new SchemaExtractor("Data Source=HOUTFS01;Initial Catalog=Northwind;Integrated Security=True");
+            SchemaExtractor s = new SchemaExtractor("Data Source=HOUTFS01;Initial Catalog=IntelaTrac_2;Integrated Security=True");
             XmlDocument xDoc = s.GetSchemaDefinition();
+            int i = 0;
         }
     }
 }
