@@ -144,16 +144,16 @@ namespace TotalSafety.DataTierGenerator
         private void projectToolStripMenuItem1_Click(object sender, EventArgs e)
         {
 
-            NewProjectWizard wizard = new NewProjectWizard();
+            //NewProjectWizard wizard = new NewProjectWizard();
 
-            if (wizard.ShowDialog(this) == DialogResult.OK)
-            {
-                Project project = wizard.Project;
-                if (project != null)
-                {
-                    LoadProject(project);
-                }
-            }
+            //if (wizard.ShowDialog(this) == DialogResult.OK)
+            //{
+            //    Project project = wizard.Project;
+            //    if (project != null)
+            //    {
+            //        LoadProject(project);
+            //    }
+            //}
         }
 
         private void extractToolStripMenuItem_Click(object sender, EventArgs e)

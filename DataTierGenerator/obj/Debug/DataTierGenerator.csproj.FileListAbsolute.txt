@@ -42,10 +42,9 @@ C:\_TFSProjects\DataTierGenerator\DataTierGenerator\obj\Debug\TotalSafety.DataTi
 C:\_TFSProjects\DataTierGenerator\DataTierGenerator\obj\Debug\TotalSafety.DataTierGenerator.Controls.SqlServerLogin.resources
 C:\_TFSProjects\DataTierGenerator\DataTierGenerator\obj\Debug\TotalSafety.DataTierGenerator.DatabaseConnectionSettings.resources
 C:\_TFSProjects\DataTierGenerator\DataTierGenerator\obj\Debug\TotalSafety.DataTierGenerator.MiscSettings.resources
-C:\_TFSProjects\DataTierGenerator\DataTierGenerator\obj\Debug\TotalSafety.DataTierGenerator.NewProjectWizard.resources
 C:\_TFSProjects\DataTierGenerator\DataTierGenerator\obj\Debug\TotalSafety.DataTierGenerator.MainForm.resources
 C:\_TFSProjects\DataTierGenerator\DataTierGenerator\obj\Debug\TotalSafety.DataTierGenerator.Controls.ConfigurationView.resources
 C:\_TFSProjects\DataTierGenerator\DataTierGenerator\bin\Debug\DataTierGenerator.Common.dll
-C:\_TFSProjects\DataTierGenerator\DataTierGenerator\bin\Debug\DataTierGenerator.Factory.dll
 C:\_TFSProjects\DataTierGenerator\DataTierGenerator\bin\Debug\DataTierGenerator.Common.pdb
-C:\_TFSProjects\DataTierGenerator\DataTierGenerator\bin\Debug\DataTierGenerator.Factory.pdb
+C:\_TFSProjects\DataTierGenerator\DataTierGenerator\bin\Debug\DataTierGenerator.CodeGenerationFactory.dll
+C:\_TFSProjects\DataTierGenerator\DataTierGenerator\bin\Debug\DataTierGenerator.CodeGenerationFactory.pdb
