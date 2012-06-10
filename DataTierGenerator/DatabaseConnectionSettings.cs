@@ -16,9 +16,6 @@ namespace TotalSafety.DataTierGenerator {
 
         #endregion
 
-        #region internal structured members
-        #endregion
-
         #region constructors / desturctors
 
         public DatabaseConnectionSettings() {
@@ -48,15 +45,6 @@ namespace TotalSafety.DataTierGenerator {
         }
 
         #endregion
-
-        #region public methods
-
-        #endregion
-
-        #region private implementation
-
-        #endregion
-
 
     }
 

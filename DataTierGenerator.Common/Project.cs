@@ -25,8 +25,10 @@ namespace TotalSafety.DataTierGenerator.Common
         private string m_ConnectionString = String.Empty;
         private string m_Namespace = String.Empty;
         private string m_OutputPath = String.Empty;
+        private MonitoredList<Schema> m_SchemaList = new MonitoredList<Schema>();
         private MonitoredList<Table> m_TableList = new MonitoredList<Table>();
         private MonitoredList<Common.View> m_ViewList = new MonitoredList<Common.View>();
+        private MonitoredList<Function> m_FunctionList = new MonitoredList<Function>();
         private MonitoredList<Procedure> m_ProcedureList = new MonitoredList<Procedure>();
         private bool m_Dirty = false;
         private bool m_New = true;
@@ -162,6 +164,19 @@ namespace TotalSafety.DataTierGenerator.Common
             }
         }
 
+        public MonitoredList<Schema> SchemaList
+        {
+            get
+            {
+                return m_SchemaList;
+            }
+            set
+            {
+                m_SchemaList = value;
+                OnChanged();
+            }
+        }
+
         public MonitoredList<Table> TableList
         {
             get
@@ -184,6 +199,19 @@ namespace TotalSafety.DataTierGenerator.Common
             set
             {
                 m_ViewList = value;
+                OnChanged();
+            }
+        }
+
+        public MonitoredList<Function> FunctionList
+        {
+            get
+            {
+                return m_FunctionList;
+            }
+            set
+            {
+                m_FunctionList = value;
                 OnChanged();
             }
         }
@@ -446,6 +474,31 @@ namespace TotalSafety.DataTierGenerator.Common
         public void ResumeEvents()
         {
             m_SupressEvents = false;
+        }
+
+        public void LoadSchema()
+        {
+
+        }
+
+        public void LoadTable(string schema, XmlElement table)
+        {
+
+        }
+
+        public void LoadView(string schema, XmlElement table)
+        {
+
+        }
+
+        public void LoadFunction(string schema, XmlElement table)
+        {
+
+        }
+
+        public void LoadProcedure(string schema, XmlElement table)
+        {
+
         }
 
         #endregion

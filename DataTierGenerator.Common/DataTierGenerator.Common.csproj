@@ -49,13 +49,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Column.cs" />
+    <Compile Include="Schema.cs" />
+    <Compile Include="Function.cs" />
     <Compile Include="ForeignKeyIndex.cs" />
     <Compile Include="Index.cs" />
     <Compile Include="MonitoredList.cs" />
     <Compile Include="Procedure.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Schema\project.cs">
+    <Compile Include="ProjectSchema\project.cs">
       <DependentUpon>project.xsd</DependentUpon>
     </Compile>
     <Compile Include="Table.cs" />
@@ -80,16 +82,16 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Schema\project.xsd">
+    <EmbeddedResource Include="ProjectSchema\project.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <None Include="Schema\project.xsx">
+    <None Include="ProjectSchema\project.xsx">
       <DependentUpon>project.xsd</DependentUpon>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>"C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Bin\NETFX 4.0 Tools\x64\xsd.exe" "$(ProjectDir)Schema\project.xsd" /classes /namespace:$(RootNameSpace).Schema /out:"$(ProjectDir)Schema"</PreBuildEvent>
+    <PreBuildEvent>"C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Bin\NETFX 4.0 Tools\x64\xsd.exe" "$(ProjectDir)ProjectSchema\project.xsd" /classes /namespace:$(RootNameSpace).ProjectSchema /out:"$(ProjectDir)ProjectSchema"</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

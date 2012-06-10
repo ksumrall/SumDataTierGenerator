@@ -200,7 +200,6 @@
     <Compile Include="Controls\SqlServerLogin.Designer.cs">
       <DependentUpon>SqlServerLogin.cs</DependentUpon>
     </Compile>
-    <Compile Include="SchemaExtractor.cs" />
     <Compile Include="MiscSettings.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -251,6 +250,10 @@
     <ProjectReference Include="..\DataTierGenerator.Factory\DataTierGenerator.CodeGenerationFactory.csproj">
       <Project>{5E14A9B5-8CAE-416E-9157-CAEB30C8B569}</Project>
       <Name>DataTierGenerator.CodeGenerationFactory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataTierGenerator.SchemaExtractor\DataTierGenerator.SchemaExtractor.csproj">
+      <Project>{31AF9DC8-B2E6-4FB6-8AE8-460D3C68A9F4}</Project>
+      <Name>DataTierGenerator.SchemaExtractor</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

@@ -71,15 +71,6 @@
     <EmbeddedResource Include="EmbeddedResources\ExtractDatabaseProcedures.sql" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="EmbeddedResources\ExtractDatabaseTableAndColumnSchema.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="EmbeddedResources\ExtractDatabaseTableAndColumnSchema1.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="EmbeddedResources\User.sql" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="EmbeddedResources\ExtractDatabaseSchemas.sql" />
   </ItemGroup>
   <ItemGroup>

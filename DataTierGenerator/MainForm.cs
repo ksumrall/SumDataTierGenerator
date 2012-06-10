@@ -15,6 +15,7 @@ using Microsoft.Win32;
 using TotalSafety.DataTierGenerator.Common;
 using TotalSafety.DataTierGenerator.CodeGenerationFactory;
 using TotalSafety.DataTierGenerator.MVP;
+using TotalSafety.DataTierGenerator.SchemaExtractor;
 
 namespace TotalSafety.DataTierGenerator
 {
@@ -34,7 +35,7 @@ namespace TotalSafety.DataTierGenerator
         private string m_LastSelectedOutputdirectory = "";
         private string m_ProjectPathName = "";
         XmlDocument m_ProjectXmlDoc;
-        private SchemaGenerator m_SchemaGenerator = null;
+        private SchemaExtractorWrapper m_SchemaExtractor = null;
 
         List<Table> m_TableList;
 
@@ -124,11 +125,6 @@ namespace TotalSafety.DataTierGenerator
             ConfigurationViewControl.Dock = DockStyle.Fill;
             dlg.ShowDialog();
 
-            //MiscSettings miscSettingsDlg = new MiscSettings();
-            //miscSettingsDlg.Model = m_MiscSettingsModel;
-
-            //miscSettingsDlg.ShowDialog(this);
-            //UpdateTitle();
         }
 
         private void generateToolStripMenuItem_Click(object sender, EventArgs e)
@@ -141,50 +137,37 @@ namespace TotalSafety.DataTierGenerator
             OpenProjectFromOpenDialog();
         }
 
-        private void projectToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-
-            //NewProjectWizard wizard = new NewProjectWizard();
-
-            //if (wizard.ShowDialog(this) == DialogResult.OK)
-            //{
-            //    Project project = wizard.Project;
-            //    if (project != null)
-            //    {
-            //        LoadProject(project);
-            //    }
-            //}
-        }
-
         private void extractToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (m_Project != null && m_IsProjectLoaded)
             {
-                m_SchemaGenerator = new SchemaGenerator(m_Project.ConnectionString);
-                m_SchemaGenerator.ExtractSchema();
+                m_SchemaExtractor = new SchemaExtractorWrapper();
+                m_SchemaExtractor.ProviderType = m_Project.DbProviderType;
+                m_SchemaExtractor.ConnectionString = m_Project.ConnectionString;
+                XmlDocument xDoc = m_SchemaExtractor.GetSchemaDefinition();
 
-                List<string> noBuildTables = new List<string>();
-                foreach (Table t in m_Project.TableList)
-                {
-                    if (!t.BuildClass)
-                    {
-                        noBuildTables.Add(t.Name);
-                    }
-                }
+                //List<string> noBuildTables = new List<string>();
+                //foreach (Table t in m_Project.TableList)
+                //{
+                //    if (!t.BuildClass)
+                //    {
+                //        noBuildTables.Add(t.Name);
+                //    }
+                //}
 
-                m_Project.TableList.Clear();
-                m_Project.TableList.AddRange(m_SchemaGenerator.TableList);
-                foreach (Table t in m_Project.TableList)
-                {
-                    if (noBuildTables.Contains(t.Name))
-                    {
-                        t.BuildClass = false;
-                    }
-                    else
-                    {
-                        t.BuildClass = true;
-                    }
-                }
+                //m_Project.TableList.Clear();
+                //m_Project.TableList.AddRange(m_SchemaGenerator.TableList);
+                //foreach (Table t in m_Project.TableList)
+                //{
+                //    if (noBuildTables.Contains(t.Name))
+                //    {
+                //        t.BuildClass = false;
+                //    }
+                //    else
+                //    {
+                //        t.BuildClass = true;
+                //    }
+                //}
 
                 LoadTree();
             }
@@ -254,10 +237,10 @@ namespace TotalSafety.DataTierGenerator
 
         #endregion
 
-        void m_Project_Changed(object sender, ChangedEventArgs<Project> e)
-        {
-            UpdateApplicationFeaturesBasedOnRecentProjectChanges();
-        }
+        //void m_Project_Changed(object sender, ChangedEventArgs<Project> e)
+        //{
+        //    UpdateApplicationFeaturesBasedOnRecentProjectChanges();
+        //}
 
         void m_ConfigurationViewControl_ConfigurationChanged(object sender, Controls.ConfigurationView.ChangedEventArgs e)
         {
@@ -328,7 +311,7 @@ namespace TotalSafety.DataTierGenerator
             //m_GuiProjectTree.Nodes["Root"].Nodes.Add("Configuration", "Configuration").Tag = TreeNodeTypes.Configuration;
 
             // Add Schema
-            //m_GuiProjectTree.Nodes["Root"].Nodes.Add("Schema", "Schema").Tag = TreeNodeTypes.Schema;
+            m_GuiProjectTree.Nodes["Root"].Nodes.Add("Schemas", "Schemas").Tag = TreeNodeTypes.Schema;
 
             // Add Schema Tables
             //m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes.Add("Tables", "Tables").Tag = TreeNodeTypes.Tables;
@@ -616,7 +599,7 @@ namespace TotalSafety.DataTierGenerator
         private void LoadProject(Project project)
         {
             m_Project = project;
-            m_Project.Changed += new EventHandler<ChangedEventArgs<Project>>(m_Project_Changed);
+            //m_Project.Changed += new EventHandler<ChangedEventArgs<Project>>(m_Project_Changed);
             LoadTree();
 
             if (m_Project.TableList.Count > 0 || m_Project.ViewList.Count > 0 || m_Project.ProcedureList.Count > 0)
