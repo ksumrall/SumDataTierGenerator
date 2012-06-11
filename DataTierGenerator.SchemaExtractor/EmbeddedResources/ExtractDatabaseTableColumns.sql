@@ -23,7 +23,7 @@ SELECT SCHEMA_NAME(t.schema_id) AS schema_name
     ,c.[rule_object_id]
     ,c.[is_sparse]
     ,c.[is_column_set]
-    ,ep.value AS [Description]
+    ,ep.value AS [description]
     ,dc.definition AS default_definition
 FROM sys.columns c
 INNER JOIN sys.tables t ON c.object_id = t.object_id

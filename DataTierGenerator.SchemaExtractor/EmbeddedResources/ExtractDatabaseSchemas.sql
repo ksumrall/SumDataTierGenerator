@@ -1,2 +1,8 @@
 SELECT *
-FROM INFORMATION_SCHEMA.SCHEMATA
+FROM sys.schemas
+WHERE NAME NOT LIKE 'db\_%' ESCAPE '\'
+    AND NAME NOT IN (
+        'guest'
+        ,'sys'
+        ,'INFORMATION_SCHEMA'
+        )

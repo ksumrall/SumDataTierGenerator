@@ -38,19 +38,20 @@ namespace TotalSafety.DataTierGenerator.Common
     /// <summary>
     /// Class that stores information for tables in a database.
     /// </summary>
-    public class Table
+    [XmlRoot(Namespace = "urn:dtg-project")]
+    public class Table: ProjectSchema.Table
     {
 
         #region private and protected member variables
 
-        private string m_Name;
-        private DateTime m_CreateDate;
-        private DateTime m_ModifyDate;
-        private string m_DatabaseName;
-        private string m_Schema;
-        private string m_Description;
+        //private string m_Name;
+        //private DateTime m_CreateDate;
+        //private DateTime m_ModifyDate;
+        //private string m_DatabaseName;
+        //private string m_Schema;
+        //private string m_Description;
         private ColumnList m_ColumnList;
-        private Index m_PrimaryKey;
+        //private Index m_PrimaryKey;
         private List<Index> m_ForeignKeyList;
 
         private string m_ClassName;
@@ -66,18 +67,18 @@ namespace TotalSafety.DataTierGenerator.Common
         /// </summary>
         public Table()
         {
-            m_ColumnList = new ColumnList();
-            m_PrimaryKey = null;
-            m_ForeignKeyList = new List<Index>();
+            //m_ColumnList = new ColumnList();
+            //m_PrimaryKey = null;
+            //m_ForeignKeyList = new List<Index>();
 
-            m_Schema = "";
-            m_Name = "";
-            m_Description = "";
+            //m_Schema = "";
+            //m_Name = "";
+            //m_Description = "";
 
             m_ClassName = "";
         }
 
-        public Table(XmlNode tableNode)
+        public Table(XmlNode tableNode):this()
         {
             /*
             <table name="Transaction" create_date="8/21/2010 7:19:37 PM" modify_date="11/7/2010 3:10:50 PM">
@@ -110,7 +111,7 @@ namespace TotalSafety.DataTierGenerator.Common
                 </foreign_keys>
             </table>
              * */
-            m_Name = tableNode.Attributes["name"].Value;
+            Name = tableNode.Attributes["name"].Value;
 
             //node = tableNode.SelectSingleNode("./DatabaseName");
             //if (node != null)
@@ -128,12 +129,14 @@ namespace TotalSafety.DataTierGenerator.Common
             //if (node != null)
             //    m_Description = node.Value;
 
-            XmlNodeList list = tableNode.SelectNodes(".\\columns\\column");
+            XmlNodeList list = tableNode.SelectNodes(".//columns//column");
 
+            List<ProjectSchema.Column> columnList = new List<ProjectSchema.Column>();
             foreach (XmlNode node in list)
             {
-                m_ColumnList.Add(new Column(node));
+                columnList.Add(new Column(node));
             }
+            Columns = columnList.ToArray();
 
         }
 
@@ -144,104 +147,104 @@ namespace TotalSafety.DataTierGenerator.Common
         /// <summary>
         /// Contains the list of Column instances that define the table.
         /// </summary>
-        public ColumnList Columns
-        {
-            get
-            {
-                return m_ColumnList;
-            }
-        }
+        //public ColumnList Columns
+        //{
+        //    get
+        //    {
+        //        return m_ColumnList;
+        //    }
+        //}
 
         /// <summary>
         /// DatabaseName of the table.
         /// </summary>
-        public string DatabaseName
-        {
-            get
-            {
-                return m_DatabaseName;
-            }
-            set
-            {
-                m_DatabaseName = value;
-            }
-        }
+        //public string DatabaseName
+        //{
+        //    get
+        //    {
+        //        return m_DatabaseName;
+        //    }
+        //    set
+        //    {
+        //        m_DatabaseName = value;
+        //    }
+        //}
 
         /// <summary>
         /// Schema of the table.
         /// </summary>
-        public string Schema
-        {
-            get
-            {
-                return m_Schema;
-            }
-            set
-            {
-                m_Schema = value;
-            }
-        }
+        //public string Schema
+        //{
+        //    get
+        //    {
+        //        return m_Schema;
+        //    }
+        //    set
+        //    {
+        //        m_Schema = value;
+        //    }
+        //}
 
         /// <summary>
         /// Name of the table.
         /// </summary>
-        public string Name
-        {
-            get
-            {
-                return m_Name;
-            }
-            set
-            {
-                m_Name = value;
+        //public string Name
+        //{
+        //    get
+        //    {
+        //        return m_Name;
+        //    }
+        //    set
+        //    {
+        //        m_Name = value;
 
-                if (string.IsNullOrEmpty(m_ClassName))
-                {
-                    m_ClassName = m_Name;
-                }
-            }
-        }
+        //        if (string.IsNullOrEmpty(m_ClassName))
+        //        {
+        //            m_ClassName = m_Name;
+        //        }
+        //    }
+        //}
 
-        public string Description
-        {
-            get
-            {
-                return m_Description;
-            }
-            set
-            {
-                m_Description = value;
-            }
-        }
+        //public string Description
+        //{
+        //    get
+        //    {
+        //        return m_Description;
+        //    }
+        //    set
+        //    {
+        //        m_Description = value;
+        //    }
+        //}
 
         /// <summary>
         /// Contains the list of primary key Column instances that define the table.
         /// </summary>
-        public Index PrimaryKey
-        {
-            get
-            {
-                return m_PrimaryKey;
-            }
-            set
-            {
-                m_PrimaryKey = value;
-            }
-        }
+        //public Index PrimaryKey
+        //{
+        //    get
+        //    {
+        //        return m_PrimaryKey;
+        //    }
+        //    set
+        //    {
+        //        m_PrimaryKey = value;
+        //    }
+        //}
 
         /// <summary>
         /// Contains the list of Column instances that define the table.  The Hashtable returned 
         /// is keyed on the foreign key name, and the value associated with the key is an 
         /// ArrayList of Column instances that compose the foreign key.
         /// </summary>
-        [XmlIgnore]
-        public List<Index> ForeignKeys
-        {
-            get
-            {
-                return m_ForeignKeyList;
-            }
-        }
+        //[XmlIgnore]
+        //public List<Index> ForeignKeys
+        //{
+        //    get
+        //    {
+        //        return m_ForeignKeyList;
+        //    }
+        //}
 
         #endregion
 

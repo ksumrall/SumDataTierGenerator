@@ -6,7 +6,8 @@
                 <xs:element ref="Configuration" minOccurs="1" maxOccurs="1" />
                 <xs:element ref="Schemas" minOccurs="1" maxOccurs="1" />
             </xs:sequence>
-            <xs:attribute name="version" use="required" type="xs:string" />
+            <xs:attribute name="Name" use="required" type="xs:string" />
+            <xs:attribute name="Version" use="required" type="xs:string" />
         </xs:complexType>
     </xs:element>
     <xs:element name="Configuration">
@@ -72,6 +73,7 @@
                 <xs:element ref="Functions" minOccurs="0" maxOccurs="1" />
                 <xs:element ref="Procedures" minOccurs="0" maxOccurs="1" />
             </xs:sequence>
+            <xs:attribute name="Name" use="required" type="xs:string" />
         </xs:complexType>
     </xs:element>
     <xs:element name="Table">
@@ -91,11 +93,11 @@
                 </xs:element>
                 <xs:element ref="Columns" minOccurs="1" maxOccurs="1" />
             </xs:sequence>
-            <xs:attribute name="name" type="xs:string" use="required" />
-            <xs:attribute name="dbName" type="xs:string" use="required" />
-            <xs:attribute name="description" type="xs:string" use="required" />
-            <xs:attribute name="schema" type="xs:string" use="required" />
-            <xs:attribute name="build" type="xs:boolean" use="required" />
+            <xs:attribute name="Name" type="xs:string" use="required" />
+            <xs:attribute name="DbName" type="xs:string" use="required" />
+            <xs:attribute name="Description" type="xs:string" use="required" />
+            <xs:attribute name="Schema" type="xs:string" use="required" />
+            <xs:attribute name="Build" type="xs:boolean" use="required" />
         </xs:complexType>
     </xs:element>
     <xs:element name="View">
@@ -103,11 +105,11 @@
             <xs:sequence minOccurs="0" maxOccurs="1">
                 <xs:element ref="Columns" minOccurs="1" maxOccurs="1" />
             </xs:sequence>
-            <xs:attribute name="name" type="xs:string" use="required" />
-            <xs:attribute name="dbName" type="xs:string" use="required" />
-            <xs:attribute name="description" type="xs:string" use="required" />
-            <xs:attribute name="schema" type="xs:string" use="required" />
-            <xs:attribute name="build" type="xs:boolean" use="required" />
+            <xs:attribute name="Name" type="xs:string" use="required" />
+            <xs:attribute name="DbName" type="xs:string" use="required" />
+            <xs:attribute name="Description" type="xs:string" use="required" />
+            <xs:attribute name="Schema" type="xs:string" use="required" />
+            <xs:attribute name="Build" type="xs:boolean" use="required" />
         </xs:complexType>
     </xs:element>
     <xs:element name="Function">
@@ -115,11 +117,11 @@
             <xs:sequence minOccurs="0" maxOccurs="1">
                 <xs:element ref="Parameters" minOccurs="1" maxOccurs="1" />
             </xs:sequence>
-            <xs:attribute name="name" type="xs:string" use="required" />
-            <xs:attribute name="dbName" type="xs:string" use="required" />
-            <xs:attribute name="description" type="xs:string" use="required" />
-            <xs:attribute name="schema" type="xs:string" use="required" />
-            <xs:attribute name="build" type="xs:boolean" use="required" />
+            <xs:attribute name="Name" type="xs:string" use="required" />
+            <xs:attribute name="DbName" type="xs:string" use="required" />
+            <xs:attribute name="Description" type="xs:string" use="required" />
+            <xs:attribute name="Schema" type="xs:string" use="required" />
+            <xs:attribute name="Build" type="xs:boolean" use="required" />
         </xs:complexType>
     </xs:element>
     <xs:element name="Procedure">
@@ -127,11 +129,11 @@
             <xs:sequence minOccurs="0" maxOccurs="1">
                 <xs:element ref="Parameters" minOccurs="1" maxOccurs="1" />
             </xs:sequence>
-            <xs:attribute name="name" type="xs:string" use="required" />
-            <xs:attribute name="dbName" type="xs:string" use="required" />
-            <xs:attribute name="description" type="xs:string" use="required" />
-            <xs:attribute name="schema" type="xs:string" use="required" />
-            <xs:attribute name="build" type="xs:boolean" use="required" />
+            <xs:attribute name="Name" type="xs:string" use="required" />
+            <xs:attribute name="DbName" type="xs:string" use="required" />
+            <xs:attribute name="Description" type="xs:string" use="required" />
+            <xs:attribute name="Schema" type="xs:string" use="required" />
+            <xs:attribute name="Build" type="xs:boolean" use="required" />
         </xs:complexType>
     </xs:element>
     <xs:element name="Columns">
@@ -143,20 +145,21 @@
     </xs:element>
     <xs:element name="Column">
         <xs:complexType>
-            <xs:attribute name="name" type="xs:string" use="required" />
-            <xs:attribute name="clrType" type="xs:string" use="required" />
-            <xs:attribute name="dbType" type="xs:string" use="required" />
-            <xs:attribute name="languageType" type="xs:string" use="required" />
-            <xs:attribute name="length" type="xs:string" use="required" />
-            <xs:attribute name="precision" type="xs:string" use="required" />
-            <xs:attribute name="propertyName" type="xs:string" use="required" />
-            <xs:attribute name="defaultValue" type="xs:string" use="required" />
-            <xs:attribute name="enumeratedTypeName" type="xs:string" use="required" />
-            <xs:attribute name="isNullable" type="xs:boolean" use="required" />
-            <xs:attribute name="isIdentity" type="xs:boolean" use="required" />
-            <xs:attribute name="isRowGuid" type="xs:boolean" use="required" />
-            <xs:attribute name="isComputed" type="xs:boolean" use="required" />
-            <xs:attribute name="scale" type="xs:string" use="required" />
+            <xs:attribute name="Name" type="xs:string" use="required" />
+            <xs:attribute name="PropertyName" type="xs:string" use="required" />
+            <xs:attribute name="ClrType" type="xs:string" use="required" />
+            <xs:attribute name="DbType" type="xs:string" use="required" />
+            <xs:attribute name="LanguageType" type="xs:string" use="required" />
+            <xs:attribute name="Length" type="xs:string" use="required" />
+            <xs:attribute name="Scale" type="xs:string" use="required" />
+            <xs:attribute name="Precision" type="xs:string" use="required" />
+            <xs:attribute name="DefaultValue" type="xs:string" use="required" />
+            <xs:attribute name="EnumeratedTypeName" type="xs:string" use="required" />
+            <xs:attribute name="IsNullable" type="xs:boolean" use="required" />
+            <xs:attribute name="IsIdentity" type="xs:boolean" use="required" />
+            <xs:attribute name="IsRowGuid" type="xs:boolean" use="required" />
+            <xs:attribute name="IsComputed" type="xs:boolean" use="required" />
+            <xs:attribute name="Description" type="xs:string" use="required" />
         </xs:complexType>
     </xs:element>
     <xs:element name="Parameters">
@@ -168,13 +171,13 @@
     </xs:element>
     <xs:element name="Parameter">
         <xs:complexType>
-            <xs:attribute name="name" type="xs:string" use="required" />
-            <xs:attribute name="clrType" type="xs:string" use="required" />
-            <xs:attribute name="dbType" type="xs:string" use="required" />
-            <xs:attribute name="propertyName" type="xs:string" use="required" />
-            <xs:attribute name="defaultValue" type="xs:string" use="required" />
-            <xs:attribute name="enumeratedTypeName" type="xs:string" use="required" />
-            <xs:attribute name="isNullable" type="xs:boolean" use="required" />
+            <xs:attribute name="Name" type="xs:string" use="required" />
+            <xs:attribute name="PropertyName" type="xs:string" use="required" />
+            <xs:attribute name="ClrType" type="xs:string" use="required" />
+            <xs:attribute name="DbType" type="xs:string" use="required" />
+            <xs:attribute name="DefaultValue" type="xs:string" use="required" />
+            <xs:attribute name="EnumeratedTypeName" type="xs:string" use="required" />
+            <xs:attribute name="IsNullable" type="xs:boolean" use="required" />
         </xs:complexType>
     </xs:element>
 </xs:schema>

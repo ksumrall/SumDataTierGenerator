@@ -185,7 +185,7 @@ namespace TotalSafety.DataTierGenerator.SchemaExtractor
         {
             XmlElement xmlElement = xDoc.CreateElement("schema");
 
-            xmlElement.Attributes.Append(GetXmlAttribute(xDoc, "name", schemaRow["schema_name"].ToString()));
+            xmlElement.Attributes.Append(GetXmlAttribute(xDoc, "name", schemaRow["name"].ToString()));
 
             xmlElement.AppendChild(xDoc.CreateElement("tables"));
             xmlElement.AppendChild(xDoc.CreateElement("views"));
@@ -231,6 +231,7 @@ namespace TotalSafety.DataTierGenerator.SchemaExtractor
                     columnElement.Attributes.Append(GetXmlAttribute(xDoc, "precision", drvC["precision"].ToString()));
                     columnElement.Attributes.Append(GetXmlAttribute(xDoc, "scale", drvC["scale"].ToString()));
                     columnElement.Attributes.Append(GetXmlAttribute(xDoc, "is_nullable", drvC["is_nullable"].ToString()));
+                    columnElement.Attributes.Append(GetXmlAttribute(xDoc, "is_computed", drvC["is_computed"].ToString()));
                     columnElement.Attributes.Append(GetXmlAttribute(xDoc, "is_rowguidcol", drvC["is_rowguidcol"].ToString()));
                     columnElement.Attributes.Append(GetXmlAttribute(xDoc, "is_identity", drvC["is_identity"].ToString()));
                     columnElement.Attributes.Append(GetXmlAttribute(xDoc, "description", drvC["description"].ToString()));
@@ -336,6 +337,11 @@ namespace TotalSafety.DataTierGenerator.SchemaExtractor
                     childElement.Attributes.Append(GetXmlAttribute(xDoc, "max_length", drvC["max_length"].ToString()));
                     childElement.Attributes.Append(GetXmlAttribute(xDoc, "precision", drvC["precision"].ToString()));
                     childElement.Attributes.Append(GetXmlAttribute(xDoc, "scale", drvC["scale"].ToString()));
+                    childElement.Attributes.Append(GetXmlAttribute(xDoc, "is_nullable", drvC["is_nullable"].ToString()));
+                    childElement.Attributes.Append(GetXmlAttribute(xDoc, "is_computed", drvC["is_computed"].ToString()));
+                    childElement.Attributes.Append(GetXmlAttribute(xDoc, "is_rowguidcol", drvC["is_rowguidcol"].ToString()));
+                    childElement.Attributes.Append(GetXmlAttribute(xDoc, "is_identity", drvC["is_identity"].ToString()));
+                    childElement.Attributes.Append(GetXmlAttribute(xDoc, "description", drvC["description"].ToString()));
 
                     childContainerElement.AppendChild(childElement);
                 }
@@ -388,11 +394,13 @@ namespace TotalSafety.DataTierGenerator.SchemaExtractor
                     childElement = xDoc.CreateElement("parameter");
                     childElement.Attributes.Append(GetXmlAttribute(xDoc, "name", parameterName));
                     childElement.Attributes.Append(GetXmlAttribute(xDoc, "id", drvP["parameter_id"].ToString()));
+                    childElement.Attributes.Append(GetXmlAttribute(xDoc, "description", drvP["description"].ToString()));
                     childElement.Attributes.Append(GetXmlAttribute(xDoc, "data_type", drvP["parameter_type"].ToString()));
                     childElement.Attributes.Append(GetXmlAttribute(xDoc, "max_length", drvP["max_length"].ToString()));
                     childElement.Attributes.Append(GetXmlAttribute(xDoc, "precision", drvP["precision"].ToString()));
                     childElement.Attributes.Append(GetXmlAttribute(xDoc, "scale", drvP["scale"].ToString()));
                     childElement.Attributes.Append(GetXmlAttribute(xDoc, "is_output", drvP["is_output"].ToString()));
+                    childElement.Attributes.Append(GetXmlAttribute(xDoc, "default_definition", drvP["default_definition"].ToString()));
 
                     childContainerElement.AppendChild(childElement);
                 }
@@ -444,11 +452,13 @@ namespace TotalSafety.DataTierGenerator.SchemaExtractor
                     childElement = xDoc.CreateElement("parameter");
                     childElement.Attributes.Append(GetXmlAttribute(xDoc, "name", drvP["parameter_name"].ToString()));
                     childElement.Attributes.Append(GetXmlAttribute(xDoc, "id", drvP["parameter_id"].ToString()));
+                    childElement.Attributes.Append(GetXmlAttribute(xDoc, "description", drvP["description"].ToString()));
                     childElement.Attributes.Append(GetXmlAttribute(xDoc, "data_type", drvP["parameter_type"].ToString()));
                     childElement.Attributes.Append(GetXmlAttribute(xDoc, "max_length", drvP["max_length"].ToString()));
                     childElement.Attributes.Append(GetXmlAttribute(xDoc, "precision", drvP["precision"].ToString()));
                     childElement.Attributes.Append(GetXmlAttribute(xDoc, "scale", drvP["scale"].ToString()));
                     childElement.Attributes.Append(GetXmlAttribute(xDoc, "is_output", drvP["is_output"].ToString()));
+                    childElement.Attributes.Append(GetXmlAttribute(xDoc, "default_definition", drvP["default_definition"].ToString()));
 
                     childContainerElement.AppendChild(childElement);
                 }

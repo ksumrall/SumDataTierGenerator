@@ -5,3 +5,4 @@ C:\_TFSProjects\DataTierGenerator\DataTierGenerator.SchemaExtractor\bin\Debug\Da
 C:\_TFSProjects\DataTierGenerator\DataTierGenerator.SchemaExtractor\obj\Debug\ResolveAssemblyReference.cache
 C:\_TFSProjects\DataTierGenerator\DataTierGenerator.SchemaExtractor\obj\Debug\DataTierGenerator.SchemaExtractor.exe
 C:\_TFSProjects\DataTierGenerator\DataTierGenerator.SchemaExtractor\obj\Debug\DataTierGenerator.SchemaExtractor.pdb
+C:\_TFSProjects\DataTierGenerator\DataTierGenerator.SchemaExtractor\bin\Debug\DataTierGenerator.SchemaExtractor.exe.config

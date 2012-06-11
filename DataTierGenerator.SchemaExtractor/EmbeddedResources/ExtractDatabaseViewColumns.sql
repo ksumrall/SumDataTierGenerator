@@ -23,7 +23,7 @@ SELECT SCHEMA_NAME(v.schema_id) AS schema_name
     ,c.[rule_object_id]
     ,c.[is_sparse]
     ,c.[is_column_set]
-    ,ep.value AS [Description]
+    ,ep.value AS [description]
 FROM sys.columns c
 INNER JOIN sys.VIEWS v ON c.object_id = v.object_id
 LEFT JOIN sys.extended_properties ep ON c.object_id = ep.major_id

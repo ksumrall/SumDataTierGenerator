@@ -33,7 +33,8 @@ namespace TotalSafety.DataTierGenerator.Common
 
     }
 
-    public class Procedure
+    [XmlRoot(Namespace = "urn:dtg-project")]
+    public class Procedure : ProjectSchema.Procedure
     {
 
         #region private and protected member variables
@@ -66,26 +67,38 @@ namespace TotalSafety.DataTierGenerator.Common
             m_ClassName = "";
         }
 
-        public Procedure(XmlNode node)
+        public Procedure(XmlNode procedureNode)
+            : this()
         {
 
-            XmlNode tempNode;
+            Name = procedureNode.Attributes["name"].Value;
 
-            tempNode = node.SelectSingleNode("./DatabaseName");
-            if (tempNode != null)
-                m_DatabaseName = node.Value;
+            //XmlNode tempNode;
 
-            tempNode = node.SelectSingleNode("./Schema");
-            if (tempNode != null)
-                m_Schema = node.Value;
+            //tempNode = node.SelectSingleNode("./DatabaseName");
+            //if (tempNode != null)
+            //    m_DatabaseName = node.Value;
 
-            tempNode = node.SelectSingleNode("./Name");
-            if (tempNode != null)
-                m_Name = node.Value;
+            //tempNode = node.SelectSingleNode("./Schema");
+            //if (tempNode != null)
+            //    m_Schema = node.Value;
 
-            tempNode = node.SelectSingleNode("./Description");
-            if (tempNode != null)
-                m_Description = node.Value;
+            //tempNode = node.SelectSingleNode("./Name");
+            //if (tempNode != null)
+            //    m_Name = node.Value;
+
+            //tempNode = node.SelectSingleNode("./Description");
+            //if (tempNode != null)
+            //    m_Description = node.Value;
+
+            XmlNodeList list = procedureNode.SelectNodes(".//parameters//parameter");
+
+            List<ProjectSchema.Parameter> paramList = new List<ProjectSchema.Parameter>();
+            foreach (XmlNode node in list)
+            {
+                paramList.Add(new Parameter(node));
+            }
+            Parameters = paramList.ToArray();
 
         }
 
@@ -96,75 +109,75 @@ namespace TotalSafety.DataTierGenerator.Common
         /// <summary>
         /// Contains the list of Column instances that define the view.
         /// </summary>
-        public ParameterList Parameters
-        {
-            get
-            {
-                return m_ParameterList;
-            }
-        }
+        //public ParameterList Parameters
+        //{
+        //    get
+        //    {
+        //        return m_ParameterList;
+        //    }
+        //}
 
         /// <summary>
         /// DatabaseName of the view.
         /// </summary>
-        public string DatabaseName
-        {
-            get
-            {
-                return m_DatabaseName;
-            }
-            set
-            {
-                m_DatabaseName = value;
-            }
-        }
+        //public string DatabaseName
+        //{
+        //    get
+        //    {
+        //        return m_DatabaseName;
+        //    }
+        //    set
+        //    {
+        //        m_DatabaseName = value;
+        //    }
+        //}
 
         /// <summary>
         /// Schema of the view.
         /// </summary>
-        public string Schema
-        {
-            get
-            {
-                return m_Schema;
-            }
-            set
-            {
-                m_Schema = value;
-            }
-        }
+        //public string Schema
+        //{
+        //    get
+        //    {
+        //        return m_Schema;
+        //    }
+        //    set
+        //    {
+        //        m_Schema = value;
+        //    }
+        //}
 
         /// <summary>
         /// Name of the view.
         /// </summary>
-        public string Name
-        {
-            get
-            {
-                return m_Name;
-            }
-            set
-            {
-                m_Name = value;
+        //public string Name
+        //{
+        //    get
+        //    {
+        //        return m_Name;
+        //    }
+        //    set
+        //    {
+        //        m_Name = value;
 
-                if (string.IsNullOrEmpty(m_ClassName))
-                {
-                    m_ClassName = m_Name;
-                }
-            }
-        }
+        //        if (string.IsNullOrEmpty(m_ClassName))
+        //        {
+        //            m_ClassName = m_Name;
+        //        }
+        //    }
+        //}
 
-        public string Description
-        {
-            get
-            {
-                return m_Description;
-            }
-            set
-            {
-                m_Description = value;
-            }
-        }
+        //public string Description
+        //{
+        //    get
+        //    {
+        //        return m_Description;
+        //    }
+        //    set
+        //    {
+        //        m_Description = value;
+        //    }
+        //}
 
         #endregion
 

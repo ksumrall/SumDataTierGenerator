@@ -113,7 +113,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
 
             AppendLine();
             // build the regular field values
-            columnCount = m_Table.Columns.Count;
+            columnCount = m_Table.Columns.Length;
             for( int index = 0; index < columnCount; index++ ) {
                 AppendStartLine( "m_FieldValues[" );
                 Append( index.ToString() );

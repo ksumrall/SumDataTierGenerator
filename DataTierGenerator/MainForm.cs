@@ -87,12 +87,14 @@ namespace TotalSafety.DataTierGenerator
 
             LoadPreviousValues();
 
-            if (m_SqlConnectionSettingsModel.DatabaseName != "")
-            {
-                GenerateProject();
-            }
+            //if (m_SqlConnectionSettingsModel.DatabaseName != "")
+            //{
+            //    GenerateProject();
+            //}
 
             UpdateTitle();
+
+            //LoadProject(Project.Load("..\\..\\..\\TempProj.dtgproj"));
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -100,22 +102,33 @@ namespace TotalSafety.DataTierGenerator
             //StoreApplicationValues();
         }
 
-        #region menu events
+        #region menu file events
 
-        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void m_GuiOpenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenProjectFromOpenDialog();
+        }
+
+        private void m_GuiSaveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            m_Project.Save();
+            m_GuiSaveToolStripMenuItem.Enabled = false;
+            UpdateTitle();
+        }
+
+        private void m_GuiSaveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveAs();
         }
 
-        private void closeButton_Click(object sender, EventArgs e)
+        private void m_GuiExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
+        #endregion
+
+        #region menu project events
 
         private void m_GuiConfigurationToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -127,17 +140,7 @@ namespace TotalSafety.DataTierGenerator
 
         }
 
-        private void generateToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            GenerateProject();
-        }
-
-        private void m_GuiOpenToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            OpenProjectFromOpenDialog();
-        }
-
-        private void extractToolStripMenuItem_Click(object sender, EventArgs e)
+        private void m_GuiRefreshToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (m_Project != null && m_IsProjectLoaded)
             {
@@ -146,15 +149,15 @@ namespace TotalSafety.DataTierGenerator
                 m_SchemaExtractor.ConnectionString = m_Project.ConnectionString;
                 XmlDocument xDoc = m_SchemaExtractor.GetSchemaDefinition();
 
-                m_Project.LoadSchemasFromXml(xDoc);
+                m_Project.LoadSchemasFromXml(xDoc.SelectSingleNode("schemas"));
             }
+
+            LoadTree(m_Project);
         }
 
-        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        private void m_GuiGenerateToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            m_Project.Save();
-            saveToolStripMenuItem.Enabled = false;
-            UpdateTitle();
+            GenerateProject();
         }
 
         #endregion
@@ -284,37 +287,9 @@ namespace TotalSafety.DataTierGenerator
             // Add Schemas
             schemaCollectionTreeNode = m_GuiProjectTree.Nodes["Root"].Nodes.Add("Schemas", "Schemas");
             schemaCollectionTreeNode.Tag = TreeNodeTypes.Schema;
-            foreach (Schema schema in project.SchemaList)
+            foreach (Common.ProjectSchema.Schema schema in project.Schemas)
             {
-                //AddTableNode(m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes["Tables"], table);
                 AddSchemaNode(schemaCollectionTreeNode, schema);
-            }
-
-            // Add Schema Tables
-            //m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes.Add("Tables", "Tables").Tag = TreeNodeTypes.Tables;
-            m_GuiProjectTree.Nodes["Root"].Nodes.Add("Tables", "Tables").Tag = TreeNodeTypes.Tables;
-            foreach (Table table in project.TableList)
-            {
-                //AddTableNode(m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes["Tables"], table);
-                AddTableNode(m_GuiProjectTree.Nodes["Root"].Nodes["Tables"], table);
-            }
-
-            // Add Schema Views
-            //m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes.Add("Views", "Views").Tag = TreeNodeTypes.Views;
-            m_GuiProjectTree.Nodes["Root"].Nodes.Add("Views", "Views").Tag = TreeNodeTypes.Views;
-            foreach (Common.View view in project.ViewList)
-            {
-                //AddViewNode(m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes["Views"], view);
-                AddViewNode(m_GuiProjectTree.Nodes["Root"].Nodes["Views"], view);
-            }
-
-            // Add Schema Stored Procedures
-            //m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes.Add("Procedures", "Procedures").Tag = TreeNodeTypes.Procedures;
-            m_GuiProjectTree.Nodes["Root"].Nodes.Add("Procedures", "Procedures").Tag = TreeNodeTypes.Procedures;
-            foreach (Procedure procedure in project.ProcedureList)
-            {
-                //AddProcedureNode(m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes["rocedures"], procedure);
-                AddProcedureNode(m_GuiProjectTree.Nodes["Root"].Nodes["rocedures"], procedure);
             }
 
             // End
@@ -324,49 +299,66 @@ namespace TotalSafety.DataTierGenerator
 
         }
 
-        private void AddSchemaNode(TreeNode schemaCollectionNode, Schema schema)
+        private void AddSchemaNode(TreeNode schemaCollectionNode, Common.ProjectSchema.Schema schema)
         {
             TreeNode node;
+            TreeNode collectionNode;
 
             node = new TreeNode(schema.Name);
             node.Tag = TreeNodeTypes.Schema;
 
             #region add tables
 
-            schema.Tables.Sort(new Comparison<Table>(Table.CompareByProgrammaticAlias));
-            foreach (Table t in schema.Tables)
+            collectionNode = new TreeNode("Tables");
+            collectionNode.Tag = TreeNodeTypes.Tables;
+            node.Nodes.Add(collectionNode);
+
+            //schema.Tables.Sort(new Comparison<Table>(Table.CompareByProgrammaticAlias));
+            foreach (Common.ProjectSchema.Table t in schema.Tables)
             {
-                AddTableNode(node, t);
+                AddTableNode(collectionNode, t);
             }
 
             #endregion
 
             #region add views
 
-            schema.Views.Sort(new Comparison<Common.View>(Common.View.CompareByProgrammaticAlias));
-            foreach (Common.View v in schema.Views)
+            collectionNode = new TreeNode("Views");
+            collectionNode.Tag = TreeNodeTypes.Views;
+            node.Nodes.Add(collectionNode);
+
+            //schema.Views.Sort(new Comparison<Common.View>(Common.View.CompareByProgrammaticAlias));
+            foreach (Common.ProjectSchema.View v in schema.Views)
             {
-                AddViewNode(node, v);
+                AddViewNode(collectionNode, v);
             }
 
             #endregion
 
             #region add functions
 
-            schema.Functions.Sort(new Comparison<Function>(Function.CompareByProgrammaticAlias));
-            foreach (Function f in schema.Functions)
+            collectionNode = new TreeNode("Functions");
+            collectionNode.Tag = TreeNodeTypes.Functions;
+            node.Nodes.Add(collectionNode);
+
+            //schema.Functions.Sort(new Comparison<Function>(Function.CompareByProgrammaticAlias));
+            foreach (Common.ProjectSchema.Function f in schema.Functions)
             {
-                AddFunctionNode(node, f);
+                AddFunctionNode(collectionNode, f);
             }
 
             #endregion
 
             #region add procedures
 
-            schema.Procedures.Sort(new Comparison<Procedure>(Procedure.CompareByProgrammaticAlias));
-            foreach (Procedure p in schema.Procedures)
+            collectionNode = new TreeNode("Procedures");
+            collectionNode.Tag = TreeNodeTypes.Procedures;
+            node.Nodes.Add(collectionNode);
+
+            //schema.Procedures.Sort(new Comparison<Procedure>(Procedure.CompareByProgrammaticAlias));
+            foreach (Common.ProjectSchema.Procedure p in schema.Procedures)
             {
-                AddProcedureNode(node, p);
+                AddProcedureNode(collectionNode, p);
             }
 
             #endregion
@@ -374,7 +366,7 @@ namespace TotalSafety.DataTierGenerator
             schemaCollectionNode.Nodes.Add(node);
         }
 
-        private void AddTableNode(TreeNode treeNnode, Table table)
+        private void AddTableNode(TreeNode treeNnode, Common.ProjectSchema.Table table)
         {
             TreeNode node;
 
@@ -390,7 +382,7 @@ namespace TotalSafety.DataTierGenerator
             treeNnode.Nodes.Add(node);
         }
 
-        private void AddViewNode(TreeNode treeNode, Common.View view)
+        private void AddViewNode(TreeNode treeNode, Common.ProjectSchema.View view)
         {
             TreeNode node;
 
@@ -405,14 +397,14 @@ namespace TotalSafety.DataTierGenerator
             treeNode.Nodes.Add(node);
         }
 
-        private void AddFunctionNode(TreeNode treeNode, Function function)
+        private void AddFunctionNode(TreeNode treeNode, Common.ProjectSchema.Function function)
         {
             TreeNode node;
 
             node = new TreeNode(function.Name);
             node.Tag = TreeNodeTypes.Function;
 
-            foreach (Parameter parameter in function.Parameters)
+            foreach (Common.ProjectSchema.Parameter parameter in function.Parameters)
             {
                 AddParameterNode(node, parameter);
             }
@@ -420,14 +412,14 @@ namespace TotalSafety.DataTierGenerator
             treeNode.Nodes.Add(node);
         }
 
-        private void AddProcedureNode(TreeNode treeNode, Procedure procedure)
+        private void AddProcedureNode(TreeNode treeNode, Common.ProjectSchema.Procedure procedure)
         {
             TreeNode node;
 
             node = new TreeNode(procedure.Name);
             node.Tag = TreeNodeTypes.Function;
 
-            foreach (Parameter parameter in procedure.Parameters)
+            foreach (Common.ProjectSchema.Parameter parameter in procedure.Parameters)
             {
                 AddParameterNode(node, parameter);
             }
@@ -446,7 +438,7 @@ namespace TotalSafety.DataTierGenerator
             treeNode.Nodes.Add(node);
         }
 
-        private void AddParameterNode(TreeNode treeNode, Parameter parameter)
+        private void AddParameterNode(TreeNode treeNode, Common.ProjectSchema.Parameter parameter)
         {
 
             TreeNode node;
@@ -566,7 +558,7 @@ namespace TotalSafety.DataTierGenerator
         {
             if (!m_Project.IsNew)
             {
-                saveToolStripMenuItem.Enabled = true;
+                m_GuiSaveToolStripMenuItem.Enabled = true;
             }
 
             if (m_Project.TableList.Count > 0 || m_Project.ViewList.Count > 0 || m_Project.ProcedureList.Count > 0)

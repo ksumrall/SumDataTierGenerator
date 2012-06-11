@@ -139,7 +139,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Controls\ConfigurationView.cs" />
+    <Compile Include="Controls\ConfigurationView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Controls\ConfigurationView.Designer.cs">
       <DependentUpon>ConfigurationView.cs</DependentUpon>
     </Compile>
@@ -168,9 +170,6 @@
     </EmbeddedResource>
     <Compile Include="IDataConnectionConfiguration.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="SchemaGenerator.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

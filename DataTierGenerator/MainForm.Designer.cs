@@ -31,14 +31,14 @@ namespace TotalSafety.DataTierGenerator {
             this.projectToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.m_GuiOpenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
-            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_GuiSaveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_GuiSaveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.projectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_GuiExitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_GuiProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.m_GuiConfigurationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
-            this.extractToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_GuiRefreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.m_GuiGenerateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
@@ -58,7 +58,7 @@ namespace TotalSafety.DataTierGenerator {
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.projectToolStripMenuItem});
+            this.m_GuiProjectToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
@@ -72,10 +72,10 @@ namespace TotalSafety.DataTierGenerator {
             this.newToolStripMenuItem,
             this.m_GuiOpenToolStripMenuItem,
             this.toolStripMenuItem2,
-            this.saveToolStripMenuItem,
-            this.saveAsToolStripMenuItem,
+            this.m_GuiSaveToolStripMenuItem,
+            this.m_GuiSaveAsToolStripMenuItem,
             this.toolStripMenuItem1,
-            this.exitToolStripMenuItem});
+            this.m_GuiExitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "&File";
@@ -107,44 +107,44 @@ namespace TotalSafety.DataTierGenerator {
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
             this.toolStripMenuItem2.Size = new System.Drawing.Size(152, 6);
             // 
-            // saveToolStripMenuItem
+            // m_GuiSaveToolStripMenuItem
             // 
-            this.saveToolStripMenuItem.Enabled = false;
-            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
-            this.saveToolStripMenuItem.Text = "&Save";
-            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
+            this.m_GuiSaveToolStripMenuItem.Enabled = false;
+            this.m_GuiSaveToolStripMenuItem.Name = "m_GuiSaveToolStripMenuItem";
+            this.m_GuiSaveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.m_GuiSaveToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.m_GuiSaveToolStripMenuItem.Text = "&Save";
+            this.m_GuiSaveToolStripMenuItem.Click += new System.EventHandler(this.m_GuiSaveToolStripMenuItem_Click);
             // 
-            // saveAsToolStripMenuItem
+            // m_GuiSaveAsToolStripMenuItem
             // 
-            this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
-            this.saveAsToolStripMenuItem.Text = "Save &As...";
-            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
+            this.m_GuiSaveAsToolStripMenuItem.Name = "m_GuiSaveAsToolStripMenuItem";
+            this.m_GuiSaveAsToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.m_GuiSaveAsToolStripMenuItem.Text = "Save &As...";
+            this.m_GuiSaveAsToolStripMenuItem.Click += new System.EventHandler(this.m_GuiSaveAsToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(152, 6);
             // 
-            // exitToolStripMenuItem
+            // m_GuiExitToolStripMenuItem
             // 
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
-            this.exitToolStripMenuItem.Text = "E&xit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            this.m_GuiExitToolStripMenuItem.Name = "m_GuiExitToolStripMenuItem";
+            this.m_GuiExitToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.m_GuiExitToolStripMenuItem.Text = "E&xit";
+            this.m_GuiExitToolStripMenuItem.Click += new System.EventHandler(this.m_GuiExitToolStripMenuItem_Click);
             // 
-            // projectToolStripMenuItem
+            // m_GuiProjectToolStripMenuItem
             // 
-            this.projectToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.m_GuiProjectToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.m_GuiConfigurationToolStripMenuItem,
             this.toolStripMenuItem4,
-            this.extractToolStripMenuItem,
+            this.m_GuiRefreshToolStripMenuItem,
             this.m_GuiGenerateToolStripMenuItem});
-            this.projectToolStripMenuItem.Name = "projectToolStripMenuItem";
-            this.projectToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
-            this.projectToolStripMenuItem.Text = "&Project";
+            this.m_GuiProjectToolStripMenuItem.Name = "m_GuiProjectToolStripMenuItem";
+            this.m_GuiProjectToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
+            this.m_GuiProjectToolStripMenuItem.Text = "&Project";
             // 
             // m_GuiConfigurationToolStripMenuItem
             // 
@@ -158,13 +158,13 @@ namespace TotalSafety.DataTierGenerator {
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
             this.toolStripMenuItem4.Size = new System.Drawing.Size(178, 6);
             // 
-            // extractToolStripMenuItem
+            // m_GuiRefreshToolStripMenuItem
             // 
-            this.extractToolStripMenuItem.Name = "extractToolStripMenuItem";
-            this.extractToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.extractToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
-            this.extractToolStripMenuItem.Text = "&Refresh...";
-            this.extractToolStripMenuItem.Click += new System.EventHandler(this.extractToolStripMenuItem_Click);
+            this.m_GuiRefreshToolStripMenuItem.Name = "m_GuiRefreshToolStripMenuItem";
+            this.m_GuiRefreshToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
+            this.m_GuiRefreshToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.m_GuiRefreshToolStripMenuItem.Text = "&Refresh...";
+            this.m_GuiRefreshToolStripMenuItem.Click += new System.EventHandler(this.m_GuiRefreshToolStripMenuItem_Click);
             // 
             // m_GuiGenerateToolStripMenuItem
             // 
@@ -172,7 +172,7 @@ namespace TotalSafety.DataTierGenerator {
             this.m_GuiGenerateToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.F5)));
             this.m_GuiGenerateToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
             this.m_GuiGenerateToolStripMenuItem.Text = "&Generate...";
-            this.m_GuiGenerateToolStripMenuItem.Click += new System.EventHandler(this.generateToolStripMenuItem_Click);
+            this.m_GuiGenerateToolStripMenuItem.Click += new System.EventHandler(this.m_GuiGenerateToolStripMenuItem_Click);
             // 
             // openFileDialog1
             // 
@@ -262,21 +262,21 @@ namespace TotalSafety.DataTierGenerator {
 
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem m_GuiSaveToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem m_GuiSaveAsToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem m_GuiExitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem m_GuiOpenToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
-        private System.Windows.Forms.ToolStripMenuItem projectToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem m_GuiProjectToolStripMenuItem;
         private System.Windows.Forms.SplitContainer m_GuiSplitContainer;
         private System.Windows.Forms.TreeView m_GuiProjectTree;
         private System.Windows.Forms.ToolStripMenuItem m_GuiGenerateToolStripMenuItem;
         private System.Windows.Forms.StatusStrip statusStrip1;
-        private System.Windows.Forms.ToolStripMenuItem extractToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem m_GuiRefreshToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem projectToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem m_GuiConfigurationToolStripMenuItem;

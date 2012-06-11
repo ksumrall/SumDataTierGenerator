@@ -28,6 +28,8 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
         
         private Schema[] schemasField;
         
+        private string nameField;
+        
         private string versionField;
         
         /// <remarks/>
@@ -53,7 +55,18 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string version {
+        public string Name {
+            get {
+                return this.nameField;
+            }
+            set {
+                this.nameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string Version {
             get {
                 return this.versionField;
             }
@@ -186,6 +199,8 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
         
         private Procedure[] proceduresField;
         
+        private string nameField;
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlArrayItemAttribute("Table", IsNullable=false)]
         public Table[] Tables {
@@ -227,6 +242,17 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
             }
             set {
                 this.proceduresField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string Name {
+            get {
+                return this.nameField;
+            }
+            set {
+                this.nameField = value;
             }
         }
     }
@@ -277,7 +303,7 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string name {
+        public string Name {
             get {
                 return this.nameField;
             }
@@ -288,7 +314,7 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string dbName {
+        public string DbName {
             get {
                 return this.dbNameField;
             }
@@ -299,7 +325,7 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string description {
+        public string Description {
             get {
                 return this.descriptionField;
             }
@@ -310,7 +336,7 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string schema {
+        public string Schema {
             get {
                 return this.schemaField;
             }
@@ -321,7 +347,7 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public bool build {
+        public bool Build {
             get {
                 return this.buildField;
             }
@@ -399,6 +425,8 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
         
         private string nameField;
         
+        private string propertyNameField;
+        
         private string clrTypeField;
         
         private string dbTypeField;
@@ -407,9 +435,9 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
         
         private string lengthField;
         
-        private string precisionField;
+        private string scaleField;
         
-        private string propertyNameField;
+        private string precisionField;
         
         private string defaultValueField;
         
@@ -423,11 +451,11 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
         
         private bool isComputedField;
         
-        private string scaleField;
+        private string descriptionField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string name {
+        public string Name {
             get {
                 return this.nameField;
             }
@@ -438,62 +466,7 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string clrType {
-            get {
-                return this.clrTypeField;
-            }
-            set {
-                this.clrTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string dbType {
-            get {
-                return this.dbTypeField;
-            }
-            set {
-                this.dbTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string languageType {
-            get {
-                return this.languageTypeField;
-            }
-            set {
-                this.languageTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string length {
-            get {
-                return this.lengthField;
-            }
-            set {
-                this.lengthField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string precision {
-            get {
-                return this.precisionField;
-            }
-            set {
-                this.precisionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string propertyName {
+        public string PropertyName {
             get {
                 return this.propertyNameField;
             }
@@ -504,7 +477,73 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string defaultValue {
+        public string ClrType {
+            get {
+                return this.clrTypeField;
+            }
+            set {
+                this.clrTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string DbType {
+            get {
+                return this.dbTypeField;
+            }
+            set {
+                this.dbTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string LanguageType {
+            get {
+                return this.languageTypeField;
+            }
+            set {
+                this.languageTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string Length {
+            get {
+                return this.lengthField;
+            }
+            set {
+                this.lengthField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string Scale {
+            get {
+                return this.scaleField;
+            }
+            set {
+                this.scaleField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string Precision {
+            get {
+                return this.precisionField;
+            }
+            set {
+                this.precisionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string DefaultValue {
             get {
                 return this.defaultValueField;
             }
@@ -515,7 +554,7 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string enumeratedTypeName {
+        public string EnumeratedTypeName {
             get {
                 return this.enumeratedTypeNameField;
             }
@@ -526,7 +565,7 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public bool isNullable {
+        public bool IsNullable {
             get {
                 return this.isNullableField;
             }
@@ -537,7 +576,7 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public bool isIdentity {
+        public bool IsIdentity {
             get {
                 return this.isIdentityField;
             }
@@ -548,7 +587,7 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public bool isRowGuid {
+        public bool IsRowGuid {
             get {
                 return this.isRowGuidField;
             }
@@ -559,7 +598,7 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public bool isComputed {
+        public bool IsComputed {
             get {
                 return this.isComputedField;
             }
@@ -570,12 +609,12 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string scale {
+        public string Description {
             get {
-                return this.scaleField;
+                return this.descriptionField;
             }
             set {
-                this.scaleField = value;
+                this.descriptionField = value;
             }
         }
     }
@@ -614,7 +653,7 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string name {
+        public string Name {
             get {
                 return this.nameField;
             }
@@ -625,7 +664,7 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string dbName {
+        public string DbName {
             get {
                 return this.dbNameField;
             }
@@ -636,7 +675,7 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string description {
+        public string Description {
             get {
                 return this.descriptionField;
             }
@@ -647,7 +686,7 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string schema {
+        public string Schema {
             get {
                 return this.schemaField;
             }
@@ -658,7 +697,7 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public bool build {
+        public bool Build {
             get {
                 return this.buildField;
             }
@@ -702,7 +741,7 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string name {
+        public string Name {
             get {
                 return this.nameField;
             }
@@ -713,7 +752,7 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string dbName {
+        public string DbName {
             get {
                 return this.dbNameField;
             }
@@ -724,7 +763,7 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string description {
+        public string Description {
             get {
                 return this.descriptionField;
             }
@@ -735,7 +774,7 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string schema {
+        public string Schema {
             get {
                 return this.schemaField;
             }
@@ -746,7 +785,7 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public bool build {
+        public bool Build {
             get {
                 return this.buildField;
             }
@@ -767,11 +806,11 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
         
         private string nameField;
         
+        private string propertyNameField;
+        
         private string clrTypeField;
         
         private string dbTypeField;
-        
-        private string propertyNameField;
         
         private string defaultValueField;
         
@@ -781,7 +820,7 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string name {
+        public string Name {
             get {
                 return this.nameField;
             }
@@ -792,29 +831,7 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string clrType {
-            get {
-                return this.clrTypeField;
-            }
-            set {
-                this.clrTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string dbType {
-            get {
-                return this.dbTypeField;
-            }
-            set {
-                this.dbTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string propertyName {
+        public string PropertyName {
             get {
                 return this.propertyNameField;
             }
@@ -825,7 +842,29 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string defaultValue {
+        public string ClrType {
+            get {
+                return this.clrTypeField;
+            }
+            set {
+                this.clrTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string DbType {
+            get {
+                return this.dbTypeField;
+            }
+            set {
+                this.dbTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string DefaultValue {
             get {
                 return this.defaultValueField;
             }
@@ -836,7 +875,7 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string enumeratedTypeName {
+        public string EnumeratedTypeName {
             get {
                 return this.enumeratedTypeNameField;
             }
@@ -847,7 +886,7 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public bool isNullable {
+        public bool IsNullable {
             get {
                 return this.isNullableField;
             }
@@ -891,7 +930,7 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string name {
+        public string Name {
             get {
                 return this.nameField;
             }
@@ -902,7 +941,7 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string dbName {
+        public string DbName {
             get {
                 return this.dbNameField;
             }
@@ -913,7 +952,7 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string description {
+        public string Description {
             get {
                 return this.descriptionField;
             }
@@ -924,7 +963,7 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string schema {
+        public string Schema {
             get {
                 return this.schemaField;
             }
@@ -935,7 +974,7 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public bool build {
+        public bool Build {
             get {
                 return this.buildField;
             }

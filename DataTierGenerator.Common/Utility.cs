@@ -221,96 +221,96 @@ namespace TotalSafety.DataTierGenerator.Common
 
             columnName = column.PropertyName;
 
-            switch (column.Type.ToLower()) {
+            switch (column.DbType.ToLower()) {
                 case "binary":
-                    parameter = "@" + columnName + " " + column.Type + "(" + column.Length + ")";
+                    parameter = "@" + columnName + " " + column.DbType + "(" + column.Length + ")";
                     break;
                 case "bigint":
-                    parameter = "@" + columnName + " " + column.Type;
+                    parameter = "@" + columnName + " " + column.DbType;
                     break;
                 case "bit":
-                    parameter = "@" + columnName + " " + column.Type;
+                    parameter = "@" + columnName + " " + column.DbType;
                     break;
                 case "char":
-                    parameter = "@" + columnName + " " + column.Type + "(" + column.Length + ")";
+                    parameter = "@" + columnName + " " + column.DbType + "(" + column.Length + ")";
                     break;
                 case "datetime":
-                    parameter = "@" + columnName + " " + column.Type;
+                    parameter = "@" + columnName + " " + column.DbType;
                     break;
                 case "decimal":
                     if (column.Scale.Length == 0)
-                        parameter = "@" + columnName + " " + column.Type + "(" + column.Precision + ")";
+                        parameter = "@" + columnName + " " + column.DbType + "(" + column.Precision + ")";
                     else
-                        parameter = "@" + columnName + " " + column.Type + "(" + column.Precision + ", " + column.Scale + ")";
+                        parameter = "@" + columnName + " " + column.DbType + "(" + column.Precision + ", " + column.Scale + ")";
                     break;
                 case "float":
-                    parameter = "@" + columnName + " " + column.Type + "(" + column.Precision + ")";
+                    parameter = "@" + columnName + " " + column.DbType + "(" + column.Precision + ")";
                     break;
                 case "image":
-                    parameter = "@" + columnName + " " + column.Type;
+                    parameter = "@" + columnName + " " + column.DbType;
                     break;
                 case "int":
-                    parameter = "@" + columnName + " " + column.Type;
+                    parameter = "@" + columnName + " " + column.DbType;
                     break;
                 case "money":
-                    parameter = "@" + columnName + " " + column.Type;
+                    parameter = "@" + columnName + " " + column.DbType;
                     break;
                 case "nchar":
-                    parameter = "@" + columnName + " " + column.Type + "(" + column.Length + ")";
+                    parameter = "@" + columnName + " " + column.DbType + "(" + column.Length + ")";
                     break;
                 case "ntext":
-                    parameter = "@" + columnName + " " + column.Type;
+                    parameter = "@" + columnName + " " + column.DbType;
                     break;
                 case "nvarchar":
-                    parameter = "@" + columnName + " " + column.Type + "(" + column.Length + ")";
+                    parameter = "@" + columnName + " " + column.DbType + "(" + column.Length + ")";
                     break;
                 case "numeric":
                     if (column.Scale.Length == 0)
-                        parameter = "@" + columnName + " " + column.Type + "(" + column.Precision + ")";
+                        parameter = "@" + columnName + " " + column.DbType + "(" + column.Precision + ")";
                     else
-                        parameter = "@" + columnName + " " + column.Type + "(" + column.Precision + ", " + column.Scale + ")";
+                        parameter = "@" + columnName + " " + column.DbType + "(" + column.Precision + ", " + column.Scale + ")";
                     break;
                 case "real":
-                    parameter = "@" + columnName + " " + column.Type;
+                    parameter = "@" + columnName + " " + column.DbType;
                     break;
                 case "smalldatetime":
-                    parameter = "@" + columnName + " " + column.Type;
+                    parameter = "@" + columnName + " " + column.DbType;
                     break;
                 case "smallint":
-                    parameter = "@" + columnName + " " + column.Type;
+                    parameter = "@" + columnName + " " + column.DbType;
                     break;
                 case "smallmoney":
-                    parameter = "@" + columnName + " " + column.Type;
+                    parameter = "@" + columnName + " " + column.DbType;
                     break;
                 case "sql_variant":
-                    parameter = "@" + columnName + " " + column.Type;
+                    parameter = "@" + columnName + " " + column.DbType;
                     break;
                 case "sysname":
-                    parameter = "@" + columnName + " " + column.Type;
+                    parameter = "@" + columnName + " " + column.DbType;
                     break;
                 case "text":
-                    parameter = "@" + columnName + " " + column.Type;
+                    parameter = "@" + columnName + " " + column.DbType;
                     break;
                 case "timestamp":
-                    parameter = "@" + columnName + " " + column.Type;
+                    parameter = "@" + columnName + " " + column.DbType;
                     break;
                 case "tinyint":
-                    parameter = "@" + columnName + " " + column.Type;
+                    parameter = "@" + columnName + " " + column.DbType;
                     break;
                 case "varbinary":
-                    parameter = "@" + columnName + " " + column.Type + "(" + column.Length + ")";
+                    parameter = "@" + columnName + " " + column.DbType + "(" + column.Length + ")";
                     break;
                 case "varchar":
-                    parameter = "@" + columnName + " " + column.Type + "(" + column.Length + ")";
+                    parameter = "@" + columnName + " " + column.DbType + "(" + column.Length + ")";
                     break;
                 case "uniqueidentifier":
-                    parameter = "@" + columnName + " " + column.Type;
+                    parameter = "@" + columnName + " " + column.DbType;
                     break;
                 case "xml":
-                    parameter = "@" + columnName + " " + column.Type;
+                    parameter = "@" + columnName + " " + column.DbType;
                     break;
                 default: // Unknow data type
-                    throw(new Exception("Invalid SQL Server data type specified: " + column.Type));
+                    throw (new Exception("Invalid SQL Server data type specified: " + column.DbType));
             }
 
             // Return the new parameter string
@@ -331,7 +331,8 @@ namespace TotalSafety.DataTierGenerator.Common
             columnName = column.PropertyName;
             columnName = FormatCamel(columnName);
 
-            switch (column.Type.ToLower()) {
+            switch (column.DbType.ToLower())
+            {
                 case "binary":
                     parameter = "byte[] " + columnName;
                     break;
@@ -414,7 +415,7 @@ namespace TotalSafety.DataTierGenerator.Common
                     parameter = "String " + columnName;
                     break;
                 default: // Unknow data type
-                    throw(new Exception("Invalid SQL Server data type specified: " + column.Type));
+                    throw (new Exception("Invalid SQL Server data type specified: " + column.DbType));
             }
 
             // Return the new parameter string
@@ -456,7 +457,8 @@ namespace TotalSafety.DataTierGenerator.Common
         /// <returns>A string representing a SqlClient.SqlDbType.</returns>
         public static string GetSqlDBType(Column column)
         {
-            switch (column.Type.ToLower()) {
+            switch (column.DbType.ToLower())
+            {
                 case "binary":
                     return "Binary";
                 case "bigint":
@@ -512,7 +514,7 @@ namespace TotalSafety.DataTierGenerator.Common
                 case "xml":
                     return "String";
                 default: // Unknow data type
-                    throw(new Exception("Invalid SQL Server data type specified: " + column.Type));
+                    throw (new Exception("Invalid SQL Server data type specified: " + column.DbType));
             }
         }
 

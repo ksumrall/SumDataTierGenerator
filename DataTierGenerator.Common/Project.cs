@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -8,7 +9,8 @@ using System.Xml.Serialization;
 namespace TotalSafety.DataTierGenerator.Common
 {
 
-    public class Project
+    [Serializable]
+    public class Project : ProjectSchema.Project
     {
 
         #region events
@@ -20,7 +22,7 @@ namespace TotalSafety.DataTierGenerator.Common
         #region private and protected member variables
 
         private string m_FilePath = String.Empty;
-        private string m_ProjectName = "New Project";
+        private string m_ProjectName = String.Empty;
         private string m_DbProviderType = String.Empty;
         private string m_ConnectionString = String.Empty;
         private string m_Namespace = String.Empty;
@@ -36,14 +38,12 @@ namespace TotalSafety.DataTierGenerator.Common
 
         #endregion
 
-        #region internal structured members
-
-        #endregion
-
         #region constructors / desturctors
 
         public Project()
         {
+            m_ProjectName = "New Project";
+            Schemas = new ProjectSchema.Schema[0];
             m_TableList.Changed += new EventHandler<ChangedEventArgs<Table>>(m_TableList_Changed);
             m_TableList.Cleared += new EventHandler<ClearedEventArgs<Table>>(m_TableList_Cleared);
             m_ViewList.Changed += new EventHandler<ChangedEventArgs<Common.View>>(m_ViewList_Changed);
@@ -106,7 +106,7 @@ namespace TotalSafety.DataTierGenerator.Common
             }
         }
 
-        [XmlAttribute]
+        [XmlIgnore]
         public string DbProviderType
         {
             get
@@ -120,7 +120,7 @@ namespace TotalSafety.DataTierGenerator.Common
             }
         }
 
-        [XmlAttribute]
+        [XmlIgnore]
         public string ConnectionString
         {
             get
@@ -134,6 +134,7 @@ namespace TotalSafety.DataTierGenerator.Common
             }
         }
 
+        [XmlIgnore]
         public string Namespace
         {
             get
@@ -147,6 +148,7 @@ namespace TotalSafety.DataTierGenerator.Common
             }
         }
 
+        [XmlIgnore]
         public string OutputPath
         {
             get
@@ -164,6 +166,7 @@ namespace TotalSafety.DataTierGenerator.Common
             }
         }
 
+        [XmlIgnore]
         public MonitoredList<Schema> SchemaList
         {
             get
@@ -177,6 +180,7 @@ namespace TotalSafety.DataTierGenerator.Common
             }
         }
 
+        [XmlIgnore]
         public MonitoredList<Table> TableList
         {
             get
@@ -190,6 +194,7 @@ namespace TotalSafety.DataTierGenerator.Common
             }
         }
 
+        [XmlIgnore]
         public MonitoredList<Common.View> ViewList
         {
             get
@@ -203,6 +208,7 @@ namespace TotalSafety.DataTierGenerator.Common
             }
         }
 
+        [XmlIgnore]
         public MonitoredList<Function> FunctionList
         {
             get
@@ -216,6 +222,7 @@ namespace TotalSafety.DataTierGenerator.Common
             }
         }
 
+        [XmlIgnore]
         public MonitoredList<Procedure> ProcedureList
         {
             get
@@ -371,17 +378,20 @@ namespace TotalSafety.DataTierGenerator.Common
             }
         }
 
-        public void LoadSchemasFromXml(XmlDocument xDoc)
+        public void LoadSchemasFromXml(XmlNode xnode)
         {
-            XmlNode xnode = xDoc.SelectSingleNode("schemas");
             XmlNodeList xlist = xnode.SelectNodes("schema");
+            List<ProjectSchema.Schema> schemaList = new List<ProjectSchema.Schema>();
 
             SupressEvents();
 
+            ProjectSchema.Schema schema;
             foreach (XmlNode schemNode in xlist)
             {
-                BuildSchema(schemNode);
+                schema = BuildSchema(schemNode);
+                schemaList.Add(schema);
             }
+            Schemas = schemaList.ToArray();
 
             ResumeEvents();
         }
@@ -464,8 +474,9 @@ namespace TotalSafety.DataTierGenerator.Common
                 //}
 
                 sw = new StreamWriter(path, false);
-                XmlSerializer serializer = new XmlSerializer(typeof(ProjectSchema.Project));
-                serializer.Serialize(sw, proj);
+                XmlSerializer serializer = new XmlSerializer(typeof(Project), new Type[] { 
+                    typeof(Common.Table), typeof(Common.View), typeof(Common.Column), typeof(Common.Function), typeof(Common.Procedure), typeof(Common.Parameter) });
+                serializer.Serialize(sw, this);
                 m_FilePath = path;
             }
             catch (Exception exc)
@@ -494,60 +505,63 @@ namespace TotalSafety.DataTierGenerator.Common
             m_SupressEvents = false;
         }
 
-        public void BuildSchema(XmlNode xNode)
+        public ProjectSchema.Schema BuildSchema(XmlNode xNode)
         {
-            Schema schema = new Schema();
+            ProjectSchema.Schema schema = new ProjectSchema.Schema();
+
             schema.Name = xNode.Attributes["name"].Value;
 
             #region add tables
 
-            XmlNode xCollectionNode = xNode.SelectSingleNode("tables");
-            XmlNodeList xlist = xCollectionNode.SelectNodes("table");
-
+            List<ProjectSchema.Table> tableList = new List<ProjectSchema.Table>();
+            XmlNodeList xlist = xNode.SelectNodes(".//tables//table");
             foreach (XmlNode node in xlist)
             {
-                m_TableList.Add(new Table(node));
+                tableList.Add(new Table(node));
             }
+            schema.Tables = tableList.ToArray();
 
             #endregion
 
             #region add views
 
-            xCollectionNode = xNode.SelectSingleNode("views");
-            xlist = xCollectionNode.SelectNodes("view");
-
+            List<ProjectSchema.View> viewList = new List<ProjectSchema.View>();
+            xlist = xNode.SelectNodes(".//views//view");
             foreach (XmlNode node in xlist)
             {
-                m_ViewList.Add(new View(node));
+                viewList.Add(new View(node));
             }
+            schema.Views = viewList.ToArray();
 
             #endregion
 
             #region add functions
 
-            xCollectionNode = xNode.SelectSingleNode("functions");
-            xlist = xCollectionNode.SelectNodes("function");
-
+            List<ProjectSchema.Function> functionList = new List<ProjectSchema.Function>();
+            xlist = xNode.SelectNodes(".//functions//function");
             foreach (XmlNode node in xlist)
             {
-                m_FunctionList.Add(new Function(node));
+                functionList.Add(new Function(node));
             }
+            schema.Functions = functionList.ToArray();
 
             #endregion
 
             #region add procedures
 
-            xCollectionNode = xNode.SelectSingleNode("procedures");
-            xlist = xCollectionNode.SelectNodes("procedure");
-
+            List<ProjectSchema.Procedure> procedureList = new List<ProjectSchema.Procedure>();
+            xlist = xNode.SelectNodes(".//procedures//procedure");
             foreach (XmlNode node in xlist)
             {
-                m_ProcedureList.Add(new Procedure(node));
+                procedureList.Add(new Procedure(node));
             }
+            schema.Procedures = procedureList.ToArray();
 
             #endregion
 
-            SchemaList.Add(schema);
+            //SchemaList.Add(schema);
+
+            return schema;
         }
 
         public void BuildView(string schema, XmlElement table)

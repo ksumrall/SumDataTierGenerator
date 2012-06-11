@@ -33,7 +33,8 @@ namespace TotalSafety.DataTierGenerator.Common
 
     }
 
-    public class View
+    [XmlRoot(Namespace = "urn:dtg-project")]
+    public class View : ProjectSchema.View
     {
 
         #region private and protected member variables
@@ -48,9 +49,6 @@ namespace TotalSafety.DataTierGenerator.Common
 
         private bool m_BuildClass;
 
-        #endregion
-
-        #region internal structured members
         #endregion
 
         #region constructors / desturctors
@@ -69,26 +67,37 @@ namespace TotalSafety.DataTierGenerator.Common
             m_ClassName = "";
         }
 
-        public View(XmlNode node)
+        public View(XmlNode viewNode):this()
         {
 
             XmlNode tempNode;
 
-            tempNode = node.SelectSingleNode("./DatabaseName");
-            if (tempNode != null)
-                m_DatabaseName = node.Value;
+            Name = viewNode.Attributes["name"].Value;
 
-            tempNode = node.SelectSingleNode("./Schema");
-            if (tempNode != null)
-                m_Schema = node.Value;
+            //tempNode = node.SelectSingleNode("./DatabaseName");
+            //if (tempNode != null)
+            //    m_DatabaseName = node.Value;
 
-            tempNode = node.SelectSingleNode("./Name");
-            if (tempNode != null)
-                m_Name = node.Value;
+            //tempNode = node.SelectSingleNode("./Schema");
+            //if (tempNode != null)
+            //    m_Schema = node.Value;
 
-            tempNode = node.SelectSingleNode("./Description");
-            if (tempNode != null)
-                m_Description = node.Value;
+            //tempNode = node.SelectSingleNode("./Name");
+            //if (tempNode != null)
+            //    m_Name = node.Value;
+
+            //tempNode = node.SelectSingleNode("./Description");
+            //if (tempNode != null)
+            //    m_Description = node.Value;
+
+            XmlNodeList list = viewNode.SelectNodes(".//columns//column");
+
+            List<ProjectSchema.Column> columnList = new List<ProjectSchema.Column>();
+            foreach (XmlNode node in list)
+            {
+                columnList.Add(new Column(node));
+            }
+            Columns = columnList.ToArray();
 
         }
 
@@ -99,75 +108,75 @@ namespace TotalSafety.DataTierGenerator.Common
         /// <summary>
         /// Contains the list of Column instances that define the view.
         /// </summary>
-        public ColumnList Columns
-        {
-            get
-            {
-                return m_ColumnList;
-            }
-        }
+        //public ColumnList Columns
+        //{
+        //    get
+        //    {
+        //        return m_ColumnList;
+        //    }
+        //}
 
         /// <summary>
         /// DatabaseName of the view.
         /// </summary>
-        public string DatabaseName
-        {
-            get
-            {
-                return m_DatabaseName;
-            }
-            set
-            {
-                m_DatabaseName = value;
-            }
-        }
+        //public string DatabaseName
+        //{
+        //    get
+        //    {
+        //        return m_DatabaseName;
+        //    }
+        //    set
+        //    {
+        //        m_DatabaseName = value;
+        //    }
+        //}
 
         /// <summary>
         /// Schema of the view.
         /// </summary>
-        public string Schema
-        {
-            get
-            {
-                return m_Schema;
-            }
-            set
-            {
-                m_Schema = value;
-            }
-        }
+        //public string Schema
+        //{
+        //    get
+        //    {
+        //        return m_Schema;
+        //    }
+        //    set
+        //    {
+        //        m_Schema = value;
+        //    }
+        //}
 
         /// <summary>
         /// Name of the view.
         /// </summary>
-        public string Name
-        {
-            get
-            {
-                return m_Name;
-            }
-            set
-            {
-                m_Name = value;
+        //public string Name
+        //{
+        //    get
+        //    {
+        //        return m_Name;
+        //    }
+        //    set
+        //    {
+        //        m_Name = value;
 
-                if (string.IsNullOrEmpty(m_ClassName))
-                {
-                    m_ClassName = m_Name;
-                }
-            }
-        }
+        //        if (string.IsNullOrEmpty(m_ClassName))
+        //        {
+        //            m_ClassName = m_Name;
+        //        }
+        //    }
+        //}
 
-        public string Description
-        {
-            get
-            {
-                return m_Description;
-            }
-            set
-            {
-                m_Description = value;
-            }
-        }
+        //public string Description
+        //{
+        //    get
+        //    {
+        //        return m_Description;
+        //    }
+        //    set
+        //    {
+        //        m_Description = value;
+        //    }
+        //}
 
         #endregion
 

@@ -8,8 +8,11 @@ SELECT SCHEMA_NAME(schema_id) AS schema_name
     ,p.precision
     ,p.scale
     ,p.is_output
+    ,NULL AS default_definition
+    ,ep.value AS [description]
 FROM sys.objects AS o
 INNER JOIN sys.parameters AS p ON o.object_id = p.object_id
+LEFT JOIN sys.extended_properties ep ON o.object_id = ep.major_id
 ORDER BY schema_name
     ,o.NAME
     ,p.parameter_id;

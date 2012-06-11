@@ -6,3 +6,5 @@ C:\_TFSProjects\DataTierGenerator\DataTierGenerator.Common\bin\Debug\DataTierGen
 C:\_TFSProjects\DataTierGenerator\DataTierGenerator.Common\bin\Debug\DataTierGenerator.Common.pdb
 C:\_TFSProjects\DataTierGenerator\DataTierGenerator.Common\obj\x86\Debug\DataTierGenerator.Common.dll
 C:\_TFSProjects\DataTierGenerator\DataTierGenerator.Common\obj\x86\Debug\DataTierGenerator.Common.pdb
+C:\_TFSProjects\DataTierGenerator\DataTierGenerator.Common\obj\x86\Debug\ResGen.read.1.tlog
+C:\_TFSProjects\DataTierGenerator\DataTierGenerator.Common\obj\x86\Debug\ResGen.write.1.tlog
