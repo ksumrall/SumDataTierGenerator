@@ -12,9 +12,9 @@ namespace TotalSafety.DataTierGenerator.SchemaExtractor
         [STAThread]
         static void Main()
         {
-            SchemaExtractor s = new SchemaExtractor();
+            SchemaExtractorWrapper s = new SchemaExtractorWrapper();
             s.ProviderType = "System.Data.SqlClient";
-            s.ConnectionString = "Data Source=HOUTFS01;Initial Catalog=IntelaTrac_2;Integrated Security=True";
+            s.ConnectionString = "Data Source=.\\sqlexpress;Initial Catalog=DecorStores;Integrated Security=True";
             XmlDocument xDoc = s.GetSchemaDefinition();
         }
     }

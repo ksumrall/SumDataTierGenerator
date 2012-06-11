@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
@@ -42,9 +43,11 @@ namespace TotalSafety.DataTierGenerator.Common
 
         #region private and protected member variables
 
+        private string m_Name;
+        private DateTime m_CreateDate;
+        private DateTime m_ModifyDate;
         private string m_DatabaseName;
         private string m_Schema;
-        private string m_Name;
         private string m_Description;
         private ColumnList m_ColumnList;
         private Index m_PrimaryKey;
@@ -76,24 +79,61 @@ namespace TotalSafety.DataTierGenerator.Common
 
         public Table(XmlNode tableNode)
         {
+            /*
+            <table name="Transaction" create_date="8/21/2010 7:19:37 PM" modify_date="11/7/2010 3:10:50 PM">
+                <columns>
+                    <column name="TransactionId" id="1" data_type="varchar" max_length="50" precision="0" scale="0" is_nullable="False" is_rowguidcol="False" is_identity="False" description="" default_definition="" />
+                    <column name="OrderId" id="2" data_type="int" max_length="4" precision="10" scale="0" is_nullable="False" is_rowguidcol="False" is_identity="False" description="" default_definition="" />
+                    <column name="AuthorizationCode" id="3" data_type="nvarchar" max_length="100" precision="0" scale="0" is_nullable="True" is_rowguidcol="False" is_identity="False" description="" default_definition="" />
+                    <column name="TransactionDate" id="4" data_type="datetime" max_length="8" precision="23" scale="3" is_nullable="False" is_rowguidcol="False" is_identity="False" description="" default_definition="(getdate())" />
+                    <column name="TransactionTypeID" id="5" data_type="int" max_length="4" precision="10" scale="0" is_nullable="False" is_rowguidcol="False" is_identity="False" description="" default_definition="((1))" />
+                    <column name="Amount" id="6" data_type="money" max_length="8" precision="19" scale="4" is_nullable="False" is_rowguidcol="False" is_identity="False" description="" default_definition="" />
+                    <column name="TransactionNotes" id="7" data_type="nvarchar" max_length="1000" precision="0" scale="0" is_nullable="True" is_rowguidcol="False" is_identity="False" description="" default_definition="" />
+                    <column name="CreatedOn" id="8" data_type="datetime" max_length="8" precision="23" scale="3" is_nullable="True" is_rowguidcol="False" is_identity="False" description="" default_definition="(getdate())" />
+                    <column name="CreatedBy" id="9" data_type="nvarchar" max_length="100" precision="0" scale="0" is_nullable="True" is_rowguidcol="False" is_identity="False" description="" default_definition="(N'System')" />
+                    <column name="ModifiedOn" id="10" data_type="datetime" max_length="8" precision="23" scale="3" is_nullable="True" is_rowguidcol="False" is_identity="False" description="" default_definition="(getdate())" />
+                    <column name="ModifiedBy" id="11" data_type="nvarchar" max_length="100" precision="0" scale="0" is_nullable="True" is_rowguidcol="False" is_identity="False" description="" default_definition="(N'System')" />
+                </columns>
+                <primary_key name="PK_Transaction">
+                    <column name="TransactionId" id="1" />
+                </primary_key>
+                <foreign_keys>
+                    <foreign_key name="FK_OrderTransactions_TransactionTypes">
+                        <column constraint_column_name="TransactionTypeID" constraint_column_id="1" referenced_object="TransactionType" referenced_column_name="TransactionTypeID" />
+                    </foreign_key>
+                    <foreign_key name="FK_Transaction_Order1">
+                        <column constraint_column_name="OrderId" constraint_column_id="1" referenced_object="Order" referenced_column_name="OrderId" />
+                    </foreign_key>
+                    <foreign_key name="FK_Transaction_Transaction">
+                        <column constraint_column_name="TransactionId" constraint_column_id="1" referenced_object="Transaction" referenced_column_name="TransactionId" />
+                    </foreign_key>
+                </foreign_keys>
+            </table>
+             * */
+            m_Name = tableNode.Attributes["name"].Value;
 
-            XmlNode node;
+            //node = tableNode.SelectSingleNode("./DatabaseName");
+            //if (node != null)
+            //    m_DatabaseName = node.Value;
 
-            node = tableNode.SelectSingleNode("./DatabaseName");
-            if (node != null)
-                m_DatabaseName = node.Value;
+            //node = tableNode.SelectSingleNode("./Schema");
+            //if (node != null)
+            //    m_Schema = node.Value;
 
-            node = tableNode.SelectSingleNode("./Schema");
-            if (node != null)
-                m_Schema = node.Value;
+            //node = tableNode.SelectSingleNode("./Name");
+            //if (node != null)
+            //    m_Name = node.Value;
 
-            node = tableNode.SelectSingleNode("./Name");
-            if (node != null)
-                m_Name = node.Value;
+            //node = tableNode.SelectSingleNode("./Description");
+            //if (node != null)
+            //    m_Description = node.Value;
 
-            node = tableNode.SelectSingleNode("./Description");
-            if (node != null)
-                m_Description = node.Value;
+            XmlNodeList list = tableNode.SelectNodes(".\\columns\\column");
+
+            foreach (XmlNode node in list)
+            {
+                m_ColumnList.Add(new Column(node));
+            }
 
         }
 

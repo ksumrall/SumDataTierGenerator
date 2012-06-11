@@ -139,9 +139,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Controls\ConfigurationView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Controls\ConfigurationView.cs" />
     <Compile Include="Controls\ConfigurationView.Designer.cs">
       <DependentUpon>ConfigurationView.cs</DependentUpon>
     </Compile>

@@ -9,22 +9,22 @@ namespace TotalSafety.DataTierGenerator.Common
     public class SchemaList : List<Schema>
     {
 
-        public Schema this[string schemaName, string tableName]
+        public Schema this[string schemaName]
         {
             get
             {
-                return FindTable(schemaName, tableName);
+                return FindSchema(schemaName);
             }
         }
 
-        public Schema FindTable(string schemaName, string tableName)
+        public Schema FindSchema(string schemaName)
         {
 
-            foreach (Table table in this)
+            foreach (Schema schema in this)
             {
-                if (table.Schema == schemaName && table.Name == tableName)
+                if (schema.Name == schemaName)
                 {
-                    return table;
+                    return schema;
                 }
             }
 
@@ -43,8 +43,10 @@ namespace TotalSafety.DataTierGenerator.Common
         #region private and protected member variables
 
         private string m_DatabaseName;
+        private string m_Schema;
         private string m_Name;
         private string m_Description;
+
         private TableList m_TableList;
         private ViewList m_ViewList;
         private FunctionList m_FunctionList;
@@ -63,11 +65,11 @@ namespace TotalSafety.DataTierGenerator.Common
         /// </summary>
         public Schema()
         {
-            m_ColumnList = new ColumnList();
-            m_PrimaryKey = null;
-            m_ForeignKeyList = new List<Index>();
+            m_TableList = new TableList();
+            m_ViewList = new ViewList();
+            m_FunctionList = new FunctionList();
+            m_ProcedureList = new ProcedureList();
 
-            m_Schema = "";
             m_Name = "";
             m_Description = "";
 
@@ -102,17 +104,6 @@ namespace TotalSafety.DataTierGenerator.Common
         #region public database related properties
 
         /// <summary>
-        /// Contains the list of Column instances that define the table.
-        /// </summary>
-        public ColumnList Columns
-        {
-            get
-            {
-                return m_ColumnList;
-            }
-        }
-
-        /// <summary>
         /// DatabaseName of the table.
         /// </summary>
         public string DatabaseName
@@ -130,21 +121,6 @@ namespace TotalSafety.DataTierGenerator.Common
         /// <summary>
         /// Schema of the table.
         /// </summary>
-        public string SchemaName
-        {
-            get
-            {
-                return m_Schema;
-            }
-            set
-            {
-                m_Schema = value;
-            }
-        }
-
-        /// <summary>
-        /// Name of the table.
-        /// </summary>
         public string Name
         {
             get
@@ -154,11 +130,50 @@ namespace TotalSafety.DataTierGenerator.Common
             set
             {
                 m_Name = value;
+            }
+        }
 
-                if (string.IsNullOrEmpty(m_ClassName))
-                {
-                    m_ClassName = m_Name;
-                }
+        /// <summary>
+        /// Contains the list of Table instances.
+        /// </summary>
+        public TableList Tables
+        {
+            get
+            {
+                return m_TableList;
+            }
+        }
+
+        /// <summary>
+        /// Contains the list of View instances.
+        /// </summary>
+        public ViewList Views
+        {
+            get
+            {
+                return m_ViewList;
+            }
+        }
+
+        /// <summary>
+        /// Contains the list of Function instances.
+        /// </summary>
+        public FunctionList Functions
+        {
+            get
+            {
+                return m_FunctionList;
+            }
+        }
+
+        /// <summary>
+        /// Contains the list of Procedure instances.
+        /// </summary>
+        public ProcedureList Procedures
+        {
+            get
+            {
+                return m_ProcedureList;
             }
         }
 
@@ -171,35 +186,6 @@ namespace TotalSafety.DataTierGenerator.Common
             set
             {
                 m_Description = value;
-            }
-        }
-
-        /// <summary>
-        /// Contains the list of primary key Column instances that define the table.
-        /// </summary>
-        public Index PrimaryKey
-        {
-            get
-            {
-                return m_PrimaryKey;
-            }
-            set
-            {
-                m_PrimaryKey = value;
-            }
-        }
-
-        /// <summary>
-        /// Contains the list of Column instances that define the table.  The Hashtable returned 
-        /// is keyed on the foreign key name, and the value associated with the key is an 
-        /// ArrayList of Column instances that compose the foreign key.
-        /// </summary>
-        [XmlIgnore]
-        public List<Index> ForeignKeys
-        {
-            get
-            {
-                return m_ForeignKeyList;
             }
         }
 
@@ -229,9 +215,9 @@ namespace TotalSafety.DataTierGenerator.Common
 
         #region comparison implementation
 
-        public static int CompareByProgrammaticAlias(Table table1, Table table2)
+        public static int CompareByProgrammaticAlias(Schema schema1, Schema schema2)
         {
-            return table1.Name.CompareTo(table2.Name);
+            return schema1.Name.CompareTo(schema2.Name);
         }
 
         #endregion

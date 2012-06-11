@@ -4,7 +4,7 @@
         <xs:complexType>
             <xs:sequence minOccurs="0" maxOccurs="1">
                 <xs:element ref="Configuration" minOccurs="1" maxOccurs="1" />
-                <xs:element ref="Schemas" minOccurs="1" maxOccurs="unbounded" />
+                <xs:element ref="Schemas" minOccurs="1" maxOccurs="1" />
             </xs:sequence>
             <xs:attribute name="version" use="required" type="xs:string" />
         </xs:complexType>
@@ -31,8 +31,8 @@
     </xs:element>
     <xs:element name="Schemas">
         <xs:complexType>
-            <xs:sequence minOccurs="0" maxOccurs="unbounded">
-                <xs:element ref="Schema" minOccurs="0" maxOccurs="1" />
+            <xs:sequence minOccurs="0" maxOccurs="1">
+                <xs:element ref="Schema" minOccurs="0" maxOccurs="unbounded" />
             </xs:sequence>
         </xs:complexType>
     </xs:element>

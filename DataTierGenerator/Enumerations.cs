@@ -12,10 +12,14 @@ public enum TreeNodeTypes
     Schema,
     Tables,
     Views,
+    Functions,
     Procedures,
     Columns,
+    Parameters,
     Table,
     View,
+    Function,
     Procedure,
-    Column
+    Column,
+    Parameter
 }

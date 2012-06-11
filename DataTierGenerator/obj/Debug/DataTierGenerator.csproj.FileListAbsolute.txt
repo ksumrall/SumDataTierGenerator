@@ -48,3 +48,5 @@ C:\_TFSProjects\DataTierGenerator\DataTierGenerator\bin\Debug\DataTierGenerator.
 C:\_TFSProjects\DataTierGenerator\DataTierGenerator\bin\Debug\DataTierGenerator.Common.pdb
 C:\_TFSProjects\DataTierGenerator\DataTierGenerator\bin\Debug\DataTierGenerator.CodeGenerationFactory.dll
 C:\_TFSProjects\DataTierGenerator\DataTierGenerator\bin\Debug\DataTierGenerator.CodeGenerationFactory.pdb
+C:\_TFSProjects\DataTierGenerator\DataTierGenerator\bin\Debug\DataTierGenerator.SchemaExtractor.exe
+C:\_TFSProjects\DataTierGenerator\DataTierGenerator\bin\Debug\DataTierGenerator.SchemaExtractor.pdb

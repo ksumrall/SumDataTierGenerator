@@ -26,7 +26,7 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
         
         private Configuration configurationField;
         
-        private Schemas[] schemasField;
+        private Schema[] schemasField;
         
         private string versionField;
         
@@ -41,8 +41,8 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("Schemas")]
-        public Schemas[] Schemas {
+        [System.Xml.Serialization.XmlArrayItemAttribute("Schema", IsNullable=false)]
+        public Schema[] Schemas {
             get {
                 return this.schemasField;
             }
@@ -165,29 +165,6 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
             }
             set {
                 this.connectionStringField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.1")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="urn:dtg-project")]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace="urn:dtg-project", IsNullable=false)]
-    public partial class Schemas {
-        
-        private Schema[] schemaField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("Schema")]
-        public Schema[] Schema {
-            get {
-                return this.schemaField;
-            }
-            set {
-                this.schemaField = value;
             }
         }
     }
@@ -964,6 +941,29 @@ namespace TotalSafety.DataTierGenerator.Common.ProjectSchema {
             }
             set {
                 this.buildField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.1")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="urn:dtg-project")]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace="urn:dtg-project", IsNullable=false)]
+    public partial class Schemas {
+        
+        private Schema[] schemaField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("Schema")]
+        public Schema[] Schema {
+            get {
+                return this.schemaField;
+            }
+            set {
+                this.schemaField = value;
             }
         }
     }

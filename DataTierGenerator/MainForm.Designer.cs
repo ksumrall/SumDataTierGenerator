@@ -93,7 +93,6 @@ namespace TotalSafety.DataTierGenerator {
             this.projectToolStripMenuItem1.Name = "projectToolStripMenuItem1";
             this.projectToolStripMenuItem1.Size = new System.Drawing.Size(120, 22);
             this.projectToolStripMenuItem1.Text = "&Project...";
-            this.projectToolStripMenuItem1.Click += new System.EventHandler(this.projectToolStripMenuItem1_Click);
             // 
             // m_GuiOpenToolStripMenuItem
             // 

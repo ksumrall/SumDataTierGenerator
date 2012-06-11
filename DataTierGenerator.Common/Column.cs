@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Xml;
 
 namespace TotalSafety.DataTierGenerator.Common
 {
@@ -40,22 +42,56 @@ namespace TotalSafety.DataTierGenerator.Common
         #region private and protected member variables
 
         // Private variable used to hold the property values
-        private string name;
-        private string description;
-        private string type;
-        private string clrType;
-        private string languageType;
-        private string enumeratedTypeName;
-        private string length;
-        private string precision;
-        private string scale;
-        private bool isRowGuidCol;
-        private bool isIdentity;
-        private bool isNullable;
-        private bool isComputed;
-        private string defaultValue;
+        private string m_Name;
+        private string m_Description;
+        private string m_Type;
+        private string m_ClrType;
+        private string m_LanguageType;
+        private string m_EnumeratedTypeName;
+        private string m_Length;
+        private string m_Precision;
+        private string m_Scale;
+        private bool m_IsRowGuidCol;
+        private bool m_IsIdentity;
+        private bool m_IsNullable;
+        private bool m_IsComputed;
+        private string m_DefaultValue;
 
         private string m_PropertyName;
+
+        #endregion
+
+        #region constructors / desturctors
+
+        /// <summary>
+        /// Default constructor.  All collections are initialized.
+        /// </summary>
+        public Column()
+        {
+        }
+
+        public Column(XmlNode columnNode)
+        {
+            /*
+                    <column m_Name="TransactionId" id="1" data_type="varchar" max_length="50" m_Precision="0" m_Scale="0" m_I_nullable="False" m_I_rowguidcol="False" m_I_identity="False" m_Description="" default_definition="" />
+             * */
+            m_Name = columnNode.Attributes["name"].Value;
+            m_Description = columnNode.Attributes["m_Description"].Value;
+            m_Type = columnNode.Attributes["data_type"].Value;
+            m_ClrType = columnNode.Attributes[""].Value;
+            m_LanguageType = columnNode.Attributes[""].Value;
+            m_EnumeratedTypeName = columnNode.Attributes[""].Value;
+            m_Length = columnNode.Attributes["max_length"].Value;
+            m_Precision = columnNode.Attributes["m_Precision"].Value;
+            m_Scale = columnNode.Attributes["m_Scale"].Value;
+            bool.TryParse(columnNode.Attributes["is_rowguidcol"].Value, out m_IsRowGuidCol);
+            bool.TryParse(columnNode.Attributes["is_identity"].Value, out m_IsIdentity);
+            bool.TryParse(columnNode.Attributes["is_nullable"].Value, out m_IsNullable);
+            bool.TryParse(columnNode.Attributes["is_computed"].Value, out m_IsComputed);
+            m_DefaultValue = columnNode.Attributes["default_definition"].Value;
+
+            m_PropertyName = System.Text.RegularExpressions.Regex.Replace(m_Name, "\\W", "_");
+        }
 
         #endregion
 
@@ -68,11 +104,11 @@ namespace TotalSafety.DataTierGenerator.Common
         {
             get
             {
-                return name;
+                return m_Name;
             }
             set
             {
-                name = value;
+                m_Name = value;
             }
         }
 
@@ -80,71 +116,71 @@ namespace TotalSafety.DataTierGenerator.Common
         {
             get
             {
-                return description;
+                return m_Description;
             }
             set
             {
-                description = value;
+                m_Description = value;
             }
         }
 
         /// <summary>
-        /// Data type of the column.
+        /// Data m_Type of the column.
         /// </summary>
         public string Type
         {
             get
             {
-                return type;
+                return m_Type;
             }
             set
             {
-                type = value;
+                m_Type = value;
             }
         }
 
         /// <summary>
-        /// System type of the column.
+        /// System m_Type of the column.
         /// </summary>
         public string ClrType
         {
             get
             {
-                return clrType;
+                return m_ClrType;
             }
             set
             {
-                clrType = value;
+                m_ClrType = value;
             }
         }
 
         /// <summary>
-        /// Language (c#, VB.NET, etc.) type of the column.
+        /// Language (c#, VB.NET, etc.) m_Type of the column.
         /// </summary>
         public string LanguageType
         {
             get
             {
-                return languageType;
+                return m_LanguageType;
             }
             set
             {
-                languageType = value;
+                m_LanguageType = value;
             }
         }
 
         /// <summary>
-        /// This is the enumerated string value for SqlDbType, OleDbType, OracleType...
+        /// This m_I the enumerated string value for SqlDbType, OleDbType, OracleType...
         /// </summary>
         public string EnumeratedTypeName
         {
             get
             {
-                return enumeratedTypeName;
+                return m_EnumeratedTypeName;
             }
             set
             {
-                enumeratedTypeName = value;
+                m_EnumeratedTypeName = value;
             }
         }
 
@@ -155,11 +191,11 @@ namespace TotalSafety.DataTierGenerator.Common
         {
             get
             {
-                return length;
+                return m_Length;
             }
             set
             {
-                length = value;
+                m_Length = value;
             }
         }
 
@@ -170,11 +206,11 @@ namespace TotalSafety.DataTierGenerator.Common
         {
             get
             {
-                return precision;
+                return m_Precision;
             }
             set
             {
-                precision = value;
+                m_Precision = value;
             }
         }
 
@@ -185,11 +221,11 @@ namespace TotalSafety.DataTierGenerator.Common
         {
             get
             {
-                return scale;
+                return m_Scale;
             }
             set
             {
-                scale = value;
+                m_Scale = value;
             }
         }
 
@@ -200,11 +236,11 @@ namespace TotalSafety.DataTierGenerator.Common
         {
             get
             {
-                return isRowGuidCol;
+                return m_IsRowGuidCol;
             }
             set
             {
-                isRowGuidCol = value;
+                m_IsRowGuidCol = value;
             }
         }
 
@@ -215,11 +251,11 @@ namespace TotalSafety.DataTierGenerator.Common
         {
             get
             {
-                return isIdentity;
+                return m_IsIdentity;
             }
             set
             {
-                isIdentity = value;
+                m_IsIdentity = value;
             }
         }
 
@@ -227,11 +263,11 @@ namespace TotalSafety.DataTierGenerator.Common
         {
             get
             {
-                return isNullable;
+                return m_IsNullable;
             }
             set
             {
-                isNullable = value;
+                m_IsNullable = value;
             }
         }
 
@@ -242,11 +278,11 @@ namespace TotalSafety.DataTierGenerator.Common
         {
             get
             {
-                return isComputed;
+                return m_IsComputed;
             }
             set
             {
-                isComputed = value;
+                m_IsComputed = value;
             }
         }
 
@@ -254,11 +290,11 @@ namespace TotalSafety.DataTierGenerator.Common
         {
             get
             {
-                return defaultValue;
+                return m_DefaultValue;
             }
             set
             {
-                defaultValue = value;
+                m_DefaultValue = value;
             }
         }
 
@@ -268,7 +304,7 @@ namespace TotalSafety.DataTierGenerator.Common
             {
                 if (m_PropertyName == null || m_PropertyName == "")
                 {
-                    m_PropertyName = System.Text.RegularExpressions.Regex.Replace(name, "\\W", "_");
+                    m_PropertyName = System.Text.RegularExpressions.Regex.Replace(m_Name, "\\W", "_");
 
                 }
 

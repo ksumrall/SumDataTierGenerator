@@ -275,8 +275,8 @@ namespace TotalSafety.DataTierGenerator.Common
             try
             {
                 sr = new StreamReader(path);
-                XmlSerializer serializer = new XmlSerializer(typeof(Schema.Project));
-                Schema.Project proj = serializer.Deserialize(sr) as Schema.Project;
+                XmlSerializer serializer = new XmlSerializer(typeof(ProjectSchema.Project));
+                ProjectSchema.Project proj = serializer.Deserialize(sr) as ProjectSchema.Project;
                 if (proj == null)
                 {
                     throw new Exception();
@@ -294,62 +294,63 @@ namespace TotalSafety.DataTierGenerator.Common
                 newProj.Namespace = proj.Configuration.CodeGenerationDetails.projectNamespace;
                 newProj.OutputPath = proj.Configuration.CodeGenerationDetails.outputPath;
 
-                if (proj.Tables != null && proj.Tables.Length > 0)
+                if (proj.Schemas != null && proj.Schemas.Length > 0)
                 {
-                    foreach (Schema.Table t in proj.Tables)
+                    foreach (ProjectSchema.Schema s in proj.Schemas) { }
+                    foreach (ProjectSchema.Schema s in proj.Schemas)
                     {
-                        #region
-                        Table newTable = new Table();
-                        newTable.Name = t.name;
-                        newTable.DatabaseName = t.dbName;
-                        //newTable.ClassName = t.className;
-                        newTable.Description = t.description;
-                        newTable.Schema = t.schema;
-                        newTable.BuildClass = t.build;
+                        //#region
+                        //Table newTable = new Table();
+                        //newTable.Name = t.name;
+                        //newTable.DatabaseName = t.dbName;
+                        ////newTable.ClassName = t.className;
+                        //newTable.Description = t.description;
+                        //newTable.Schema = t.schema;
+                        //newTable.BuildClass = t.build;
 
-                        if (t.Columns != null && t.Columns.Length > 0)
-                        {
-                            foreach (Schema.Column c in t.Columns)
-                            {
-                                Column newCol = new Column();
-                                newCol.Name = c.name;
-                                newCol.ClrType = c.clrType;
-                                newCol.Type = c.dbType;
-                                newCol.LanguageType = c.languageType;
-                                newCol.IsNullable = c.isNullable;
-                                newCol.IsIdentity = c.isIdentity;
-                                newCol.IsComputed = c.isComputed;
-                                newCol.IsRowGuidCol = c.isRowGuid;
-                                newCol.EnumeratedTypeName = c.enumeratedTypeName;
-                                newCol.Length = c.length;
-                                newCol.Precision = c.precision;
-                                newCol.PropertyName = c.propertyName;
-                                newCol.DefaultValue = c.defaultValue;
-                                newCol.Scale = c.scale;
+                        //if (t.Columns != null && t.Columns.Length > 0)
+                        //{
+                        //    foreach (Schema.Column c in t.Columns)
+                        //    {
+                        //        Column newCol = new Column();
+                        //        newCol.Name = c.name;
+                        //        newCol.ClrType = c.clrType;
+                        //        newCol.Type = c.dbType;
+                        //        newCol.LanguageType = c.languageType;
+                        //        newCol.IsNullable = c.isNullable;
+                        //        newCol.IsIdentity = c.isIdentity;
+                        //        newCol.IsComputed = c.isComputed;
+                        //        newCol.IsRowGuidCol = c.isRowGuid;
+                        //        newCol.EnumeratedTypeName = c.enumeratedTypeName;
+                        //        newCol.Length = c.length;
+                        //        newCol.Precision = c.precision;
+                        //        newCol.PropertyName = c.propertyName;
+                        //        newCol.DefaultValue = c.defaultValue;
+                        //        newCol.Scale = c.scale;
 
-                                newTable.Columns.Add(newCol);
-                            }
-                        }
+                        //        newTable.Columns.Add(newCol);
+                        //    }
+                        //}
 
-                        // Fix up the PK refs
-                        if (t.PrimaryKey != null && t.PrimaryKey.ColumnRef != null && t.PrimaryKey.ColumnRef.Length > 0)
-                        {
-                            newTable.PrimaryKey = new Index();
-                            foreach (Schema.TablePrimaryKeyColumnRef @ref in t.PrimaryKey.ColumnRef)
-                            {
-                                foreach (Column c in newTable.Columns)
-                                {
-                                    if (c.Name == @ref.@ref)
-                                    {
-                                        newTable.PrimaryKey.Columns.Add(c);
-                                        break;
-                                    }
-                                }
-                            }
-                        }
+                        //// Fix up the PK refs
+                        //if (t.PrimaryKey != null && t.PrimaryKey.ColumnRef != null && t.PrimaryKey.ColumnRef.Length > 0)
+                        //{
+                        //    newTable.PrimaryKey = new Index();
+                        //    foreach (Schema.TablePrimaryKeyColumnRef @ref in t.PrimaryKey.ColumnRef)
+                        //    {
+                        //        foreach (Column c in newTable.Columns)
+                        //        {
+                        //            if (c.Name == @ref.@ref)
+                        //            {
+                        //                newTable.PrimaryKey.Columns.Add(c);
+                        //                break;
+                        //            }
+                        //        }
+                        //    }
+                        //}
 
-                        newProj.TableList.Add(newTable);
-                        #endregion
+                        //newProj.TableList.Add(newTable);
+                        //#endregion
                     }
                 }
 
@@ -357,7 +358,7 @@ namespace TotalSafety.DataTierGenerator.Common
 
                 return newProj;
             }
-            catch(Exception exc)
+            catch (Exception exc)
             {
                 throw exc;
             }
@@ -368,6 +369,21 @@ namespace TotalSafety.DataTierGenerator.Common
                     sr.Close();
                 }
             }
+        }
+
+        public void LoadSchemasFromXml(XmlDocument xDoc)
+        {
+            XmlNode xnode = xDoc.SelectSingleNode("schemas");
+            XmlNodeList xlist = xnode.SelectNodes("schema");
+
+            SupressEvents();
+
+            foreach (XmlNode schemNode in xlist)
+            {
+                BuildSchema(schemNode);
+            }
+
+            ResumeEvents();
         }
 
         public void Save()
@@ -383,74 +399,76 @@ namespace TotalSafety.DataTierGenerator.Common
             StreamWriter sw = null;
             try
             {
-                Schema.Project proj = new Schema.Project();
+                ProjectSchema.Project proj = new ProjectSchema.Project();
 
-                proj.Configuration = new Schema.Configuration();
-                proj.Configuration.DbConnectionDetails = new Schema.DbConnectionDetails();
-                proj.Configuration.CodeGenerationDetails = new Schema.CodeGenerationDetails();
+                proj.Configuration = new ProjectSchema.Configuration();
+                proj.Configuration.DbConnectionDetails = new ProjectSchema.DbConnectionDetails();
+                proj.Configuration.CodeGenerationDetails = new ProjectSchema.CodeGenerationDetails();
 
                 proj.Configuration.DbConnectionDetails.dbProviderType = this.DbProviderType;
                 proj.Configuration.DbConnectionDetails.connectionString = this.ConnectionString;
                 proj.Configuration.CodeGenerationDetails.projectNamespace = this.Namespace;
                 proj.Configuration.CodeGenerationDetails.outputPath = this.OutputPath;
 
-                proj.Tables = new Schema.Table[this.TableList.Count];
-                for (int i = 0; i < this.TableList.Count; i++)
-                {
-                    #region
-                    Table t = this.TableList[i];
-                    Schema.Table pt = new Schema.Table();
-                    proj.Tables[i] = pt;
+                proj.Schemas = new ProjectSchema.Schema[0];
 
-                    pt.dbName = t.DatabaseName;
-                    pt.schema = t.Schema;
-                    pt.name = t.Name;
-                    pt.description = t.Description;
-                    pt.build = t.BuildClass;
+                //proj.Tables = new ProjectSchema.Table[this.TableList.Count];
+                //for (int i = 0; i < this.TableList.Count; i++)
+                //{
+                //    #region
+                //    Table t = this.TableList[i];
+                //    Schema.Table pt = new Schema.Table();
+                //    proj.Tables[i] = pt;
 
-                    if (t.PrimaryKey != null)
-                    {
-                        pt.PrimaryKey = new Schema.TablePrimaryKey();
-                        pt.PrimaryKey.name = t.PrimaryKey.Name;
-                        pt.PrimaryKey.ColumnRef = new Schema.TablePrimaryKeyColumnRef[t.PrimaryKey.Columns.Count];
-                        for (int j = 0; j < t.PrimaryKey.Columns.Count; j++)
-                        {
-                            pt.PrimaryKey.ColumnRef[j] = new Schema.TablePrimaryKeyColumnRef();
-                            pt.PrimaryKey.ColumnRef[j].@ref = t.PrimaryKey.Columns[j].Name;
-                        }
-                    }
+                //    pt.dbName = t.DatabaseName;
+                //    pt.schema = t.Schema;
+                //    pt.name = t.Name;
+                //    pt.description = t.Description;
+                //    pt.build = t.BuildClass;
 
-                    pt.Columns = new Schema.Column[t.Columns.Count];
-                    for (int j = 0; j < t.Columns.Count; j++)
-                    {
-                        Column c = t.Columns[j];
-                        Schema.Column pc = new Schema.Column();
-                        pt.Columns[j] = pc;
+                //    if (t.PrimaryKey != null)
+                //    {
+                //        pt.PrimaryKey = new Schema.TablePrimaryKey();
+                //        pt.PrimaryKey.name = t.PrimaryKey.Name;
+                //        pt.PrimaryKey.ColumnRef = new Schema.TablePrimaryKeyColumnRef[t.PrimaryKey.Columns.Count];
+                //        for (int j = 0; j < t.PrimaryKey.Columns.Count; j++)
+                //        {
+                //            pt.PrimaryKey.ColumnRef[j] = new Schema.TablePrimaryKeyColumnRef();
+                //            pt.PrimaryKey.ColumnRef[j].@ref = t.PrimaryKey.Columns[j].Name;
+                //        }
+                //    }
 
-                        pc.name = c.Name;
-                        pc.clrType = c.ClrType;
-                        pc.dbType = c.Type;
-                        pc.languageType = c.LanguageType;
-                        pc.isNullable = c.IsNullable;
-                        pc.isIdentity = c.IsIdentity;
-                        pc.isComputed = c.IsComputed;
-                        pc.isRowGuid = c.IsRowGuidCol;
-                        pc.enumeratedTypeName = c.EnumeratedTypeName;
-                        pc.length = c.Length;
-                        pc.precision = c.Precision;
-                        pc.propertyName = c.PropertyName;
-                        pc.defaultValue = c.DefaultValue;
-                        pc.scale = c.Scale;
-                    }
-                    #endregion
-                }
+                //    pt.Columns = new Schema.Column[t.Columns.Count];
+                //    for (int j = 0; j < t.Columns.Count; j++)
+                //    {
+                //        Column c = t.Columns[j];
+                //        Schema.Column pc = new Schema.Column();
+                //        pt.Columns[j] = pc;
+
+                //        pc.name = c.Name;
+                //        pc.clrType = c.ClrType;
+                //        pc.dbType = c.Type;
+                //        pc.languageType = c.LanguageType;
+                //        pc.isNullable = c.IsNullable;
+                //        pc.isIdentity = c.IsIdentity;
+                //        pc.isComputed = c.IsComputed;
+                //        pc.isRowGuid = c.IsRowGuidCol;
+                //        pc.enumeratedTypeName = c.EnumeratedTypeName;
+                //        pc.length = c.Length;
+                //        pc.precision = c.Precision;
+                //        pc.propertyName = c.PropertyName;
+                //        pc.defaultValue = c.DefaultValue;
+                //        pc.scale = c.Scale;
+                //    }
+                //    #endregion
+                //}
 
                 sw = new StreamWriter(path, false);
-                XmlSerializer serializer = new XmlSerializer(typeof(Schema.Project));
+                XmlSerializer serializer = new XmlSerializer(typeof(ProjectSchema.Project));
                 serializer.Serialize(sw, proj);
                 m_FilePath = path;
             }
-            catch(Exception exc)
+            catch (Exception exc)
             {
                 throw exc;
             }
@@ -476,27 +494,73 @@ namespace TotalSafety.DataTierGenerator.Common
             m_SupressEvents = false;
         }
 
-        public void LoadSchema()
+        public void BuildSchema(XmlNode xNode)
+        {
+            Schema schema = new Schema();
+            schema.Name = xNode.Attributes["name"].Value;
+
+            #region add tables
+
+            XmlNode xCollectionNode = xNode.SelectSingleNode("tables");
+            XmlNodeList xlist = xCollectionNode.SelectNodes("table");
+
+            foreach (XmlNode node in xlist)
+            {
+                m_TableList.Add(new Table(node));
+            }
+
+            #endregion
+
+            #region add views
+
+            xCollectionNode = xNode.SelectSingleNode("views");
+            xlist = xCollectionNode.SelectNodes("view");
+
+            foreach (XmlNode node in xlist)
+            {
+                m_ViewList.Add(new View(node));
+            }
+
+            #endregion
+
+            #region add functions
+
+            xCollectionNode = xNode.SelectSingleNode("functions");
+            xlist = xCollectionNode.SelectNodes("function");
+
+            foreach (XmlNode node in xlist)
+            {
+                m_FunctionList.Add(new Function(node));
+            }
+
+            #endregion
+
+            #region add procedures
+
+            xCollectionNode = xNode.SelectSingleNode("procedures");
+            xlist = xCollectionNode.SelectNodes("procedure");
+
+            foreach (XmlNode node in xlist)
+            {
+                m_ProcedureList.Add(new Procedure(node));
+            }
+
+            #endregion
+
+            SchemaList.Add(schema);
+        }
+
+        public void BuildView(string schema, XmlElement table)
         {
 
         }
 
-        public void LoadTable(string schema, XmlElement table)
+        public void BuildFunction(string schema, XmlElement table)
         {
 
         }
 
-        public void LoadView(string schema, XmlElement table)
-        {
-
-        }
-
-        public void LoadFunction(string schema, XmlElement table)
-        {
-
-        }
-
-        public void LoadProcedure(string schema, XmlElement table)
+        public void BuildProcedure(string schema, XmlElement table)
         {
 
         }
@@ -507,9 +571,10 @@ namespace TotalSafety.DataTierGenerator.Common
 
         private void OnChanged()
         {
+            m_Dirty = true;
+
             if (!m_SupressEvents)
             {
-                m_Dirty = true;
                 if (Changed != null)
                 {
                     Changed(this, new ChangedEventArgs<Project>(this, ChangeType.Added));

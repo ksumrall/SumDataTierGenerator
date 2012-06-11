@@ -42,7 +42,7 @@ namespace TotalSafety.DataTierGenerator.Common
         private string m_Schema;
         private string m_Name;
         private string m_Description;
-        private ColumnList m_ColumnList;
+        private ParameterList m_ParameterList;
 
         private string m_ClassName;
 
@@ -57,7 +57,7 @@ namespace TotalSafety.DataTierGenerator.Common
         /// </summary>
         public Procedure()
         {
-            m_ColumnList = new ColumnList();
+            m_ParameterList = new ParameterList();
 
             m_Schema = "";
             m_Name = "";
@@ -96,11 +96,11 @@ namespace TotalSafety.DataTierGenerator.Common
         /// <summary>
         /// Contains the list of Column instances that define the view.
         /// </summary>
-        public ColumnList Columns
+        public ParameterList Parameters
         {
             get
             {
-                return m_ColumnList;
+                return m_ParameterList;
             }
         }
 
@@ -192,7 +192,7 @@ namespace TotalSafety.DataTierGenerator.Common
 
         #region comparison implementation
 
-        public static int CompareByProgrammaticAlias(View obj1, View obj2)
+        public static int CompareByProgrammaticAlias(Procedure obj1, Procedure obj2)
         {
             return obj1.Name.CompareTo(obj2.Name);
         }

@@ -146,30 +146,7 @@ namespace TotalSafety.DataTierGenerator
                 m_SchemaExtractor.ConnectionString = m_Project.ConnectionString;
                 XmlDocument xDoc = m_SchemaExtractor.GetSchemaDefinition();
 
-                //List<string> noBuildTables = new List<string>();
-                //foreach (Table t in m_Project.TableList)
-                //{
-                //    if (!t.BuildClass)
-                //    {
-                //        noBuildTables.Add(t.Name);
-                //    }
-                //}
-
-                //m_Project.TableList.Clear();
-                //m_Project.TableList.AddRange(m_SchemaGenerator.TableList);
-                //foreach (Table t in m_Project.TableList)
-                //{
-                //    if (noBuildTables.Contains(t.Name))
-                //    {
-                //        t.BuildClass = false;
-                //    }
-                //    else
-                //    {
-                //        t.BuildClass = true;
-                //    }
-                //}
-
-                LoadTree();
+                m_Project.LoadSchemasFromXml(xDoc);
             }
         }
 
@@ -237,11 +214,6 @@ namespace TotalSafety.DataTierGenerator
 
         #endregion
 
-        //void m_Project_Changed(object sender, ChangedEventArgs<Project> e)
-        //{
-        //    UpdateApplicationFeaturesBasedOnRecentProjectChanges();
-        //}
-
         void m_ConfigurationViewControl_ConfigurationChanged(object sender, Controls.ConfigurationView.ChangedEventArgs e)
         {
             m_Project.DbProviderType = e.DbProvider;
@@ -297,26 +269,31 @@ namespace TotalSafety.DataTierGenerator
 
         }
 
-        private void LoadTree()
+        private void LoadTree(Project project)
         {
+            TreeNode schemaCollectionTreeNode;
+
             // Begin
             m_GuiProjectTree.Sorted = false;
             m_GuiProjectTree.BeginUpdate();
             m_GuiProjectTree.Nodes.Clear();
 
             // Add Root
-            m_GuiProjectTree.Nodes.Add("Root", m_Project.ProjectName).Tag = TreeNodeTypes.Project;
+            m_GuiProjectTree.Nodes.Add("Root", project.ProjectName).Tag = TreeNodeTypes.Project;
 
-            // Add Configuration
-            //m_GuiProjectTree.Nodes["Root"].Nodes.Add("Configuration", "Configuration").Tag = TreeNodeTypes.Configuration;
-
-            // Add Schema
-            m_GuiProjectTree.Nodes["Root"].Nodes.Add("Schemas", "Schemas").Tag = TreeNodeTypes.Schema;
+            // Add Schemas
+            schemaCollectionTreeNode = m_GuiProjectTree.Nodes["Root"].Nodes.Add("Schemas", "Schemas");
+            schemaCollectionTreeNode.Tag = TreeNodeTypes.Schema;
+            foreach (Schema schema in project.SchemaList)
+            {
+                //AddTableNode(m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes["Tables"], table);
+                AddSchemaNode(schemaCollectionTreeNode, schema);
+            }
 
             // Add Schema Tables
             //m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes.Add("Tables", "Tables").Tag = TreeNodeTypes.Tables;
             m_GuiProjectTree.Nodes["Root"].Nodes.Add("Tables", "Tables").Tag = TreeNodeTypes.Tables;
-            foreach (Table table in m_Project.TableList)
+            foreach (Table table in project.TableList)
             {
                 //AddTableNode(m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes["Tables"], table);
                 AddTableNode(m_GuiProjectTree.Nodes["Root"].Nodes["Tables"], table);
@@ -325,7 +302,7 @@ namespace TotalSafety.DataTierGenerator
             // Add Schema Views
             //m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes.Add("Views", "Views").Tag = TreeNodeTypes.Views;
             m_GuiProjectTree.Nodes["Root"].Nodes.Add("Views", "Views").Tag = TreeNodeTypes.Views;
-            foreach (Common.View view in m_Project.ViewList)
+            foreach (Common.View view in project.ViewList)
             {
                 //AddViewNode(m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes["Views"], view);
                 AddViewNode(m_GuiProjectTree.Nodes["Root"].Nodes["Views"], view);
@@ -334,7 +311,7 @@ namespace TotalSafety.DataTierGenerator
             // Add Schema Stored Procedures
             //m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes.Add("Procedures", "Procedures").Tag = TreeNodeTypes.Procedures;
             m_GuiProjectTree.Nodes["Root"].Nodes.Add("Procedures", "Procedures").Tag = TreeNodeTypes.Procedures;
-            foreach (Procedure procedure in m_Project.ProcedureList)
+            foreach (Procedure procedure in project.ProcedureList)
             {
                 //AddProcedureNode(m_GuiProjectTree.Nodes["Root"].Nodes["Schema"].Nodes["rocedures"], procedure);
                 AddProcedureNode(m_GuiProjectTree.Nodes["Root"].Nodes["rocedures"], procedure);
@@ -347,9 +324,58 @@ namespace TotalSafety.DataTierGenerator
 
         }
 
+        private void AddSchemaNode(TreeNode schemaCollectionNode, Schema schema)
+        {
+            TreeNode node;
+
+            node = new TreeNode(schema.Name);
+            node.Tag = TreeNodeTypes.Schema;
+
+            #region add tables
+
+            schema.Tables.Sort(new Comparison<Table>(Table.CompareByProgrammaticAlias));
+            foreach (Table t in schema.Tables)
+            {
+                AddTableNode(node, t);
+            }
+
+            #endregion
+
+            #region add views
+
+            schema.Views.Sort(new Comparison<Common.View>(Common.View.CompareByProgrammaticAlias));
+            foreach (Common.View v in schema.Views)
+            {
+                AddViewNode(node, v);
+            }
+
+            #endregion
+
+            #region add functions
+
+            schema.Functions.Sort(new Comparison<Function>(Function.CompareByProgrammaticAlias));
+            foreach (Function f in schema.Functions)
+            {
+                AddFunctionNode(node, f);
+            }
+
+            #endregion
+
+            #region add procedures
+
+            schema.Procedures.Sort(new Comparison<Procedure>(Procedure.CompareByProgrammaticAlias));
+            foreach (Procedure p in schema.Procedures)
+            {
+                AddProcedureNode(node, p);
+            }
+
+            #endregion
+
+            schemaCollectionNode.Nodes.Add(node);
+        }
+
         private void AddTableNode(TreeNode treeNnode, Table table)
         {
-
             TreeNode node;
 
             node = new TreeNode(table.Name);
@@ -362,12 +388,10 @@ namespace TotalSafety.DataTierGenerator
             }
 
             treeNnode.Nodes.Add(node);
-
         }
 
         private void AddViewNode(TreeNode treeNode, Common.View view)
         {
-
             TreeNode node;
 
             node = new TreeNode(view.Name);
@@ -379,11 +403,36 @@ namespace TotalSafety.DataTierGenerator
             }
 
             treeNode.Nodes.Add(node);
-
         }
 
-        private void AddProcedureNode(TreeNode node, Procedure procedure)
+        private void AddFunctionNode(TreeNode treeNode, Function function)
         {
+            TreeNode node;
+
+            node = new TreeNode(function.Name);
+            node.Tag = TreeNodeTypes.Function;
+
+            foreach (Parameter parameter in function.Parameters)
+            {
+                AddParameterNode(node, parameter);
+            }
+
+            treeNode.Nodes.Add(node);
+        }
+
+        private void AddProcedureNode(TreeNode treeNode, Procedure procedure)
+        {
+            TreeNode node;
+
+            node = new TreeNode(procedure.Name);
+            node.Tag = TreeNodeTypes.Function;
+
+            foreach (Parameter parameter in procedure.Parameters)
+            {
+                AddParameterNode(node, parameter);
+            }
+
+            treeNode.Nodes.Add(node);
         }
 
         private void AddColumnNode(TreeNode treeNode, Column column)
@@ -393,6 +442,17 @@ namespace TotalSafety.DataTierGenerator
 
             node = new TreeNode(column.PropertyName);
             node.Tag = TreeNodeTypes.Column;
+
+            treeNode.Nodes.Add(node);
+        }
+
+        private void AddParameterNode(TreeNode treeNode, Parameter parameter)
+        {
+
+            TreeNode node;
+
+            node = new TreeNode(parameter.PropertyName);
+            node.Tag = TreeNodeTypes.Parameter;
 
             treeNode.Nodes.Add(node);
         }
@@ -467,7 +527,7 @@ namespace TotalSafety.DataTierGenerator
             if (rkey.GetValue("FileName") != null)
             {
                 string filePathName = (string)rkey.GetValue("FileName");
-                LoadProjectFile(filePathName);
+                LoadProject(Project.Load(filePathName));
 
                 m_ProjectPathName = System.IO.Path.GetFullPath(filePathName);
             }
@@ -499,20 +559,6 @@ namespace TotalSafety.DataTierGenerator
 
             //if ( rkey.GetValue( "DataLayerOutputDirectory" ) != null )
             //    m_MiscSettingsModel.ProjectPathname = (string)rkey.GetValue("DataLayerOutputDirectory");
-
-        }
-
-        private XmlDocument GenerateProjectXmlDocument()
-        {
-
-            // create the xml file
-            XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.AppendChild(xmlDoc.CreateElement("Root"));
-
-            SaveConnectionProperties(xmlDoc.DocumentElement);
-            SaveMiscProperties(xmlDoc.DocumentElement);
-
-            return xmlDoc;
 
         }
 
@@ -582,25 +628,18 @@ namespace TotalSafety.DataTierGenerator
 
             if (openFileDialog1.ShowDialog(this) == DialogResult.OK)
             {
-
-                LoadProjectFile(openFileDialog1.FileName);
+                LoadProject(Project.Load(openFileDialog1.FileName));
 
                 m_ProjectPathName = System.IO.Path.GetFullPath(openFileDialog1.FileName);
-
             }
 
-        }
-
-        private void LoadProjectFile(string filePathName)
-        {
-            LoadProject(Project.Load(filePathName));
         }
 
         private void LoadProject(Project project)
         {
             m_Project = project;
             //m_Project.Changed += new EventHandler<ChangedEventArgs<Project>>(m_Project_Changed);
-            LoadTree();
+            LoadTree(m_Project);
 
             if (m_Project.TableList.Count > 0 || m_Project.ViewList.Count > 0 || m_Project.ProcedureList.Count > 0)
             {
@@ -612,45 +651,12 @@ namespace TotalSafety.DataTierGenerator
             }
         }
 
-        private void LoadTableFromNode(XmlNode xmlNode)
-        {
-
-            Table table;
-
-            table = new Table(xmlNode);
-
-            m_TableList.Add(table);
-
-        }
-
-        private void LoadView()
-        {
-        }
-
-        private void LoadStoredProcedure()
-        {
-        }
-
         #endregion
 
         #region save project to file implementation
 
         private void SaveAs()
         {
-
-            //if (m_ProjectXmlDoc == null){
-            //    MessageBox.Show("Project must be generated before saving.");
-            //}
-
-            /*m_ProjectXmlDoc = GenerateProjectXmlDocument ();
-
-            if (m_ProjectPathName == "") {
-                saveFileDialog1.InitialDirectory = Environment.CurrentDirectory;
-            }
-            else {
-                saveFileDialog1.InitialDirectory =
-                    System.IO.Path.GetFullPath (m_ProjectPathName);
-            }*/
 
             saveFileDialog1.OverwritePrompt = true;
             saveFileDialog1.DefaultExt = "dtgproj";
@@ -666,133 +672,6 @@ namespace TotalSafety.DataTierGenerator
         private void SaveProjectFile(string filePathName)
         {
             m_Project.Save(filePathName);
-        }
-
-        private void SaveConnectionProperties(XmlElement xmlElement)
-        {
-
-            XmlDocument xmlDoc;
-            XmlElement connectionElement;
-            XmlElement propertyElement;
-
-            XmlSerializer serializer = new XmlSerializer(typeof(SqlConnectionSettingsModel));
-
-            //serializer.Serialize(writer, m_SqlConnectionSettingsModel);
-            //xmlDoc = xmlElement.OwnerDocument;
-
-            //connectionElement = xmlDoc.CreateElement("ConnectionProperties");
-
-            //propertyElement = xmlDoc.CreateElement("Server");
-            //propertyElement.InnerText = m_SqlConnectionSettingsModel.ServerName;
-            //connectionElement.AppendChild(propertyElement);
-
-            //propertyElement = xmlDoc.CreateElement("Database");
-            //propertyElement.InnerText = m_SqlConnectionSettingsModel.DatabaseName;
-            //connectionElement.AppendChild(propertyElement);
-
-            //propertyElement = xmlDoc.CreateElement("AuthenticationType");
-            //propertyElement.InnerText = m_SqlConnectionSettingsModel.SqlServerAuthenticationType.ToString();
-            //connectionElement.AppendChild(propertyElement);
-
-            //if (m_SqlConnectionSettingsModel.SqlServerAuthenticationType == SqlServerAuthenticationTypeEnumeration.SqlServer) {
-
-            //    propertyElement = xmlDoc.CreateElement("UserId");
-            //    propertyElement.InnerText = m_SqlConnectionSettingsModel.UserId;
-            //    connectionElement.AppendChild(propertyElement);
-
-            //    propertyElement = xmlDoc.CreateElement("Password");
-            //    propertyElement.InnerText = m_SqlConnectionSettingsModel.Password;
-            //    connectionElement.AppendChild(propertyElement);
-
-            //}
-
-            //xmlElement.AppendChild(connectionElement);
-
-        }
-
-        private void SaveMiscProperties(XmlElement xmlParentElement)
-        {
-
-            XmlDocument xmlDoc;
-            XmlElement xmlElement;
-
-            xmlDoc = xmlParentElement.OwnerDocument;
-
-            xmlElement = xmlDoc.CreateElement("Namespace");
-            xmlElement.InnerText = m_MiscSettingsModel.Namespace;
-            xmlDoc.DocumentElement.AppendChild(xmlElement);
-
-            xmlElement = xmlDoc.CreateElement("GeneratedOutputPath");
-            xmlElement.InnerText = m_MiscSettingsModel.GeneratedDataProjectPath;
-
-            xmlParentElement.AppendChild(xmlElement);
-
-        }
-
-        private void SaveTables(XmlElement xmlParentElement)
-        {
-
-            XmlDocument xmlDoc;
-            XmlElement tableGroupElement;
-            XmlElement xmlElement;
-
-            xmlDoc = xmlParentElement.OwnerDocument;
-
-            tableGroupElement = xmlDoc.CreateElement("Tables");
-
-            foreach (Table table in m_TableList)
-            {
-                xmlElement = xmlDoc.CreateElement(table.Name);
-
-                SaveColumns(xmlElement, table);
-
-                tableGroupElement.AppendChild(xmlElement);
-            }
-
-            xmlParentElement.AppendChild(tableGroupElement);
-
-        }
-
-        private void SaveColumns(XmlElement xmlParentElement, Table table)
-        {
-
-            XmlDocument xmlDoc;
-            XmlElement columnGroupElement;
-            XmlElement xmlElement;
-
-            xmlDoc = xmlParentElement.OwnerDocument;
-
-            columnGroupElement = xmlDoc.CreateElement("Columns");
-
-            foreach (Column column in table.Columns)
-            {
-                xmlElement = xmlDoc.CreateElement(column.PropertyName);
-
-                columnGroupElement.AppendChild(xmlElement);
-            }
-
-            xmlParentElement.AppendChild(columnGroupElement);
-
-        }
-
-        private void SaveViews(XmlElement xmlParentElement)
-        {
-
-            XmlDocument xmlDoc;
-            XmlElement xmlElement;
-
-            xmlDoc = xmlParentElement.OwnerDocument;
-
-        }
-
-        private void SaveStoredProcedures(XmlElement xmlParentElement)
-        {
-
-            XmlDocument xmlDoc;
-            XmlElement xmlElement;
-
-            xmlDoc = xmlParentElement.OwnerDocument;
-
         }
 
         #endregion

@@ -68,7 +68,7 @@ namespace TotalSafety.DataTierGenerator.SchemaExtractor
             ISchemaExtractor se = null;
             XmlDocument xDoc = null;
 
-            if (m_ProviderType == "System.Data.SqlClient")
+            if (m_ProviderType == "Microsoft SQL Server (SqlClient)")
             {
                 se = new SqlServerSchemaExtractor(m_ConnectionString);
             }
