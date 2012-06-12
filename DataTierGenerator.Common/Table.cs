@@ -38,8 +38,7 @@ namespace TotalSafety.DataTierGenerator.Common
     /// <summary>
     /// Class that stores information for tables in a database.
     /// </summary>
-    [XmlRoot(Namespace = "urn:dtg-project")]
-    public class Table: ProjectSchema.Table
+    public partial class Table
     {
 
         #region private and protected member variables
@@ -131,7 +130,7 @@ namespace TotalSafety.DataTierGenerator.Common
 
             XmlNodeList list = tableNode.SelectNodes(".//columns//column");
 
-            List<ProjectSchema.Column> columnList = new List<ProjectSchema.Column>();
+            List<Column> columnList = new List<Column>();
             foreach (XmlNode node in list)
             {
                 columnList.Add(new Column(node));

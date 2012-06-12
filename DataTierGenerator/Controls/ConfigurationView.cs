@@ -62,10 +62,10 @@ namespace TotalSafety.DataTierGenerator.Controls
         {
             InitializeComponent();
 
-            m_Original_DbProvider = m_GuiDbProviderTextBox.Text = project.DbProviderType;
-            m_Original_ConnectionString = m_GuiConnectionStringTextBox.Text = project.ConnectionString;
-            m_Original_Namespace = m_GuiNamespaceTextBox.Text = project.Namespace;
-            m_Original_OutputPath = m_GuiOutputPathTextBox.Text = project.OutputPath;
+            m_Original_DbProvider = m_GuiDbProviderTextBox.Text = project.Configuration.DbConnectionDetails.DbProviderType;
+            m_Original_ConnectionString = m_GuiConnectionStringTextBox.Text = project.Configuration.DbConnectionDetails.ConnectionString;
+            m_Original_Namespace = m_GuiNamespaceTextBox.Text = project.Configuration.CodeGenerationDetails.Namespace;
+            m_Original_OutputPath = m_GuiOutputPathTextBox.Text = project.Configuration.CodeGenerationDetails.OutputPath;
         }
 
         #region events

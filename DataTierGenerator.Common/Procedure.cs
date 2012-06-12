@@ -33,8 +33,7 @@ namespace TotalSafety.DataTierGenerator.Common
 
     }
 
-    [XmlRoot(Namespace = "urn:dtg-project")]
-    public class Procedure : ProjectSchema.Procedure
+    public partial class Procedure
     {
 
         #region private and protected member variables
@@ -93,7 +92,7 @@ namespace TotalSafety.DataTierGenerator.Common
 
             XmlNodeList list = procedureNode.SelectNodes(".//parameters//parameter");
 
-            List<ProjectSchema.Parameter> paramList = new List<ProjectSchema.Parameter>();
+            List<Parameter> paramList = new List<Parameter>();
             foreach (XmlNode node in list)
             {
                 paramList.Add(new Parameter(node));

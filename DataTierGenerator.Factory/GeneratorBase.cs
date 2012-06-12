@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -169,7 +170,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
         public string COLUMN_COUNT {
             get {
                 if ( m_COLUMN_COUNT == "" ) {
-                    m_COLUMN_COUNT = Table.Columns.Count.ToString();
+                    m_COLUMN_COUNT = Table.Columns.Length.ToString();
                 }
 
                 return m_COLUMN_COUNT;
@@ -182,8 +183,9 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
         public string PK_COLUMN_COUNT {
             get {
                 if ( m_PK_COLUMN_COUNT == "" ) {
-                    if ( m_Table.PrimaryKey != null && m_Table.PrimaryKey.Columns.Count > 0 ) {
-                        m_PK_COLUMN_COUNT = m_Table.PrimaryKey.Columns.Count.ToString();
+                    if (m_Table.PrimaryKey != null && m_Table.PrimaryKey.Columns.Length > 0)
+                    {
+                        m_PK_COLUMN_COUNT = m_Table.PrimaryKey.Columns.Length.ToString();
                     }
                 }
 
@@ -198,9 +200,10 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             get {
                 if ( m_PK_ARGUMENT_LIST == "" ) {
 
-                    if ( m_Table.PrimaryKey != null && m_Table.PrimaryKey.Columns.Count > 0 ) {
-                        List<Column> pkList = m_Table.PrimaryKey.Columns;
-                        int columnCount = m_Table.PrimaryKey.Columns.Count;
+                    if (m_Table.PrimaryKey != null && m_Table.PrimaryKey.Columns.Length > 0)
+                    {
+                        Column[] pkList = m_Table.PrimaryKey.Columns;
+                        int columnCount = m_Table.PrimaryKey.Columns.Length;
 
                         for ( int index = 0; index < columnCount; index++ ) {
                             m_PK_ARGUMENT_LIST += Utility.FormatCamel( pkList[index].PropertyName );
@@ -222,9 +225,10 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             get {
                 if ( m_PK_PARAMETER_LIST == "" ) {
 
-                    if ( m_Table.PrimaryKey != null && m_Table.PrimaryKey.Columns.Count > 0 ) {
-                        List<Column> pkList = m_Table.PrimaryKey.Columns;
-                        int columnCount = m_Table.PrimaryKey.Columns.Count;
+                    if (m_Table.PrimaryKey != null && m_Table.PrimaryKey.Columns.Length > 0)
+                    {
+                        Column[] pkList = m_Table.PrimaryKey.Columns;
+                        int columnCount = m_Table.PrimaryKey.Columns.Length;
 
                         for ( int index = 0; index < columnCount; index++ ) {
                             m_PK_PARAMETER_LIST += pkList[index].LanguageType + " "
@@ -244,9 +248,10 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             get {
                 if( string.IsNullOrEmpty(m_PK_PARAMETER_TYPE_LIST) ) {
 
-                    if( m_Table.PrimaryKey != null && m_Table.PrimaryKey.Columns.Count > 0 ) {
-                        List<Column> pkList = m_Table.PrimaryKey.Columns;
-                        int columnCount = m_Table.PrimaryKey.Columns.Count;
+                    if (m_Table.PrimaryKey != null && m_Table.PrimaryKey.Columns.Length > 0)
+                    {
+                        Column[] pkList = m_Table.PrimaryKey.Columns;
+                        int columnCount = m_Table.PrimaryKey.Columns.Length;
 
                         for( int index = 0; index < columnCount; index++ ) {
                             m_PK_PARAMETER_TYPE_LIST += pkList[index].LanguageType;
@@ -265,10 +270,11 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             get {
                 if ( m_PK_WHERE_FILTER == "" ) {
 
-                    if ( m_Table.PrimaryKey != null && m_Table.PrimaryKey.Columns.Count > 0 ) {
+                    if (m_Table.PrimaryKey != null && m_Table.PrimaryKey.Columns.Length > 0)
+                    {
 
-                        List<Column> pkList = m_Table.PrimaryKey.Columns;
-                        int columnCount = m_Table.PrimaryKey.Columns.Count;
+                        Column[] pkList = m_Table.PrimaryKey.Columns;
+                        int columnCount = m_Table.PrimaryKey.Columns.Length;
 
                         for ( int index = 0; index < columnCount; index++ ) {
                             m_PK_WHERE_FILTER += "[" + pkList[index].Name + "] = @"
@@ -434,7 +440,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             newFieldDefinition.Append( "\", \"" );
             newFieldDefinition.Append( column.Name );
             newFieldDefinition.Append( "\", \"" );
-            newFieldDefinition.Append( column.Type );
+            newFieldDefinition.Append( column.DbType );
             newFieldDefinition.Append( "\", " );
             if ( column.Length.Length == 0 ) {
                 newFieldDefinition.Append( "0" );
@@ -454,7 +460,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
                 newFieldDefinition.Append( column.Precision );
             }
             newFieldDefinition.Append( ", " );
-            if ( table.PrimaryKey != null && table.PrimaryKey.Columns.Contains( column ) ) {
+            if ( table.PrimaryKey != null && ((IList)table.PrimaryKey.Columns).Contains( column ) ) {
                 newFieldDefinition.Append( "true" );
             } else {
                 newFieldDefinition.Append( "false" );
@@ -475,7 +481,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             if ( column.IsComputed ) {
                 isReadOnly = "true";
             }
-            if ( column.IsRowGuidCol && column.DefaultValue != null ) {
+            if ( column.IsRowGuid && column.DefaultValue != null ) {
                 isReadOnly = "true";
             }
 
@@ -601,8 +607,8 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
         protected string Get_SELECT_COLUMN_LIST_ALL() {
 
             StringBuilder columnList = new StringBuilder();
-            List<Column> columns = m_Table.Columns;
-            int columnCount = m_Table.Columns.Count;
+            Column[] columns = m_Table.Columns;
+            int columnCount = m_Table.Columns.Length;
 
             for ( int index = 0; index < columnCount; index++ ) {
                 columnList.Append( "[" );

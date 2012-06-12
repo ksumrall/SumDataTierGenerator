@@ -37,8 +37,7 @@ namespace TotalSafety.DataTierGenerator.Common
     /// <summary>
     /// Class that stores information for columns in a database table.
     /// </summary>
-    [XmlRoot(Namespace = "urn:dtg-project")]
-    public class Parameter : ProjectSchema.Parameter
+    public partial class Parameter
     {
 
         #region private and protected member variables
@@ -70,22 +69,22 @@ namespace TotalSafety.DataTierGenerator.Common
             /*
                 <parameter name="@Beginning_Date" id="1" data_type="datetime" max_length="8" precision="23" scale="3" is_output="False" />
              * * */
-            m_Name = parameterNode.Attributes["name"].Value;
-            m_Description = parameterNode.Attributes["description"].Value;
-            m_Type = parameterNode.Attributes["data_type"].Value;
+            Name = parameterNode.Attributes["name"].Value;
+            //Description = parameterNode.Attributes["description"].Value;
+            DbType = parameterNode.Attributes["data_type"].Value;
             //m_ClrType = columnNode.Attributes[""].Value;
             //m_LanguageType = columnNode.Attributes[""].Value;
             //m_EnumeratedTypeName = columnNode.Attributes[""].Value;
-            m_Length = parameterNode.Attributes["max_length"].Value;
-            m_Precision = parameterNode.Attributes["precision"].Value;
-            m_Scale = parameterNode.Attributes["scale"].Value;
+            Length = parameterNode.Attributes["max_length"].Value;
+            Precision = parameterNode.Attributes["precision"].Value;
+            Scale = parameterNode.Attributes["scale"].Value;
 
             if (parameterNode.Attributes["default_definition"] != null)
             {
-                m_DefaultValue = parameterNode.Attributes["default_definition"].Value;
+                DefaultValue = parameterNode.Attributes["default_definition"].Value;
             }
 
-            m_PropertyName = m_Name;
+            PropertyName = Name;
             //m_PropertyName = System.Text.RegularExpressions.Regex.Replace(m_Name, "\\W", "_");
         }
 

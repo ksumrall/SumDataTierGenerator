@@ -33,8 +33,7 @@ namespace TotalSafety.DataTierGenerator.Common
 
     }
 
-    [XmlRoot(Namespace = "urn:dtg-project")]
-    public class View : ProjectSchema.View
+    public partial class View
     {
 
         #region private and protected member variables
@@ -92,7 +91,7 @@ namespace TotalSafety.DataTierGenerator.Common
 
             XmlNodeList list = viewNode.SelectNodes(".//columns//column");
 
-            List<ProjectSchema.Column> columnList = new List<ProjectSchema.Column>();
+            List<Column> columnList = new List<Column>();
             foreach (XmlNode node in list)
             {
                 columnList.Add(new Column(node));

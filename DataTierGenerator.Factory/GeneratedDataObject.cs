@@ -89,7 +89,8 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             AppendLine( "internal bool m_IsDirty;" );
             AppendLine();
             AppendLine( "internal FieldValue[] m_FieldValues = new FieldValue[" + base.COLUMN_COUNT + "];" );
-            if( m_Table.PrimaryKey != null && m_Table.PrimaryKey.Columns.Count > 0 ) {
+            if (m_Table.PrimaryKey != null && m_Table.PrimaryKey.Columns.Length > 0)
+            {
                 AppendLine( "internal FieldValue[] m_PrimaryKeyFieldValues = new FieldValue[" + base.PK_COLUMN_COUNT + "];" );
             } else {
                 AppendLine( "internal FieldValue[] m_PrimaryKeyFieldValues = new FieldValue[0];" );
@@ -122,10 +123,11 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
                 AppendEndLine( "] );" );
             }
 
-            if( m_Table.PrimaryKey != null && m_Table.PrimaryKey.Columns.Count > 0 ) {
+            if (m_Table.PrimaryKey != null && m_Table.PrimaryKey.Columns.Length > 0)
+            {
                 AppendLine();
                 // build the primary key field values
-                columnCount = m_Table.PrimaryKey.Columns.Count;
+                columnCount = m_Table.PrimaryKey.Columns.Length;
                 for( int index = 0; index < columnCount; index++ ) {
                     AppendStartLine( "m_PrimaryKeyFieldValues[" );
                     Append( index.ToString() );

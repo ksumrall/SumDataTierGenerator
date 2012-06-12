@@ -37,20 +37,10 @@ namespace TotalSafety.DataTierGenerator.Common
     /// <summary>
     /// Class that stores information for tables in a database.
     /// </summary>
-    public class Schema : ProjectSchema.Schema
+    public partial class Schema
     {
 
         #region private and protected member variables
-
-        //private string m_DatabaseName;
-        //private string m_Schema;
-        //private string m_Name;
-        //private string m_Description;
-
-        //private TableList m_TableList;
-        //private ViewList m_ViewList;
-        //private FunctionList m_FunctionList;
-        //private ProcedureList m_ProcedureList;
 
         private string m_ClassName;
 
@@ -65,16 +55,8 @@ namespace TotalSafety.DataTierGenerator.Common
         /// </summary>
         public Schema()
         {
-            Tables = new ProjectSchema.Table[0];
-            Views = new ProjectSchema.View[0];
-
-            //m_TableList = new TableList();
-            //m_ViewList = new ViewList();
-            //m_FunctionList = new FunctionList();
-            //m_ProcedureList = new ProcedureList();
-
-            //m_Name = "";
-            //m_Description = "";
+            Tables = new Table[0];
+            Views = new View[0];
 
             m_ClassName = "";
         }
@@ -84,22 +66,6 @@ namespace TotalSafety.DataTierGenerator.Common
 
             XmlNode node;
             Name = tableNode.Attributes["name"].Value;
-
-            //node = tableNode.SelectSingleNode("./DatabaseName");
-            //if (node != null)
-            //    m_DatabaseName = node.Value;
-
-            //node = tableNode.SelectSingleNode("./Schema");
-            //if (node != null)
-            //    m_Schema = node.Value;
-
-            //node = tableNode.SelectSingleNode("./Name");
-            //if (node != null)
-            //    m_Name = node.Value;
-
-            //node = tableNode.SelectSingleNode("./Description");
-            //if (node != null)
-            //    m_Description = node.Value;
 
         }
 

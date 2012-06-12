@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema id="project" targetNamespace="urn:dtg-project" elementFormDefault="qualified" xmlns="urn:dtg-project" xmlns:mstns="urn:dtg-project" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema id="project" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xs:element name="Project">
         <xs:complexType>
             <xs:sequence minOccurs="0" maxOccurs="1">
@@ -20,14 +20,14 @@
     </xs:element>
     <xs:element name="CodeGenerationDetails">
         <xs:complexType>
-            <xs:attribute name="projectNamespace" type="xs:string" use="required" />
-            <xs:attribute name="outputPath" type="xs:string" use="required" />
+            <xs:attribute name="Namespace" type="xs:string" use="required" />
+            <xs:attribute name="OutputPath" type="xs:string" use="required" />
         </xs:complexType>
     </xs:element>
     <xs:element name="DbConnectionDetails">
         <xs:complexType>
-            <xs:attribute name="dbProviderType" type="xs:string" use="required" />
-            <xs:attribute name="connectionString" type="xs:string" use="required" />
+            <xs:attribute name="DbProviderType" type="xs:string" use="required" />
+            <xs:attribute name="ConnectionString" type="xs:string" use="required" />
         </xs:complexType>
     </xs:element>
     <xs:element name="Schemas">
@@ -81,20 +81,16 @@
             <xs:sequence minOccurs="0" maxOccurs="1">
                 <xs:element name="PrimaryKey" minOccurs="0" maxOccurs="1">
                     <xs:complexType>
-                        <xs:sequence minOccurs="1" maxOccurs="unbounded">
-                            <xs:element name="ColumnRef">
-                                <xs:complexType>
-                                    <xs:attribute name="ref" type="xs:string" use="required" />
-                                </xs:complexType>
-                            </xs:element>
+                        <xs:sequence minOccurs="1" maxOccurs="1">
+                            <xs:element ref="Columns" minOccurs="1" maxOccurs="1" />
                         </xs:sequence>
-                        <xs:attribute name="name" type="xs:string" use="required" />
+                        <xs:attribute name="Name" type="xs:string" use="required" />
                     </xs:complexType>
                 </xs:element>
                 <xs:element ref="Columns" minOccurs="1" maxOccurs="1" />
             </xs:sequence>
             <xs:attribute name="Name" type="xs:string" use="required" />
-            <xs:attribute name="DbName" type="xs:string" use="required" />
+            <xs:attribute name="DatabaseName" type="xs:string" use="required" />
             <xs:attribute name="Description" type="xs:string" use="required" />
             <xs:attribute name="Schema" type="xs:string" use="required" />
             <xs:attribute name="Build" type="xs:boolean" use="required" />
@@ -106,7 +102,7 @@
                 <xs:element ref="Columns" minOccurs="1" maxOccurs="1" />
             </xs:sequence>
             <xs:attribute name="Name" type="xs:string" use="required" />
-            <xs:attribute name="DbName" type="xs:string" use="required" />
+            <xs:attribute name="DatabaseName" type="xs:string" use="required" />
             <xs:attribute name="Description" type="xs:string" use="required" />
             <xs:attribute name="Schema" type="xs:string" use="required" />
             <xs:attribute name="Build" type="xs:boolean" use="required" />
@@ -151,8 +147,8 @@
             <xs:attribute name="DbType" type="xs:string" use="required" />
             <xs:attribute name="LanguageType" type="xs:string" use="required" />
             <xs:attribute name="Length" type="xs:string" use="required" />
-            <xs:attribute name="Scale" type="xs:string" use="required" />
             <xs:attribute name="Precision" type="xs:string" use="required" />
+            <xs:attribute name="Scale" type="xs:string" use="required" />
             <xs:attribute name="DefaultValue" type="xs:string" use="required" />
             <xs:attribute name="EnumeratedTypeName" type="xs:string" use="required" />
             <xs:attribute name="IsNullable" type="xs:boolean" use="required" />
@@ -175,9 +171,13 @@
             <xs:attribute name="PropertyName" type="xs:string" use="required" />
             <xs:attribute name="ClrType" type="xs:string" use="required" />
             <xs:attribute name="DbType" type="xs:string" use="required" />
+            <xs:attribute name="Length" type="xs:string" use="required" />
+            <xs:attribute name="Precision" type="xs:string" use="required" />
+            <xs:attribute name="Scale" type="xs:string" use="required" />
             <xs:attribute name="DefaultValue" type="xs:string" use="required" />
             <xs:attribute name="EnumeratedTypeName" type="xs:string" use="required" />
             <xs:attribute name="IsNullable" type="xs:boolean" use="required" />
+            <xs:attribute name="Description" type="xs:string" use="required" />
         </xs:complexType>
     </xs:element>
 </xs:schema>

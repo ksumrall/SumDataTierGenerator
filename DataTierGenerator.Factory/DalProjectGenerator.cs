@@ -35,17 +35,17 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
 
         public DalProjectGenerator(Project project)
         {
-            m_DalNamespace = project.Namespace;
-            m_DalProjectDirectory = project.OutputPath;
+            m_DalNamespace = project.Configuration.CodeGenerationDetails.Namespace;
+            m_DalProjectDirectory = project.Configuration.CodeGenerationDetails.OutputPath;
 
             // add tables
-            foreach (Table table in project.TableList)
-            {
-                if (table.BuildClass)
-                {
-                    m_TableList.Add(table);
-                }
-            }
+            //foreach (Table table in project.TableList)
+            //{
+            //    if (table.BuildClass)
+            //    {
+            //        m_TableList.Add(table);
+            //    }
+            //}
 
             // add views
 

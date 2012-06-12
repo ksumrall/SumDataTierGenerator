@@ -87,14 +87,8 @@ namespace TotalSafety.DataTierGenerator
 
             LoadPreviousValues();
 
-            //if (m_SqlConnectionSettingsModel.DatabaseName != "")
-            //{
-            //    GenerateProject();
-            //}
-
             UpdateTitle();
 
-            //LoadProject(Project.Load("..\\..\\..\\TempProj.dtgproj"));
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -145,8 +139,8 @@ namespace TotalSafety.DataTierGenerator
             if (m_Project != null && m_IsProjectLoaded)
             {
                 m_SchemaExtractor = new SchemaExtractorWrapper();
-                m_SchemaExtractor.ProviderType = m_Project.DbProviderType;
-                m_SchemaExtractor.ConnectionString = m_Project.ConnectionString;
+                m_SchemaExtractor.ProviderType = m_Project.Configuration.DbConnectionDetails.DbProviderType;
+                m_SchemaExtractor.ConnectionString = m_Project.Configuration.DbConnectionDetails.ConnectionString;
                 XmlDocument xDoc = m_SchemaExtractor.GetSchemaDefinition();
 
                 m_Project.LoadSchemasFromXml(xDoc.SelectSingleNode("schemas"));
@@ -219,10 +213,10 @@ namespace TotalSafety.DataTierGenerator
 
         void m_ConfigurationViewControl_ConfigurationChanged(object sender, Controls.ConfigurationView.ChangedEventArgs e)
         {
-            m_Project.DbProviderType = e.DbProvider;
-            m_Project.ConnectionString = e.ConnectionString;
-            m_Project.Namespace = e.Namespace;
-            m_Project.OutputPath = e.OutputPath;
+            m_Project.Configuration.DbConnectionDetails.DbProviderType = e.DbProvider;
+            m_Project.Configuration.DbConnectionDetails.ConnectionString = e.ConnectionString;
+            m_Project.Configuration.CodeGenerationDetails.Namespace = e.Namespace;
+            m_Project.Configuration.CodeGenerationDetails.OutputPath = e.OutputPath;
 
             if (m_ConfigurationViewControl.Parent is Form)
             {
@@ -246,10 +240,10 @@ namespace TotalSafety.DataTierGenerator
 
                 DalProjectGenerator dpg = new DalProjectGenerator();
 
-                dpg.DalNamespace = m_Project.Namespace;
-                dpg.DalProjectDirectory = m_Project.OutputPath;
+                dpg.DalNamespace = m_Project.Configuration.CodeGenerationDetails.Namespace;
+                dpg.DalProjectDirectory = m_Project.Configuration.CodeGenerationDetails.OutputPath;
 
-                foreach (Table table in m_Project.TableList)
+                foreach (Table table in m_Project.Schemas[0].Tables)
                 {
                     if (table.BuildClass)
                     {
@@ -287,7 +281,7 @@ namespace TotalSafety.DataTierGenerator
             // Add Schemas
             schemaCollectionTreeNode = m_GuiProjectTree.Nodes["Root"].Nodes.Add("Schemas", "Schemas");
             schemaCollectionTreeNode.Tag = TreeNodeTypes.Schema;
-            foreach (Common.ProjectSchema.Schema schema in project.Schemas)
+            foreach (Common.Schema schema in project.Schemas)
             {
                 AddSchemaNode(schemaCollectionTreeNode, schema);
             }
@@ -299,7 +293,7 @@ namespace TotalSafety.DataTierGenerator
 
         }
 
-        private void AddSchemaNode(TreeNode schemaCollectionNode, Common.ProjectSchema.Schema schema)
+        private void AddSchemaNode(TreeNode schemaCollectionNode, Common.Schema schema)
         {
             TreeNode node;
             TreeNode collectionNode;
@@ -314,7 +308,7 @@ namespace TotalSafety.DataTierGenerator
             node.Nodes.Add(collectionNode);
 
             //schema.Tables.Sort(new Comparison<Table>(Table.CompareByProgrammaticAlias));
-            foreach (Common.ProjectSchema.Table t in schema.Tables)
+            foreach (Common.Table t in schema.Tables)
             {
                 AddTableNode(collectionNode, t);
             }
@@ -328,7 +322,7 @@ namespace TotalSafety.DataTierGenerator
             node.Nodes.Add(collectionNode);
 
             //schema.Views.Sort(new Comparison<Common.View>(Common.View.CompareByProgrammaticAlias));
-            foreach (Common.ProjectSchema.View v in schema.Views)
+            foreach (Common.View v in schema.Views)
             {
                 AddViewNode(collectionNode, v);
             }
@@ -342,7 +336,7 @@ namespace TotalSafety.DataTierGenerator
             node.Nodes.Add(collectionNode);
 
             //schema.Functions.Sort(new Comparison<Function>(Function.CompareByProgrammaticAlias));
-            foreach (Common.ProjectSchema.Function f in schema.Functions)
+            foreach (Common.Function f in schema.Functions)
             {
                 AddFunctionNode(collectionNode, f);
             }
@@ -356,7 +350,7 @@ namespace TotalSafety.DataTierGenerator
             node.Nodes.Add(collectionNode);
 
             //schema.Procedures.Sort(new Comparison<Procedure>(Procedure.CompareByProgrammaticAlias));
-            foreach (Common.ProjectSchema.Procedure p in schema.Procedures)
+            foreach (Common.Procedure p in schema.Procedures)
             {
                 AddProcedureNode(collectionNode, p);
             }
@@ -366,7 +360,7 @@ namespace TotalSafety.DataTierGenerator
             schemaCollectionNode.Nodes.Add(node);
         }
 
-        private void AddTableNode(TreeNode treeNnode, Common.ProjectSchema.Table table)
+        private void AddTableNode(TreeNode treeNnode, Common.Table table)
         {
             TreeNode node;
 
@@ -382,7 +376,7 @@ namespace TotalSafety.DataTierGenerator
             treeNnode.Nodes.Add(node);
         }
 
-        private void AddViewNode(TreeNode treeNode, Common.ProjectSchema.View view)
+        private void AddViewNode(TreeNode treeNode, Common.View view)
         {
             TreeNode node;
 
@@ -397,14 +391,14 @@ namespace TotalSafety.DataTierGenerator
             treeNode.Nodes.Add(node);
         }
 
-        private void AddFunctionNode(TreeNode treeNode, Common.ProjectSchema.Function function)
+        private void AddFunctionNode(TreeNode treeNode, Common.Function function)
         {
             TreeNode node;
 
             node = new TreeNode(function.Name);
             node.Tag = TreeNodeTypes.Function;
 
-            foreach (Common.ProjectSchema.Parameter parameter in function.Parameters)
+            foreach (Common.Parameter parameter in function.Parameters)
             {
                 AddParameterNode(node, parameter);
             }
@@ -412,14 +406,14 @@ namespace TotalSafety.DataTierGenerator
             treeNode.Nodes.Add(node);
         }
 
-        private void AddProcedureNode(TreeNode treeNode, Common.ProjectSchema.Procedure procedure)
+        private void AddProcedureNode(TreeNode treeNode, Common.Procedure procedure)
         {
             TreeNode node;
 
             node = new TreeNode(procedure.Name);
             node.Tag = TreeNodeTypes.Function;
 
-            foreach (Common.ProjectSchema.Parameter parameter in procedure.Parameters)
+            foreach (Common.Parameter parameter in procedure.Parameters)
             {
                 AddParameterNode(node, parameter);
             }
@@ -438,7 +432,7 @@ namespace TotalSafety.DataTierGenerator
             treeNode.Nodes.Add(node);
         }
 
-        private void AddParameterNode(TreeNode treeNode, Common.ProjectSchema.Parameter parameter)
+        private void AddParameterNode(TreeNode treeNode, Common.Parameter parameter)
         {
 
             TreeNode node;
@@ -561,7 +555,7 @@ namespace TotalSafety.DataTierGenerator
                 m_GuiSaveToolStripMenuItem.Enabled = true;
             }
 
-            if (m_Project.TableList.Count > 0 || m_Project.ViewList.Count > 0 || m_Project.ProcedureList.Count > 0)
+            if (m_Project.Schemas[0].Tables.Length > 0 || m_Project.Schemas[0].Views.Length > 0 || m_Project.Schemas[0].Procedures.Length > 0)
             {
                 m_GuiGenerateToolStripMenuItem.Enabled = true;
             }
@@ -633,7 +627,7 @@ namespace TotalSafety.DataTierGenerator
             //m_Project.Changed += new EventHandler<ChangedEventArgs<Project>>(m_Project_Changed);
             LoadTree(m_Project);
 
-            if (m_Project.TableList.Count > 0 || m_Project.ViewList.Count > 0 || m_Project.ProcedureList.Count > 0)
+            if (m_Project.Schemas[0].Tables.Length > 0 || m_Project.Schemas[0].Views.Length > 0 || m_Project.Schemas[0].Procedures.Length > 0)
             {
                 m_GuiGenerateToolStripMenuItem.Enabled = true;
             }
