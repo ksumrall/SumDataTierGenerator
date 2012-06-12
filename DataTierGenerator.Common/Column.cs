@@ -61,9 +61,9 @@ namespace TotalSafety.DataTierGenerator.Common
             Name = columnNode.Attributes["name"].Value;
             Description = columnNode.Attributes["description"].Value;
             DbType = columnNode.Attributes["data_type"].Value;
-            //m_ClrType = columnNode.Attributes[""].Value;
-            //m_LanguageType = columnNode.Attributes[""].Value;
-            //m_EnumeratedTypeName = columnNode.Attributes[""].Value;
+            ClrType = columnNode.Attributes["ClrType"].Value;
+            LanguageType = columnNode.Attributes["LanguageType"].Value;
+            EnumeratedTypeName = columnNode.Attributes["EnumeratedTypeName"].Value;
             Length = columnNode.Attributes["max_length"].Value;
             Precision = columnNode.Attributes["precision"].Value;
             Scale = columnNode.Attributes["scale"].Value;

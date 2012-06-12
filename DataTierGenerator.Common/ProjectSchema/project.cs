@@ -406,11 +406,13 @@ namespace TotalSafety.DataTierGenerator.Common {
         
         private string propertyNameField;
         
-        private string clrTypeField;
-        
         private string dbTypeField;
         
+        private string enumeratedTypeNameField;
+        
         private string languageTypeField;
+        
+        private string clrTypeField;
         
         private string lengthField;
         
@@ -419,8 +421,6 @@ namespace TotalSafety.DataTierGenerator.Common {
         private string scaleField;
         
         private string defaultValueField;
-        
-        private string enumeratedTypeNameField;
         
         private bool isNullableField;
         
@@ -456,17 +456,6 @@ namespace TotalSafety.DataTierGenerator.Common {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string ClrType {
-            get {
-                return this.clrTypeField;
-            }
-            set {
-                this.clrTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
         public string DbType {
             get {
                 return this.dbTypeField;
@@ -478,12 +467,34 @@ namespace TotalSafety.DataTierGenerator.Common {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string EnumeratedTypeName {
+            get {
+                return this.enumeratedTypeNameField;
+            }
+            set {
+                this.enumeratedTypeNameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public string LanguageType {
             get {
                 return this.languageTypeField;
             }
             set {
                 this.languageTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string ClrType {
+            get {
+                return this.clrTypeField;
+            }
+            set {
+                this.clrTypeField = value;
             }
         }
         
@@ -528,17 +539,6 @@ namespace TotalSafety.DataTierGenerator.Common {
             }
             set {
                 this.defaultValueField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string EnumeratedTypeName {
-            get {
-                return this.enumeratedTypeNameField;
-            }
-            set {
-                this.enumeratedTypeNameField = value;
             }
         }
         
@@ -787,9 +787,13 @@ namespace TotalSafety.DataTierGenerator.Common {
         
         private string propertyNameField;
         
-        private string clrTypeField;
-        
         private string dbTypeField;
+        
+        private string enumeratedTypeNameField;
+        
+        private string languageTypeField;
+        
+        private string clrTypeField;
         
         private string lengthField;
         
@@ -798,8 +802,6 @@ namespace TotalSafety.DataTierGenerator.Common {
         private string scaleField;
         
         private string defaultValueField;
-        
-        private string enumeratedTypeNameField;
         
         private bool isNullableField;
         
@@ -829,23 +831,45 @@ namespace TotalSafety.DataTierGenerator.Common {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string ClrType {
-            get {
-                return this.clrTypeField;
-            }
-            set {
-                this.clrTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
         public string DbType {
             get {
                 return this.dbTypeField;
             }
             set {
                 this.dbTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string EnumeratedTypeName {
+            get {
+                return this.enumeratedTypeNameField;
+            }
+            set {
+                this.enumeratedTypeNameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string LanguageType {
+            get {
+                return this.languageTypeField;
+            }
+            set {
+                this.languageTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string ClrType {
+            get {
+                return this.clrTypeField;
+            }
+            set {
+                this.clrTypeField = value;
             }
         }
         
@@ -890,17 +914,6 @@ namespace TotalSafety.DataTierGenerator.Common {
             }
             set {
                 this.defaultValueField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string EnumeratedTypeName {
-            get {
-                return this.enumeratedTypeNameField;
-            }
-            set {
-                this.enumeratedTypeNameField = value;
             }
         }
         

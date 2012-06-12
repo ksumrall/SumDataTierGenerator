@@ -22,15 +22,6 @@ namespace TotalSafety.DataTierGenerator.Common
 
         private string m_FilePath = String.Empty;
         private string m_ProjectName = String.Empty;
-        private string m_DbProviderType = String.Empty;
-        private string m_ConnectionString = String.Empty;
-        private string m_Namespace = String.Empty;
-        private string m_OutputPath = String.Empty;
-        private MonitoredList<Schema> m_SchemaList = new MonitoredList<Schema>();
-        private MonitoredList<Table> m_TableList = new MonitoredList<Table>();
-        private MonitoredList<Common.View> m_ViewList = new MonitoredList<Common.View>();
-        private MonitoredList<Function> m_FunctionList = new MonitoredList<Function>();
-        private MonitoredList<Procedure> m_ProcedureList = new MonitoredList<Procedure>();
         private bool m_Dirty = false;
         private bool m_New = true;
         private bool m_SupressEvents = false;
@@ -42,13 +33,11 @@ namespace TotalSafety.DataTierGenerator.Common
         public Project()
         {
             m_ProjectName = "New Project";
-            Schemas = new Schema[0];
-            m_TableList.Changed += new EventHandler<ChangedEventArgs<Table>>(m_TableList_Changed);
-            m_TableList.Cleared += new EventHandler<ClearedEventArgs<Table>>(m_TableList_Cleared);
-            m_ViewList.Changed += new EventHandler<ChangedEventArgs<Common.View>>(m_ViewList_Changed);
-            m_ViewList.Cleared += new EventHandler<ClearedEventArgs<Common.View>>(m_ViewList_Cleared);
-            m_ProcedureList.Changed += new EventHandler<ChangedEventArgs<Procedure>>(m_ProcedureList_Changed);
-            m_ProcedureList.Cleared += new EventHandler<ClearedEventArgs<Procedure>>(m_ProcedureList_Cleared);
+            Configuration = new Configuration();
+            Configuration.CodeGenerationDetails = new CodeGenerationDetails();
+            Configuration.DbConnectionDetails = new DbConnectionDetails();
+            Configuration.CodeGenerationDetails.Namespace = "Namespace";
+            Configuration.CodeGenerationDetails.OutputPath = Environment.CurrentDirectory;
         }
 
         #endregion
@@ -107,40 +96,6 @@ namespace TotalSafety.DataTierGenerator.Common
 
         #endregion
 
-        #region event handlers / overrides
-
-        void m_TableList_Cleared(object sender, ClearedEventArgs<Table> e)
-        {
-            OnChanged();
-        }
-
-        private void m_TableList_Changed(object sender, ChangedEventArgs<Table> e)
-        {
-            OnChanged();
-        }
-
-        void m_ViewList_Cleared(object sender, ClearedEventArgs<Common.View> e)
-        {
-            OnChanged();
-        }
-
-        private void m_ViewList_Changed(object sender, ChangedEventArgs<Common.View> e)
-        {
-            OnChanged();
-        }
-
-        void m_ProcedureList_Cleared(object sender, ClearedEventArgs<Procedure> e)
-        {
-            OnChanged();
-        }
-
-        private void m_ProcedureList_Changed(object sender, ChangedEventArgs<Procedure> e)
-        {
-            OnChanged();
-        }
-
-        #endregion
-
         #region public methods
 
         public static Project Load(string path)
@@ -151,88 +106,13 @@ namespace TotalSafety.DataTierGenerator.Common
             try
             {
                 sr = new StreamReader(path);
-                XmlSerializer serializer = new XmlSerializer(typeof(Project), new Type[] { 
-                    typeof(Common.Table), typeof(Common.View), typeof(Common.Column), typeof(Common.Function), typeof(Common.Procedure), typeof(Common.Parameter) });
+                XmlSerializer serializer = new XmlSerializer(typeof(Project));
 
                 Project proj = serializer.Deserialize(sr) as Project;
                 if (proj == null)
                 {
                     throw new Exception();
                 }
-
-                //Project newProj = new Project();
-                //newProj.SupressEvents();
-
-                //newProj.FilePath = Path.GetFullPath(path);
-                //newProj.IsDirty = false;
-                //newProj.IsNew = false;
-
-                //newProj.DbProviderType = proj.Configuration.DbConnectionDetails.dbProviderType;
-                //newProj.ConnectionString = proj.Configuration.DbConnectionDetails.connectionString;
-                //newProj.Namespace = proj.Configuration.CodeGenerationDetails.projectNamespace;
-                //newProj.OutputPath = proj.Configuration.CodeGenerationDetails.outputPath;
-
-                //if (proj.Schemas != null && proj.Schemas.Length > 0)
-                //{
-                //    foreach (ProjectSchema.Schema s in proj.Schemas) { }
-                //    foreach (ProjectSchema.Schema s in proj.Schemas)
-                //    {
-                //        //#region
-                //        //Table newTable = new Table();
-                //        //newTable.Name = t.name;
-                //        //newTable.DatabaseName = t.dbName;
-                //        ////newTable.ClassName = t.className;
-                //        //newTable.Description = t.description;
-                //        //newTable.Schema = t.schema;
-                //        //newTable.BuildClass = t.build;
-
-                //        //if (t.Columns != null && t.Columns.Length > 0)
-                //        //{
-                //        //    foreach (Schema.Column c in t.Columns)
-                //        //    {
-                //        //        Column newCol = new Column();
-                //        //        newCol.Name = c.name;
-                //        //        newCol.ClrType = c.clrType;
-                //        //        newCol.Type = c.dbType;
-                //        //        newCol.LanguageType = c.languageType;
-                //        //        newCol.IsNullable = c.isNullable;
-                //        //        newCol.IsIdentity = c.isIdentity;
-                //        //        newCol.IsComputed = c.isComputed;
-                //        //        newCol.IsRowGuidCol = c.isRowGuid;
-                //        //        newCol.EnumeratedTypeName = c.enumeratedTypeName;
-                //        //        newCol.Length = c.length;
-                //        //        newCol.Precision = c.precision;
-                //        //        newCol.PropertyName = c.propertyName;
-                //        //        newCol.DefaultValue = c.defaultValue;
-                //        //        newCol.Scale = c.scale;
-
-                //        //        newTable.Columns.Add(newCol);
-                //        //    }
-                //        //}
-
-                //        //// Fix up the PK refs
-                //        //if (t.PrimaryKey != null && t.PrimaryKey.ColumnRef != null && t.PrimaryKey.ColumnRef.Length > 0)
-                //        //{
-                //        //    newTable.PrimaryKey = new Index();
-                //        //    foreach (Schema.TablePrimaryKeyColumnRef @ref in t.PrimaryKey.ColumnRef)
-                //        //    {
-                //        //        foreach (Column c in newTable.Columns)
-                //        //        {
-                //        //            if (c.Name == @ref.@ref)
-                //        //            {
-                //        //                newTable.PrimaryKey.Columns.Add(c);
-                //        //                break;
-                //        //            }
-                //        //        }
-                //        //    }
-                //        //}
-
-                //        //newProj.TableList.Add(newTable);
-                //        //#endregion
-                //    }
-                //}
-
-                //newProj.ResumeEvents();
 
                 return proj;
             }
@@ -280,73 +160,21 @@ namespace TotalSafety.DataTierGenerator.Common
             StreamWriter sw = null;
             try
             {
-                Project proj = new Project();
+                //Project proj = new Project();
 
-                proj.Configuration = new Configuration();
-                proj.Configuration.DbConnectionDetails = new DbConnectionDetails();
-                proj.Configuration.CodeGenerationDetails = new CodeGenerationDetails();
+                //proj.Configuration = new Configuration();
+                //proj.Configuration.DbConnectionDetails = new DbConnectionDetails();
+                //proj.Configuration.CodeGenerationDetails = new CodeGenerationDetails();
 
-                proj.Configuration.DbConnectionDetails.DbProviderType = this.Configuration.DbConnectionDetails.DbProviderType;
-                proj.Configuration.DbConnectionDetails.ConnectionString = this.Configuration.DbConnectionDetails.ConnectionString;
-                proj.Configuration.CodeGenerationDetails.Namespace = this.Configuration.CodeGenerationDetails.Namespace;
-                proj.Configuration.CodeGenerationDetails.OutputPath = this.Configuration.CodeGenerationDetails.OutputPath;
+                //proj.Configuration.DbConnectionDetails.DbProviderType = this.Configuration.DbConnectionDetails.DbProviderType;
+                //proj.Configuration.DbConnectionDetails.ConnectionString = this.Configuration.DbConnectionDetails.ConnectionString;
+                //proj.Configuration.CodeGenerationDetails.Namespace = this.Configuration.CodeGenerationDetails.Namespace;
+                //proj.Configuration.CodeGenerationDetails.OutputPath = this.Configuration.CodeGenerationDetails.OutputPath;
 
-                proj.Schemas = new Schema[0];
-
-                //proj.Tables = new ProjectSchema.Table[this.TableList.Count];
-                //for (int i = 0; i < this.TableList.Count; i++)
-                //{
-                //    #region
-                //    Table t = this.TableList[i];
-                //    Schema.Table pt = new Schema.Table();
-                //    proj.Tables[i] = pt;
-
-                //    pt.dbName = t.DatabaseName;
-                //    pt.schema = t.Schema;
-                //    pt.name = t.Name;
-                //    pt.description = t.Description;
-                //    pt.build = t.BuildClass;
-
-                //    if (t.PrimaryKey != null)
-                //    {
-                //        pt.PrimaryKey = new Schema.TablePrimaryKey();
-                //        pt.PrimaryKey.name = t.PrimaryKey.Name;
-                //        pt.PrimaryKey.ColumnRef = new Schema.TablePrimaryKeyColumnRef[t.PrimaryKey.Columns.Count];
-                //        for (int j = 0; j < t.PrimaryKey.Columns.Count; j++)
-                //        {
-                //            pt.PrimaryKey.ColumnRef[j] = new Schema.TablePrimaryKeyColumnRef();
-                //            pt.PrimaryKey.ColumnRef[j].@ref = t.PrimaryKey.Columns[j].Name;
-                //        }
-                //    }
-
-                //    pt.Columns = new Schema.Column[t.Columns.Count];
-                //    for (int j = 0; j < t.Columns.Count; j++)
-                //    {
-                //        Column c = t.Columns[j];
-                //        Schema.Column pc = new Schema.Column();
-                //        pt.Columns[j] = pc;
-
-                //        pc.name = c.Name;
-                //        pc.clrType = c.ClrType;
-                //        pc.dbType = c.Type;
-                //        pc.languageType = c.LanguageType;
-                //        pc.isNullable = c.IsNullable;
-                //        pc.isIdentity = c.IsIdentity;
-                //        pc.isComputed = c.IsComputed;
-                //        pc.isRowGuid = c.IsRowGuidCol;
-                //        pc.enumeratedTypeName = c.EnumeratedTypeName;
-                //        pc.length = c.Length;
-                //        pc.precision = c.Precision;
-                //        pc.propertyName = c.PropertyName;
-                //        pc.defaultValue = c.DefaultValue;
-                //        pc.scale = c.Scale;
-                //    }
-                //    #endregion
-                //}
+                //proj.Schemas = new Schema[0];
 
                 sw = new StreamWriter(path, false);
-                XmlSerializer serializer = new XmlSerializer(typeof(Project), new Type[] { 
-                    typeof(Common.Table), typeof(Common.View), typeof(Common.Column), typeof(Common.Function), typeof(Common.Procedure), typeof(Common.Parameter) });
+                XmlSerializer serializer = new XmlSerializer(typeof(Project));
                 serializer.Serialize(sw, this);
                 m_FilePath = path;
             }
@@ -433,21 +261,6 @@ namespace TotalSafety.DataTierGenerator.Common
             //SchemaList.Add(schema);
 
             return schema;
-        }
-
-        public void BuildView(string schema, XmlElement table)
-        {
-
-        }
-
-        public void BuildFunction(string schema, XmlElement table)
-        {
-
-        }
-
-        public void BuildProcedure(string schema, XmlElement table)
-        {
-
         }
 
         #endregion

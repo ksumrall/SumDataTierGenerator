@@ -79,7 +79,6 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.m_GuiConnectionStringTextBox.Location = new System.Drawing.Point(6, 75);
             this.m_GuiConnectionStringTextBox.Name = "m_GuiConnectionStringTextBox";
-            this.m_GuiConnectionStringTextBox.ReadOnly = true;
             this.m_GuiConnectionStringTextBox.Size = new System.Drawing.Size(293, 20);
             this.m_GuiConnectionStringTextBox.TabIndex = 3;
             // 
@@ -144,7 +143,6 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.m_GuiOutputPathTextBox.Location = new System.Drawing.Point(6, 71);
             this.m_GuiOutputPathTextBox.Name = "m_GuiOutputPathTextBox";
-            this.m_GuiOutputPathTextBox.ReadOnly = true;
             this.m_GuiOutputPathTextBox.Size = new System.Drawing.Size(293, 20);
             this.m_GuiOutputPathTextBox.TabIndex = 3;
             // 

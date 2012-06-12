@@ -15,6 +15,7 @@ namespace TotalSafety.DataTierGenerator.SchemaExtractor
         #region private / protected member variables
 
         private string m_ConnectionString = "";
+        XmlDocument m_DataMappingXml;
 
         #endregion
 
@@ -22,7 +23,10 @@ namespace TotalSafety.DataTierGenerator.SchemaExtractor
 
         public SqlServerSchemaExtractor()
         {
+            string dataMapping = Utility.GetResource(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.SchemaExtractor.EmbeddedResources.DataMapping.xml");
 
+            m_DataMappingXml = new XmlDocument();
+            m_DataMappingXml.LoadXml(dataMapping);
         }
 
         public SqlServerSchemaExtractor(string connectionString)
@@ -197,6 +201,9 @@ namespace TotalSafety.DataTierGenerator.SchemaExtractor
 
         private void LoadTables(XmlElement tablesElement, DataTable tables, DataTable tableColumns, DataTable primaryKeys, DataTable foreignKeys)
         {
+            string xPath;
+            XmlNode node;
+
             XmlElement tableElement;
             XmlElement xmlElement;
             XmlElement columnElement;
@@ -236,6 +243,27 @@ namespace TotalSafety.DataTierGenerator.SchemaExtractor
                     columnElement.Attributes.Append(GetXmlAttribute(xDoc, "is_identity", drvC["is_identity"].ToString()));
                     columnElement.Attributes.Append(GetXmlAttribute(xDoc, "description", drvC["description"].ToString()));
                     columnElement.Attributes.Append(GetXmlAttribute(xDoc, "default_definition", drvC["default_definition"].ToString()));
+
+                    // get the enumerated type name
+                    xPath =
+                        "/Databases/Database[@Name='MSSQL']/FromDatabase/Type[@Name='"
+                        + drvC["data_type"].ToString() + "']/System.Data.SqlDbType";
+                    node = m_DataMappingXml.SelectSingleNode(xPath);
+                    columnElement.Attributes.Append(GetXmlAttribute(xDoc, "EnumeratedTypeName", node.Attributes["Value"].Value));
+
+                    // get the ClrType
+                    xPath =
+                        "/Databases/Database[@Name='MSSQL']/FromDatabase/Type[@Name='"
+                        + drvC["data_type"].ToString() + "']/System";
+                    node = m_DataMappingXml.SelectSingleNode(xPath);
+                    columnElement.Attributes.Append(GetXmlAttribute(xDoc, "ClrType", node.Attributes["Value"].Value));
+
+                    // get the Language Type
+                    xPath =
+                        "/Databases/Database[@Name='MSSQL']/FromDatabase/Type[@Name='"
+                        + drvC["data_type"].ToString() + "']/CSharp";
+                    node = m_DataMappingXml.SelectSingleNode(xPath);
+                    columnElement.Attributes.Append(GetXmlAttribute(xDoc, "LanguageType", node.Attributes["Value"].Value));
 
                     xmlElement.AppendChild(columnElement);
                 }
@@ -303,6 +331,8 @@ namespace TotalSafety.DataTierGenerator.SchemaExtractor
 
         private void LoadViews(XmlElement containerElement, DataTable views, DataTable viewColumns)
         {
+            string xPath;
+            XmlNode node;
             string schemaName = containerElement.ParentNode.Attributes["name"].Value;
 
             XmlDocument xDoc = containerElement.OwnerDocument;
@@ -343,6 +373,27 @@ namespace TotalSafety.DataTierGenerator.SchemaExtractor
                     childElement.Attributes.Append(GetXmlAttribute(xDoc, "is_identity", drvC["is_identity"].ToString()));
                     childElement.Attributes.Append(GetXmlAttribute(xDoc, "description", drvC["description"].ToString()));
 
+                    // get the enumerated type name
+                    xPath =
+                        "/Databases/Database[@Name='MSSQL']/FromDatabase/Type[@Name='"
+                        + drvC["data_type"].ToString() + "']/System.Data.SqlDbType";
+                    node = m_DataMappingXml.SelectSingleNode(xPath);
+                    childElement.Attributes.Append(GetXmlAttribute(xDoc, "EnumeratedTypeName", node.Attributes["Value"].Value));
+
+                    // get the ClrType
+                    xPath =
+                        "/Databases/Database[@Name='MSSQL']/FromDatabase/Type[@Name='"
+                        + drvC["data_type"].ToString() + "']/System";
+                    node = m_DataMappingXml.SelectSingleNode(xPath);
+                    childElement.Attributes.Append(GetXmlAttribute(xDoc, "ClrType", node.Attributes["Value"].Value));
+
+                    // get the Language Type
+                    xPath =
+                        "/Databases/Database[@Name='MSSQL']/FromDatabase/Type[@Name='"
+                        + drvC["data_type"].ToString() + "']/CSharp";
+                    node = m_DataMappingXml.SelectSingleNode(xPath);
+                    childElement.Attributes.Append(GetXmlAttribute(xDoc, "LanguageType", node.Attributes["Value"].Value));
+
                     childContainerElement.AppendChild(childElement);
                 }
                 parentElement.AppendChild(childContainerElement);
@@ -356,6 +407,8 @@ namespace TotalSafety.DataTierGenerator.SchemaExtractor
 
         private void LoadFunctions(XmlElement containerElement, DataTable functions, DataTable parameters)
         {
+            string xPath;
+            XmlNode node;
             string schemaName = containerElement.ParentNode.Attributes["name"].Value;
             XmlDocument xDoc = containerElement.OwnerDocument;
 
@@ -402,6 +455,27 @@ namespace TotalSafety.DataTierGenerator.SchemaExtractor
                     childElement.Attributes.Append(GetXmlAttribute(xDoc, "is_output", drvP["is_output"].ToString()));
                     childElement.Attributes.Append(GetXmlAttribute(xDoc, "default_definition", drvP["default_definition"].ToString()));
 
+                    // get the enumerated type name
+                    xPath =
+                        "/Databases/Database[@Name='MSSQL']/FromDatabase/Type[@Name='"
+                        + drvP["data_type"].ToString() + "']/System.Data.SqlDbType";
+                    node = m_DataMappingXml.SelectSingleNode(xPath);
+                    childElement.Attributes.Append(GetXmlAttribute(xDoc, "EnumeratedTypeName", node.Attributes["Value"].Value));
+
+                    // get the ClrType
+                    xPath =
+                        "/Databases/Database[@Name='MSSQL']/FromDatabase/Type[@Name='"
+                        + drvP["data_type"].ToString() + "']/System";
+                    node = m_DataMappingXml.SelectSingleNode(xPath);
+                    childElement.Attributes.Append(GetXmlAttribute(xDoc, "ClrType", node.Attributes["Value"].Value));
+
+                    // get the Language Type
+                    xPath =
+                        "/Databases/Database[@Name='MSSQL']/FromDatabase/Type[@Name='"
+                        + drvP["data_type"].ToString() + "']/CSharp";
+                    node = m_DataMappingXml.SelectSingleNode(xPath);
+                    childElement.Attributes.Append(GetXmlAttribute(xDoc, "LanguageType", node.Attributes["Value"].Value));
+
                     childContainerElement.AppendChild(childElement);
                 }
                 parentElement.AppendChild(childContainerElement);
@@ -414,6 +488,8 @@ namespace TotalSafety.DataTierGenerator.SchemaExtractor
 
         private void LoadProcedures(XmlElement containerElement, DataTable procedures, DataTable parameters)
         {
+            string xPath;
+            XmlNode node;
             string schemaName = containerElement.ParentNode.Attributes["name"].Value;
             XmlDocument xDoc = containerElement.OwnerDocument;
 
@@ -453,12 +529,33 @@ namespace TotalSafety.DataTierGenerator.SchemaExtractor
                     childElement.Attributes.Append(GetXmlAttribute(xDoc, "name", drvP["parameter_name"].ToString()));
                     childElement.Attributes.Append(GetXmlAttribute(xDoc, "id", drvP["parameter_id"].ToString()));
                     childElement.Attributes.Append(GetXmlAttribute(xDoc, "description", drvP["description"].ToString()));
-                    childElement.Attributes.Append(GetXmlAttribute(xDoc, "data_type", drvP["parameter_type"].ToString()));
+                    childElement.Attributes.Append(GetXmlAttribute(xDoc, "data_type", drvP["data_type"].ToString()));
                     childElement.Attributes.Append(GetXmlAttribute(xDoc, "max_length", drvP["max_length"].ToString()));
                     childElement.Attributes.Append(GetXmlAttribute(xDoc, "precision", drvP["precision"].ToString()));
                     childElement.Attributes.Append(GetXmlAttribute(xDoc, "scale", drvP["scale"].ToString()));
                     childElement.Attributes.Append(GetXmlAttribute(xDoc, "is_output", drvP["is_output"].ToString()));
                     childElement.Attributes.Append(GetXmlAttribute(xDoc, "default_definition", drvP["default_definition"].ToString()));
+
+                    // get the enumerated type name
+                    xPath =
+                        "/Databases/Database[@Name='MSSQL']/FromDatabase/Type[@Name='"
+                        + drvP["data_type"].ToString() + "']/System.Data.SqlDbType";
+                    node = m_DataMappingXml.SelectSingleNode(xPath);
+                    childElement.Attributes.Append(GetXmlAttribute(xDoc, "EnumeratedTypeName", node.Attributes["Value"].Value));
+
+                    // get the ClrType
+                    xPath =
+                        "/Databases/Database[@Name='MSSQL']/FromDatabase/Type[@Name='"
+                        + drvP["data_type"].ToString() + "']/System";
+                    node = m_DataMappingXml.SelectSingleNode(xPath);
+                    childElement.Attributes.Append(GetXmlAttribute(xDoc, "ClrType", node.Attributes["Value"].Value));
+
+                    // get the Language Type
+                    xPath =
+                        "/Databases/Database[@Name='MSSQL']/FromDatabase/Type[@Name='"
+                        + drvP["data_type"].ToString() + "']/CSharp";
+                    node = m_DataMappingXml.SelectSingleNode(xPath);
+                    childElement.Attributes.Append(GetXmlAttribute(xDoc, "LanguageType", node.Attributes["Value"].Value));
 
                     childContainerElement.AppendChild(childElement);
                 }

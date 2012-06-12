@@ -37,8 +37,6 @@ namespace TotalSafety.DataTierGenerator
         XmlDocument m_ProjectXmlDoc;
         private SchemaExtractorWrapper m_SchemaExtractor = null;
 
-        List<Table> m_TableList;
-
         private const string BaseTitle = "Data Tier Generator";
 
         private Controls.ConfigurationView m_ConfigurationViewControl;
@@ -81,11 +79,9 @@ namespace TotalSafety.DataTierGenerator
             m_SqlConnectionSettingsModel = new SqlConnectionSettingsModel();
             m_MiscSettingsModel = new MiscSettingsModel();
 
-            LoadProject(new Project());
-
-            m_TableList = new List<Table>();
-
             LoadPreviousValues();
+
+            LoadProject(new Project());
 
             UpdateTitle();
 
@@ -130,7 +126,11 @@ namespace TotalSafety.DataTierGenerator
             dlg.ClientSize = ConfigurationViewControl.Size;
             dlg.Controls.Add(ConfigurationViewControl);
             ConfigurationViewControl.Dock = DockStyle.Fill;
-            dlg.ShowDialog();
+
+            if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                LoadTree(m_Project);
+            }
 
         }
 
@@ -224,6 +224,17 @@ namespace TotalSafety.DataTierGenerator
                 //((Form)m_ConfigurationViewControl.Parent).Dispose();
             }
 
+            if (m_Project != null && m_IsProjectLoaded)
+            {
+                m_SchemaExtractor = new SchemaExtractorWrapper();
+                m_SchemaExtractor.ProviderType = m_Project.Configuration.DbConnectionDetails.DbProviderType;
+                m_SchemaExtractor.ConnectionString = m_Project.Configuration.DbConnectionDetails.ConnectionString;
+                XmlDocument xDoc = m_SchemaExtractor.GetSchemaDefinition();
+
+                m_Project.LoadSchemasFromXml(xDoc.SelectSingleNode("schemas"));
+            }
+            LoadTree(m_Project);
+
             UpdateApplicationFeaturesBasedOnRecentProjectChanges();
         }
 
@@ -278,12 +289,15 @@ namespace TotalSafety.DataTierGenerator
             // Add Root
             m_GuiProjectTree.Nodes.Add("Root", project.ProjectName).Tag = TreeNodeTypes.Project;
 
-            // Add Schemas
-            schemaCollectionTreeNode = m_GuiProjectTree.Nodes["Root"].Nodes.Add("Schemas", "Schemas");
-            schemaCollectionTreeNode.Tag = TreeNodeTypes.Schema;
-            foreach (Common.Schema schema in project.Schemas)
+            if (project.Schemas != null)
             {
-                AddSchemaNode(schemaCollectionTreeNode, schema);
+                // Add Schemas
+                schemaCollectionTreeNode = m_GuiProjectTree.Nodes["Root"].Nodes.Add("Schemas", "Schemas");
+                schemaCollectionTreeNode.Tag = TreeNodeTypes.Schema;
+                foreach (Common.Schema schema in project.Schemas)
+                {
+                    AddSchemaNode(schemaCollectionTreeNode, schema);
+                }
             }
 
             // End
@@ -480,19 +494,6 @@ namespace TotalSafety.DataTierGenerator
             rkey.SetValue("Ypos", this.Top);
             rkey.SetValue("FileName", projectFileName);
 
-            //rkey.SetValue("Server", m_SqlConnectionSettingsModel.ServerName);
-            //rkey.SetValue("Database", m_SqlConnectionSettingsModel.DatabaseName);
-
-            //if (m_SqlConnectionSettingsModel.SqlServerAuthenticationType == SqlServerAuthenticationTypeEnumeration.Windows)
-            //    rkey.SetValue("AuthenticationType", "Windows");
-            //else
-            //    rkey.SetValue("AuthenticationType", "SQL");
-
-            //rkey.SetValue("AuthenticationUsername", m_SqlConnectionSettingsModel.UserId);
-            //rkey.SetValue("AuthenticationPassword", m_SqlConnectionSettingsModel.Password);
-
-            //rkey.SetValue("DataLayerNamespaceTextBox", m_MiscSettingsModel.Namespace);
-            //rkey.SetValue("DataLayerOutputDirectory", m_MiscSettingsModel.ProjectPathname);
         }
 
         private void LoadPreviousValues()
@@ -512,39 +513,11 @@ namespace TotalSafety.DataTierGenerator
 
             if (rkey.GetValue("FileName") != null)
             {
-                string filePathName = (string)rkey.GetValue("FileName");
-                LoadProject(Project.Load(filePathName));
+                //string filePathName = (string)rkey.GetValue("FileName");
+                //LoadProject(Project.Load(filePathName));
 
-                m_ProjectPathName = System.IO.Path.GetFullPath(filePathName);
+                //m_ProjectPathName = System.IO.Path.GetFullPath(filePathName);
             }
-
-            //if (rkey.GetValue("Server") != null)
-            //    m_SqlConnectionSettingsModel.ServerName = (string)rkey.GetValue("Server");
-
-            //if (rkey.GetValue("Database") != null)
-            //    m_SqlConnectionSettingsModel.DatabaseName = (string)rkey.GetValue("Database");
-
-            //if (rkey.GetValue("AuthenticationType") != null)
-            //{
-            //    if ((string)rkey.GetValue("AuthenticationType") == "Windows")
-            //        m_SqlConnectionSettingsModel.SqlServerAuthenticationType =
-            //            SqlServerAuthenticationTypeEnumeration.Windows;
-            //    else
-            //        m_SqlConnectionSettingsModel.SqlServerAuthenticationType =
-            //            SqlServerAuthenticationTypeEnumeration.SqlServer;
-            //}
-
-            //if (rkey.GetValue("AuthenticationUsername") != null)
-            //    m_SqlConnectionSettingsModel.UserId = (string)rkey.GetValue("AuthenticationUsername");
-
-            //if (rkey.GetValue("AuthenticationPassword") != null)
-            //    m_SqlConnectionSettingsModel.Password = (string)rkey.GetValue("AuthenticationPassword");
-
-            //if (rkey.GetValue("DataLayerNamespaceTextBox") != null)
-            //    m_MiscSettingsModel.Namespace = (string)rkey.GetValue("GuiDataLayerNamespaceTextBox");
-
-            //if ( rkey.GetValue( "DataLayerOutputDirectory" ) != null )
-            //    m_MiscSettingsModel.ProjectPathname = (string)rkey.GetValue("DataLayerOutputDirectory");
 
         }
 
@@ -555,13 +528,18 @@ namespace TotalSafety.DataTierGenerator
                 m_GuiSaveToolStripMenuItem.Enabled = true;
             }
 
-            if (m_Project.Schemas[0].Tables.Length > 0 || m_Project.Schemas[0].Views.Length > 0 || m_Project.Schemas[0].Procedures.Length > 0)
+            m_GuiGenerateToolStripMenuItem.Enabled = false;
+
+            if (m_Project.Schemas != null)
             {
-                m_GuiGenerateToolStripMenuItem.Enabled = true;
-            }
-            else
-            {
-                m_GuiGenerateToolStripMenuItem.Enabled = false;
+                foreach (Schema schema in m_Project.Schemas)
+                {
+                    if (schema.Tables.Length > 0 || schema.Views.Length > 0 || schema.Functions.Length > 0 || schema.Procedures.Length > 0)
+                    {
+                        m_GuiGenerateToolStripMenuItem.Enabled = true;
+                        break;
+                    }
+                }
             }
 
             UpdateTitle();
@@ -624,16 +602,20 @@ namespace TotalSafety.DataTierGenerator
         private void LoadProject(Project project)
         {
             m_Project = project;
-            //m_Project.Changed += new EventHandler<ChangedEventArgs<Project>>(m_Project_Changed);
+            m_GuiGenerateToolStripMenuItem.Enabled = false;
+
             LoadTree(m_Project);
 
-            if (m_Project.Schemas[0].Tables.Length > 0 || m_Project.Schemas[0].Views.Length > 0 || m_Project.Schemas[0].Procedures.Length > 0)
+            if (project.Schemas != null)
             {
-                m_GuiGenerateToolStripMenuItem.Enabled = true;
-            }
-            else
-            {
-                m_GuiGenerateToolStripMenuItem.Enabled = false;
+                foreach (Schema schema in project.Schemas)
+                {
+                    if (schema.Tables.Length > 0 || schema.Views.Length > 0 || schema.Functions.Length > 0 || schema.Procedures.Length > 0)
+                    {
+                        m_GuiGenerateToolStripMenuItem.Enabled = true;
+                        break;
+                    }
+                }
             }
         }
 

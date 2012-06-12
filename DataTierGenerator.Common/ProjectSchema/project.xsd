@@ -143,14 +143,14 @@
         <xs:complexType>
             <xs:attribute name="Name" type="xs:string" use="required" />
             <xs:attribute name="PropertyName" type="xs:string" use="required" />
-            <xs:attribute name="ClrType" type="xs:string" use="required" />
             <xs:attribute name="DbType" type="xs:string" use="required" />
+            <xs:attribute name="EnumeratedTypeName" type="xs:string" use="required" />
             <xs:attribute name="LanguageType" type="xs:string" use="required" />
+            <xs:attribute name="ClrType" type="xs:string" use="required" />
             <xs:attribute name="Length" type="xs:string" use="required" />
             <xs:attribute name="Precision" type="xs:string" use="required" />
             <xs:attribute name="Scale" type="xs:string" use="required" />
             <xs:attribute name="DefaultValue" type="xs:string" use="required" />
-            <xs:attribute name="EnumeratedTypeName" type="xs:string" use="required" />
             <xs:attribute name="IsNullable" type="xs:boolean" use="required" />
             <xs:attribute name="IsIdentity" type="xs:boolean" use="required" />
             <xs:attribute name="IsRowGuid" type="xs:boolean" use="required" />
@@ -169,13 +169,14 @@
         <xs:complexType>
             <xs:attribute name="Name" type="xs:string" use="required" />
             <xs:attribute name="PropertyName" type="xs:string" use="required" />
-            <xs:attribute name="ClrType" type="xs:string" use="required" />
             <xs:attribute name="DbType" type="xs:string" use="required" />
+            <xs:attribute name="EnumeratedTypeName" type="xs:string" use="required" />
+            <xs:attribute name="LanguageType" type="xs:string" use="required" />
+            <xs:attribute name="ClrType" type="xs:string" use="required" />
             <xs:attribute name="Length" type="xs:string" use="required" />
             <xs:attribute name="Precision" type="xs:string" use="required" />
             <xs:attribute name="Scale" type="xs:string" use="required" />
             <xs:attribute name="DefaultValue" type="xs:string" use="required" />
-            <xs:attribute name="EnumeratedTypeName" type="xs:string" use="required" />
             <xs:attribute name="IsNullable" type="xs:boolean" use="required" />
             <xs:attribute name="Description" type="xs:string" use="required" />
         </xs:complexType>

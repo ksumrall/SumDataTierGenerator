@@ -43,21 +43,6 @@ namespace TotalSafety.DataTierGenerator.Common
         #region private and protected member variables
 
         // Private variable used to hold the property values
-        private string m_Name;
-        private string m_Description;
-        private string m_Type;
-        private string m_ClrType;
-        private string m_LanguageType;
-        private string m_EnumeratedTypeName;
-
-        private string m_Length;
-        private string m_Precision;
-        private string m_Scale;
-
-        private string m_DefaultValue;
-
-        private string m_PropertyName;
-
         #endregion
 
         #region constructors
@@ -72,9 +57,9 @@ namespace TotalSafety.DataTierGenerator.Common
             Name = parameterNode.Attributes["name"].Value;
             //Description = parameterNode.Attributes["description"].Value;
             DbType = parameterNode.Attributes["data_type"].Value;
-            //m_ClrType = columnNode.Attributes[""].Value;
-            //m_LanguageType = columnNode.Attributes[""].Value;
-            //m_EnumeratedTypeName = columnNode.Attributes[""].Value;
+            ClrType = parameterNode.Attributes["ClrType"].Value;
+            LanguageType = parameterNode.Attributes["LanguageType"].Value;
+            EnumeratedTypeName = parameterNode.Attributes["EnumeratedTypeName"].Value;
             Length = parameterNode.Attributes["max_length"].Value;
             Precision = parameterNode.Attributes["precision"].Value;
             Scale = parameterNode.Attributes["scale"].Value;
@@ -91,168 +76,6 @@ namespace TotalSafety.DataTierGenerator.Common
         #endregion
 
         #region public properties
-
-        /// <summary>
-        /// Name of the column.
-        /// </summary>
-        //public string Name
-        //{
-        //    get
-        //    {
-        //        return m_Name;
-        //    }
-        //    set
-        //    {
-        //        m_Name = value;
-        //    }
-        //}
-
-        //public string Description
-        //{
-        //    get
-        //    {
-        //        return m_Description;
-        //    }
-        //    set
-        //    {
-        //        m_Description = value;
-        //    }
-        //}
-
-        /// <summary>
-        /// Data type of the column.
-        /// </summary>
-        //public string Type
-        //{
-        //    get
-        //    {
-        //        return m_Type;
-        //    }
-        //    set
-        //    {
-        //        m_Type = value;
-        //    }
-        //}
-
-        /// <summary>
-        /// System type of the column.
-        /// </summary>
-        //public string ClrType
-        //{
-        //    get
-        //    {
-        //        return m_ClrType;
-        //    }
-        //    set
-        //    {
-        //        m_ClrType = value;
-        //    }
-        //}
-
-        /// <summary>
-        /// Language (c#, VB.NET, etc.) type of the column.
-        /// </summary>
-        //public string LanguageType
-        //{
-        //    get
-        //    {
-        //        return m_LanguageType;
-        //    }
-        //    set
-        //    {
-        //        m_LanguageType = value;
-        //    }
-        //}
-
-        /// <summary>
-        /// This is the enumerated string value for SqlDbType, OleDbType, OracleType...
-        /// </summary>
-        //public string EnumeratedTypeName
-        //{
-        //    get
-        //    {
-        //        return m_EnumeratedTypeName;
-        //    }
-        //    set
-        //    {
-        //        m_EnumeratedTypeName = value;
-        //    }
-        //}
-
-        /// <summary>
-        /// Length in bytes of the column.
-        /// </summary>
-        //public string Length
-        //{
-        //    get
-        //    {
-        //        return m_Length;
-        //    }
-        //    set
-        //    {
-        //        m_Length = value;
-        //    }
-        //}
-
-        /// <summary>
-        /// Precision of the column. Applicable to decimal, float, and numeric data types only.
-        /// </summary>
-        //public string Precision
-        //{
-        //    get
-        //    {
-        //        return m_Precision;
-        //    }
-        //    set
-        //    {
-        //        m_Precision = value;
-        //    }
-        //}
-
-        /// <summary>
-        /// Scale of the column. Applicable to decimal, and numeric data types only.
-        /// </summary>
-        //public string Scale
-        //{
-        //    get
-        //    {
-        //        return m_Scale;
-        //    }
-        //    set
-        //    {
-        //        m_Scale = value;
-        //    }
-        //}
-
-        //public string DefaultValue
-        //{
-        //    get
-        //    {
-        //        return m_DefaultValue;
-        //    }
-        //    set
-        //    {
-        //        m_DefaultValue = value;
-        //    }
-        //}
-
-        //public string PropertyName
-        //{
-        //    get
-        //    {
-        //        if (m_PropertyName == null || m_PropertyName == "")
-        //        {
-        //            m_PropertyName = System.Text.RegularExpressions.Regex.Replace(m_Name, "\\W", "_");
-
-        //        }
-
-        //        return m_PropertyName;
-        //    }
-        //    set
-        //    {
-        //        m_PropertyName = value;
-        //    }
-        //}
 
         #endregion
 

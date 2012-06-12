@@ -1,7 +1,0 @@
-C:\_TFSProjects\DataTierGenerator\DataTierGenerator.Factory\bin\Debug\DataTierGenerator.CodeGenerationFactory.dll
-C:\_TFSProjects\DataTierGenerator\DataTierGenerator.Factory\bin\Debug\DataTierGenerator.CodeGenerationFactory.pdb
-C:\_TFSProjects\DataTierGenerator\DataTierGenerator.Factory\bin\Debug\DataTierGenerator.Common.dll
-C:\_TFSProjects\DataTierGenerator\DataTierGenerator.Factory\bin\Debug\DataTierGenerator.Common.pdb
-C:\_TFSProjects\DataTierGenerator\DataTierGenerator.Factory\obj\Debug\ResolveAssemblyReference.cache
-C:\_TFSProjects\DataTierGenerator\DataTierGenerator.Factory\obj\Debug\DataTierGenerator.CodeGenerationFactory.dll
-C:\_TFSProjects\DataTierGenerator\DataTierGenerator.Factory\obj\Debug\DataTierGenerator.CodeGenerationFactory.pdb
