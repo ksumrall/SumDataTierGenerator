@@ -247,22 +247,15 @@ namespace TotalSafety.DataTierGenerator
 
             try
             {
+                this.Cursor = Cursors.WaitCursor;
+
                 m_GuiGenerateToolStripMenuItem.Enabled = false;
 
-                DalProjectGenerator dpg = new DalProjectGenerator();
-
-                dpg.DalNamespace = m_Project.Configuration.CodeGenerationDetails.Namespace;
-                dpg.DalProjectDirectory = m_Project.Configuration.CodeGenerationDetails.OutputPath;
-
-                foreach (Table table in m_Project.Schemas[0].Tables)
-                {
-                    if (table.BuildClass)
-                    {
-                        dpg.TableList.Add(table);
-                    }
-                }
+                DalProjectGenerator dpg = new DalProjectGenerator(m_Project);
 
                 dpg.GenerateDalProject();
+
+                this.Cursor = DefaultCursor;
 
                 MessageBox.Show("C# classes generated successfully.");
             }

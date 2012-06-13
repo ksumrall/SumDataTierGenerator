@@ -3,7 +3,7 @@ SELECT SCHEMA_NAME(schema_id) AS schema_name
     ,o.type_desc
     ,p.parameter_id
     ,p.NAME AS parameter_name
-    ,TYPE_NAME(p.user_type_id) AS data_type
+    ,TYPE_NAME(p.system_type_id) AS data_type
     ,p.max_length
     ,p.precision
     ,p.scale

@@ -17,11 +17,15 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
 
         #region private and protected member variables
 
-        private string m_DalNamespace;
-        private List<Table> m_TableList;
-        private string m_DalProjectDirectory;
-        private XmlDocument m_DataMappingXml;
         private bool m_GenProjectFile;
+        private string m_DalNamespace;
+        private string m_DalProjectDirectory;
+        private List<Schema> m_SchemaList;
+        private List<Table> m_TableList;
+        private List<View> m_ViewList;
+        private List<Function> m_FunctionList;
+        private List<Procedure> m_ProcedureList;
+        private XmlDocument m_DataMappingXml;
 
         #endregion
 
@@ -29,33 +33,20 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
 
         public DalProjectGenerator()
         {
+            m_SchemaList = new List<Schema>();
             m_TableList = new List<Table>();
+            m_ViewList = new List<View>();
+            m_FunctionList = new List<Function>();
+            m_ProcedureList = new List<Procedure>();
             m_GenProjectFile = false;
         }
 
         public DalProjectGenerator(Project project)
+            : this()
         {
             m_DalNamespace = project.Configuration.CodeGenerationDetails.Namespace;
             m_DalProjectDirectory = project.Configuration.CodeGenerationDetails.OutputPath;
-
-            // add tables
-            //foreach (Table table in project.TableList)
-            //{
-            //    if (table.BuildClass)
-            //    {
-            //        m_TableList.Add(table);
-            //    }
-            //}
-
-            // add views
-
-            // add procedures
-
-        }
-
-        public DalProjectGenerator(string filePath)
-        {
-            // load the file and create a project object
+            m_SchemaList.AddRange(project.Schemas);
         }
 
         #endregion
@@ -68,15 +59,35 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             set { m_DalNamespace = value; }
         }
 
+        public string DalProjectDirectory
+        {
+            get { return m_DalProjectDirectory; }
+            set { m_DalProjectDirectory = value; }
+        }
+
+        public List<Schema> SchemaList
+        {
+            get { return m_SchemaList; }
+        }
+
         public List<Table> TableList
         {
             get { return m_TableList; }
         }
 
-        public string DalProjectDirectory
+        public List<View> ViewList
         {
-            get { return m_DalProjectDirectory; }
-            set { m_DalProjectDirectory = value; }
+            get { return m_ViewList; }
+        }
+
+        public List<Function> FunctionList
+        {
+            get { return m_FunctionList; }
+        }
+
+        public List<Procedure> ProcedureList
+        {
+            get { return m_ProcedureList; }
         }
 
         #endregion
@@ -85,37 +96,33 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
 
         public void GenerateDalProject()
         {
+            StringBuilder itemGroup = new StringBuilder();
 
-            string projectFile;
-            string dataMapping;
+            CreateDirectoryStructure(m_DalProjectDirectory);
 
-            if (m_TableList.Count > 0)
+            CreateCommonDataLayerFiles();
+
+            foreach (Schema schema in SchemaList)
             {
-                StringBuilder itemGroup;
+                itemGroup.AppendLine(GenerateTables(m_DalNamespace, m_DalProjectDirectory, new List<Table>(schema.Tables)));
 
-                dataMapping = Utility.GetResource(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.CodeGenerationFactory.EmbeddedResources.DataMapping.xml");
+                itemGroup.AppendLine(GenerateViews(m_DalNamespace, m_DalProjectDirectory, new List<View>(schema.Views)));
 
-                m_DataMappingXml = new XmlDocument();
-                m_DataMappingXml.LoadXml(dataMapping);
+                //itemGroup.AppendLine(GenerateFunctions(m_DalNamespace, m_DalProjectDirectory, new List<Function>(schema.Function)));
 
-                CreateDirectoryStructure(m_DalProjectDirectory);
-
-                CreateCommonDataLayerFiles();
-
-                itemGroup = GenerateTableClassFiles();
-
-                if (m_GenProjectFile)
-                {
-                    // create Project File
-                    projectFile = Utility.GetResource(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.CodeGenerationFactory.EmbeddedResources.ProjectTemplate.csproj");
-                    projectFile = projectFile.Replace("$guid1$", Guid.NewGuid().ToString());
-                    projectFile = projectFile.Replace("$safeprojectname$", m_DalNamespace);
-                    projectFile = projectFile.Replace("$CompileItem$", itemGroup.ToString());
-                    File.WriteAllText(m_DalProjectDirectory + m_DalNamespace + ".csproj", projectFile);
-                }
-
+                //itemGroup.AppendLine(GenerateProcedures(m_DalNamespace, m_DalProjectDirectory, new List<Procedure>(schema.Procedure)));
             }
 
+            if (m_GenProjectFile)
+            {
+                // create Project File
+                string projectFile;
+                projectFile = Utility.GetResource(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.CodeGenerationFactory.EmbeddedResources.ProjectTemplate.csproj");
+                projectFile = projectFile.Replace("$guid1$", Guid.NewGuid().ToString());
+                projectFile = projectFile.Replace("$safeprojectname$", m_DalNamespace);
+                projectFile = projectFile.Replace("$CompileItem$", itemGroup.ToString());
+                File.WriteAllText(m_DalProjectDirectory + m_DalNamespace + ".csproj", projectFile);
+            }
         }
 
         #endregion
@@ -124,6 +131,13 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
 
         private void CreateDirectoryStructure(string rootPath)
         {
+
+            string[] objectDirectories = new string[] { 
+                "UserDataObjects\\"
+                , "UserGateway\\"
+                , "GeneratedClasses\\DataObject\\"
+                , "GeneratedClasses\\Gateway\\"
+            };
 
             //If the directory already exists, CreateDirectory method does nothing.
             // create the directory if it does not exist
@@ -138,11 +152,23 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             // create the directory if it does not exist
             Directory.CreateDirectory(rootPath + "GeneratedClasses\\");
 
-            // create the directory if it does not exist
-            Directory.CreateDirectory(rootPath + "GeneratedClasses\\DataObject\\");
+            foreach (string path in objectDirectories)
+            {
+                // create the directory if it does not exist
+                Directory.CreateDirectory(rootPath + path);
 
-            // create the directory if it does not exist
-            Directory.CreateDirectory(rootPath + "GeneratedClasses\\Gateway\\");
+                // create the directory if it does not exist
+                Directory.CreateDirectory(rootPath + path + "Tables\\");
+
+                // create the directory if it does not exist
+                Directory.CreateDirectory(rootPath + path + "Views\\");
+
+                // create the directory if it does not exist
+                Directory.CreateDirectory(rootPath + path + "Functions\\");
+
+                // create the directory if it does not exist
+                Directory.CreateDirectory(rootPath + path + "Procedures\\");
+            }
 
         }
 
@@ -194,110 +220,311 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
 
         }
 
-        private StringBuilder GenerateTableClassFiles()
+        #region table creation implementation
+
+        private string GenerateTables(string projectNamespace, string projectDirectory, List<Table> tableList)
+        {
+            StringBuilder itemGroup = new StringBuilder();
+
+            if (tableList.Count > 0)
+            {
+                foreach (Table table in tableList)
+                {
+                    if (1==1 || table.Build)
+                    {
+                        itemGroup.AppendLine(GenerateTableDataGatewayGeneratedClass(projectNamespace, projectDirectory, table));
+
+                        itemGroup.AppendLine(GenerateTableDataGatewayUserClass(projectNamespace, projectDirectory, table));
+
+                        itemGroup.AppendLine(GenerateTableDataEntityGeneratedClass(projectNamespace, projectDirectory, table));
+                    }
+                }
+            }
+
+            return itemGroup.ToString();
+        }
+
+        private string GenerateTableDataGatewayGeneratedClass(string projectNamespace, string projectDirectory, Table table)
         {
             string fullFileName;
             string fileContents;
             string errorMessage;
-            StringBuilder itemGroup = new StringBuilder();
+            string includeFile;
 
-            // Create everything we need
-            foreach (Table table in m_TableList)
+            try
             {
 
-                #region create the Generated Gateway for the table
+                GeneratedTableGateway generatedGateway =
+                    new GeneratedTableGateway(projectNamespace, table);
 
-                try
-                {
+                fullFileName = projectDirectory + "GeneratedClasses\\Gateway\\Tables\\" + generatedGateway.FILE_NAME;
 
-                    GeneratedGateway generatedGateway =
-                        new GeneratedGateway(m_DalNamespace, table);
+                fileContents = generatedGateway.ToString();
+                File.WriteAllText(fullFileName, fileContents);
 
-                    fullFileName = m_DalProjectDirectory + "GeneratedClasses\\Gateway\\" + generatedGateway.CLASS_NAME + "_Generated.cs";
-
-                    fileContents = generatedGateway.ToString();
-                    File.WriteAllText(fullFileName, fileContents);
-
-                    itemGroup.Append("\t\t<Compile Include=\"GeneratedClasses\\Gateway\\" + generatedGateway.CLASS_NAME + "_Generated.cs" + "\" />\n");
-
-                }
-                catch (Exception exp)
-                {
-                    errorMessage = "Error while creating the generated file for table - " + table.Name + Environment.NewLine;
-                    errorMessage += "Internal error message:\n";
-                    errorMessage += exp.Message;
-
-                    throw new Exception(errorMessage, exp);
-                }
-
-                #endregion
-
-                #region create the User Gateway for the table
-
-                try
-                {
-
-                    UserGateway userGateway =
-                        new UserGateway(m_DalNamespace, table);
-
-                    fullFileName = m_DalProjectDirectory + userGateway.CLASS_NAME + ".cs";
-
-                    if (!File.Exists(fullFileName))
-                    {
-
-                        fileContents = userGateway.ToString();
-
-                        File.WriteAllText(fullFileName, fileContents);
-
-                    }
-
-                    itemGroup.Append("\t\t<Compile Include=\"" + userGateway.CLASS_NAME + ".cs" + "\" />\n");
-
-                }
-                catch (Exception exp)
-                {
-                    errorMessage = "Error while creating the user file for table - " + table.Name + Environment.NewLine;
-                    errorMessage += "Internal error message:\n";
-                    errorMessage += exp.Message;
-
-                    throw new Exception(errorMessage, exp);
-                }
-
-                #endregion
-
-                #region create the Generated Data Entity for the table
-
-                try
-                {
-
-                    GeneratedDataObject dataObjectGenerator = new GeneratedDataObject(m_DalNamespace, table);
-
-                    fullFileName = m_DalProjectDirectory + "GeneratedClasses\\DataObject\\" + dataObjectGenerator.CLASS_NAME + "_Generated.cs";
-
-                    fileContents = dataObjectGenerator.ToString();
-                    File.WriteAllText(fullFileName, fileContents);
-
-                    //CsEntityGenerator entityGenerator = new CsEntityGenerator();
-                    //entityGenerator.GenerateEntity( table, m_DalNamespace, m_DataMappingXml, m_DalProjectDirectory + "DataObjects\\" );
-
-                    itemGroup.Append("\t\t<Compile Include=\"GeneratedClasses\\DataObject\\" + dataObjectGenerator.CLASS_NAME + "_Generated.cs" + "\" />\n");
-
-                }
-                catch (Exception exp)
-                {
-                    errorMessage = "Error while creating the data object file for table - " + table.Name + Environment.NewLine;
-                    errorMessage += "Internal error message:\n";
-                    errorMessage += exp.Message;
-
-                    throw new Exception(errorMessage, exp);
-                }
-
-                #endregion
+                includeFile = "\t\t<Compile Include=\"GeneratedClasses\\Gateway\\Tables\\" + generatedGateway.FILE_NAME + "\" />";
 
             }
+            catch (Exception exp)
+            {
+                errorMessage = "Error while creating the generated file for table - " + table.Name + Environment.NewLine;
+                errorMessage += "Internal error message:\n";
+                errorMessage += exp.Message;
 
-            return itemGroup;
+                throw new Exception(errorMessage, exp);
+            }
+
+            return includeFile;
         }
+
+        private string GenerateTableDataGatewayUserClass(string projectNamespace, string projectDirectory, Table table)
+        {
+            string fullFileName;
+            string fileContents;
+            string errorMessage;
+            string includeFile;
+
+            try
+            {
+
+                UserTableGateway userGateway =
+                    new UserTableGateway(projectNamespace, table);
+
+                fullFileName = projectDirectory + "UserGateway\\Tables\\" + userGateway.CLASS_NAME + ".cs";
+
+                if (!File.Exists(fullFileName))
+                {
+
+                    fileContents = userGateway.ToString();
+
+                    File.WriteAllText(fullFileName, fileContents);
+
+                }
+
+                includeFile = "\t\t<Compile Include=\"UserGateway\\Tables\\" + userGateway.CLASS_NAME + ".cs" + "\" />";
+
+            }
+            catch (Exception exp)
+            {
+                errorMessage = "Error while creating the user file for table - " + table.Name + Environment.NewLine;
+                errorMessage += "Internal error message:\n";
+                errorMessage += exp.Message;
+
+                throw new Exception(errorMessage, exp);
+            }
+
+            return includeFile;
+        }
+
+        private string GenerateTableDataEntityGeneratedClass(string projectNamespace, string projectDirectory, Table table)
+        {
+            string fullFileName;
+            string fileContents;
+            string errorMessage;
+            string includeFile;
+
+            try
+            {
+
+                GeneratedTableDataObject dataObjectGenerator = new GeneratedTableDataObject(projectNamespace, table);
+
+                fullFileName = projectDirectory + "GeneratedClasses\\DataObject\\Tables\\" + dataObjectGenerator.CLASS_NAME + "_Generated.cs";
+
+                fileContents = dataObjectGenerator.ToString();
+                File.WriteAllText(fullFileName, fileContents);
+
+                includeFile = "\t\t<Compile Include=\"GeneratedClasses\\DataObject\\Tables\\" + dataObjectGenerator.CLASS_NAME + "_Generated.cs" + "\" />";
+
+            }
+            catch (Exception exp)
+            {
+                errorMessage = "Error while creating the data object file for table - " + table.Name + Environment.NewLine;
+                errorMessage += "Internal error message:\n";
+                errorMessage += exp.Message;
+
+                throw new Exception(errorMessage, exp);
+            }
+
+            return includeFile;
+        }
+
+        #endregion
+
+        #region view creation implementation
+
+        private string GenerateViews(string projectNamespace, string projectDirectory, List<View> viewList)
+        {
+            StringBuilder itemGroup = new StringBuilder();
+
+            if (viewList.Count > 0)
+            {
+                foreach (View view in viewList)
+                {
+                    if (1 == 1 || view.Build)
+                    {
+                        itemGroup.AppendLine(GenerateViewDataGatewayGeneratedClass(projectNamespace, projectDirectory, view));
+
+                        itemGroup.AppendLine(GenerateViewDataGatewayUserClass(projectNamespace, projectDirectory, view));
+
+                        itemGroup.AppendLine(GenerateViewDataEntityGeneratedClass(projectNamespace, projectDirectory, view));
+                    }
+                }
+            }
+
+            return itemGroup.ToString();
+        }
+
+        private string GenerateViewDataGatewayGeneratedClass(string projectNamespace, string projectDirectory, View view)
+        {
+            string fullFileName;
+            string fileContents;
+            string errorMessage;
+            string includeFile;
+
+            try
+            {
+
+                GeneratedViewGateway generatedGateway =
+                    new GeneratedViewGateway(projectNamespace, view);
+
+                fullFileName = projectDirectory + "GeneratedClasses\\Gateway\\Views\\" + generatedGateway.CLASS_NAME + "_Generated.cs";
+
+                fileContents = generatedGateway.ToString();
+                File.WriteAllText(fullFileName, fileContents);
+
+                includeFile = "\t\t<Compile Include=\"GeneratedClasses\\Gateway\\Views\\" + generatedGateway.CLASS_NAME + "_Generated.cs" + "\" />";
+
+            }
+            catch (Exception exp)
+            {
+                errorMessage = "Error while creating the generated file for table - " + view.Name + Environment.NewLine;
+                errorMessage += "Internal error message:\n";
+                errorMessage += exp.Message;
+
+                throw new Exception(errorMessage, exp);
+            }
+
+            return includeFile;
+        }
+
+        private string GenerateViewDataGatewayUserClass(string projectNamespace, string projectDirectory, View view)
+        {
+            string fullFileName;
+            string fileContents;
+            string errorMessage;
+            string includeFile;
+
+            try
+            {
+
+                UserViewGateway userGateway =
+                    new UserViewGateway(projectNamespace, view);
+
+                fullFileName = projectDirectory + "UserGateway\\Views\\" + userGateway.CLASS_NAME + ".cs";
+
+                if (!File.Exists(fullFileName))
+                {
+
+                    fileContents = userGateway.ToString();
+
+                    File.WriteAllText(fullFileName, fileContents);
+
+                }
+
+                includeFile = "\t\t<Compile Include=\"UserGateway\\Views\\" + userGateway.CLASS_NAME + ".cs" + "\" />";
+
+            }
+            catch (Exception exp)
+            {
+                errorMessage = "Error while creating the user file for table - " + view.Name + Environment.NewLine;
+                errorMessage += "Internal error message:\n";
+                errorMessage += exp.Message;
+
+                throw new Exception(errorMessage, exp);
+            }
+
+            return includeFile;
+        }
+
+        private string GenerateViewDataEntityGeneratedClass(string projectNamespace, string projectDirectory, View view)
+        {
+            string fullFileName;
+            string fileContents;
+            string errorMessage;
+            string includeFile;
+
+            try
+            {
+
+                GeneratedViewDataObject dataObjectGenerator = new GeneratedViewDataObject(projectNamespace, view);
+
+                fullFileName = projectDirectory + "GeneratedClasses\\DataObject\\Views\\" + dataObjectGenerator.CLASS_NAME + "_Generated.cs";
+
+                fileContents = dataObjectGenerator.ToString();
+                File.WriteAllText(fullFileName, fileContents);
+
+                includeFile = "\t\t<Compile Include=\"GeneratedClasses\\DataObject\\Views\\" + dataObjectGenerator.CLASS_NAME + "_Generated.cs" + "\" />";
+
+            }
+            catch (Exception exp)
+            {
+                errorMessage = "Error while creating the data object file for table - " + view.Name + Environment.NewLine;
+                errorMessage += "Internal error message:\n";
+                errorMessage += exp.Message;
+
+                throw new Exception(errorMessage, exp);
+            }
+
+            return includeFile;
+        }
+
+        #endregion
+
+        #region function creation implementation
+
+        private string GenerateFunctions(string projectNamespace, string projectDirectory, List<Function> functionList)
+        {
+            StringBuilder itemGroup = new StringBuilder();
+
+            if (functionList.Count > 0)
+            {
+                foreach (Function function in functionList)
+                {
+                    //itemGroup.AppendLine(GenerateViewDataGatewayGeneratedClass(projectNamespace, projectDirectory, view));
+
+                    //itemGroup.AppendLine(GenerateViewDataGatewayUserClass(projectNamespace, projectDirectory, view));
+
+                    //itemGroup.AppendLine(GenerateViewDataEntityGeneratedClass(projectNamespace, projectDirectory, view));
+                }
+            }
+
+            return itemGroup.ToString();
+        }
+
+        #endregion
+
+        #region procedure creation implementation
+
+        private string GenerateProcedures(string projectNamespace, string projectDirectory, List<Procedure> procedureList)
+        {
+            StringBuilder itemGroup = new StringBuilder();
+
+            if (procedureList.Count > 0)
+            {
+                foreach (Procedure procedure in procedureList)
+                {
+                    //itemGroup.AppendLine(GenerateViewDataGatewayGeneratedClass(projectNamespace, projectDirectory, view));
+
+                    //itemGroup.AppendLine(GenerateViewDataGatewayUserClass(projectNamespace, projectDirectory, view));
+
+                    //itemGroup.AppendLine(GenerateViewDataEntityGeneratedClass(projectNamespace, projectDirectory, view));
+                }
+            }
+
+            return itemGroup.ToString();
+        }
+
+        #endregion
 
         #endregion
     }

@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Column.cs" />
+    <Compile Include="IView.cs" />
     <Compile Include="Parameter.cs" />
     <Compile Include="Schema.cs" />
     <Compile Include="Function.cs" />

@@ -60,23 +60,35 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
 
         }
 
-        ~GeneratedGateway()
-        {
-        }
-
         #endregion
 
         #region public properties
 
-        public override Table Table
+        /// <summary>
+        /// returns the name of the file that is gnerated
+        /// </summary>
+        public override string FILE_NAME
         {
             get
             {
-                return m_Table;
+                if (String.IsNullOrEmpty(m_FILE_NAME))
+                {
+                    m_FILE_NAME = CLASS_NAME + "_Generated.cs";
+                }
+
+                return m_FILE_NAME;
+            }
+        }
+
+        public override IView IView
+        {
+            get
+            {
+                return m_IView;
             }
             set
             {
-                base.Table = value;
+                base.IView = value;
 
                 m_COLUMN_INDEX_ENUMERATION = "";
                 m_COLUMN_DEFINITION_INITIALIZATION = "";
@@ -115,7 +127,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
         public override string ToString()
         {
 
-            base.CLASS_SUMMARY = "Generated class that provides CRUD functionality for the #TABLE_NAME# table.";
+            base.CLASS_SUMMARY = "Table Data Gateway class that provides CRUD functionality for the #TABLE_NAME# table.";
 
             return base.ToString();
         }
@@ -127,7 +139,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             AppendLine("// It contains the implementations of the class #CLASS_NAME#.");
             AppendLine("// Do not make modifications to this file since they will be overwritten");
             AppendLine("// when this file is regenerated. Instead, make your modifications");
-            AppendLine("// to the file without the \'_Gateway\' extension.");
+            AppendLine("// to the file without the \'_Generated\' extension.");
             AppendLine("//");
 
             base.OnGetFileComments();
@@ -147,8 +159,8 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
         protected override void OnPreGetClass()
         {
 
-            Column[] columns = m_Table.Columns;
-            int columnCount = m_Table.Columns.Length;
+            Column[] columns = m_IView.Columns;
+            int columnCount = m_IView.Columns.Length;
 
             AppendLine();
             AppendLine("public enum #CLASS_NAME_PREFIX#FieldIndex{");
@@ -172,6 +184,18 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             base.OnPreGetClass();
         }
 
+        protected override void OnGetRegion_PrivateProtectedMemberVariables()
+        {
+
+            Column[] columns = m_IView.Columns;
+            int columnCount = m_IView.Columns.Length;
+
+            AppendLine();
+            AppendLine("private static readonly #CLASS_NAME# m_Instance = new #CLASS_NAME#();");
+            AppendLine("private static FieldDefinitionGroup m_FieldDefinitions = new FieldDefinitionGroup();");
+
+        }
+
         protected override void OnGetRegion_InternalStructuredMembers()
         {
 
@@ -180,25 +204,136 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             base.OnGetRegion_InternalStructuredMembers();
         }
 
-        protected override void OnGetRegion_PrivateProtectedMemberVariables()
+        protected override void OnGetRegion_PublicProperties()
         {
 
-            Column[] columns = m_Table.Columns;
-            int columnCount = m_Table.Columns.Length;
+            AppendLine();
+            AppendLine("#region properties");
+
+            #region Instance
 
             AppendLine();
-            AppendLine("private static readonly #CLASS_NAME# m_Instance = new #CLASS_NAME#();");
-            AppendLine("private static FieldDefinitionGroup m_FieldDefinitions = new FieldDefinitionGroup();");
+            AppendLine("public static #CLASS_NAME# Instance {");
+            IndentIncrement();
+            AppendLine("get {");
+            IndentIncrement();
+            AppendLine("return m_Instance;");
+            IndentDecrement();
+            AppendLine("}");
+            IndentDecrement();
+            AppendLine("}");
+
+            #endregion
+
+            #region static FieldDefinitionArray
+
+            AppendLine();
+            AppendLine("public static FieldDefinition[] FieldDefinitionArray {");
+            IndentIncrement();
+            AppendLine("get {");
+            IndentIncrement();
+            AppendLine("return m_FieldDefinitions.FieldDefinitionArray;");
+            IndentDecrement();
+            AppendLine("}");
+            IndentDecrement();
+            AppendLine("}");
+
+            #endregion
+
+            #region static FieldDefinitions
+
+            AppendLine();
+            AppendLine("public static FieldDefinitionGroup FieldDefinitions {");
+            IndentIncrement();
+            AppendLine("get {");
+            IndentIncrement();
+            AppendLine("return m_FieldDefinitions;");
+            IndentDecrement();
+            AppendLine("}");
+            IndentDecrement();
+            AppendLine("}");
+
+            #endregion
+
+            #region static DatabaseName
+
+            AppendLine();
+            AppendLine("public static string DatabaseName {");
+            IndentIncrement();
+            AppendLine("get {");
+            IndentIncrement();
+            AppendLine("return \"" + m_IView.DatabaseName + "\";");
+            IndentDecrement();
+            AppendLine("}");
+            IndentDecrement();
+            AppendLine("}");
+
+            #endregion
+
+            #region static SchemaName
+
+            AppendLine();
+            AppendLine("public static string SchemaName {");
+            IndentIncrement();
+            AppendLine("get {");
+            IndentIncrement();
+            AppendLine("return \"" + m_IView.Schema + "\";");
+            IndentDecrement();
+            AppendLine("}");
+            IndentDecrement();
+            AppendLine("}");
+
+            #endregion
+
+            #region static TableName
+
+            AppendLine();
+            AppendLine("public static string TableName {");
+            IndentIncrement();
+            AppendLine("get {");
+            IndentIncrement();
+            AppendLine("return \"[" + m_IView.Name + "]\";");
+            IndentDecrement();
+            AppendLine("}");
+            IndentDecrement();
+            AppendLine("}");
+
+            #endregion
+
+            #region static SchemaTableName
+
+            AppendLine();
+            AppendLine("public static string SchemaTableName {");
+            IndentIncrement();
+            AppendLine("get {");
+            IndentIncrement();
+            AppendLine("return SchemaName + \".\" + TableName;");
+            IndentDecrement();
+            AppendLine("}");
+            IndentDecrement();
+            AppendLine("}");
+
+            #endregion
+
+            #region static FullyQualifiedTableName
+
+            AppendLine();
+            AppendLine("public static string FullyQualifiedTableName {");
+            IndentIncrement();
+            AppendLine("get {");
+            IndentIncrement();
+            AppendLine("return DatabaseName + \".\" + SchemaName + \".\" + TableName;");
+            IndentDecrement();
+            AppendLine("}");
+            IndentDecrement();
+            AppendLine("}");
+
+            #endregion
+
+            AppendLine();
+            AppendLine("#endregion");
 
         }
-
-        //protected override void OnGetRegion_ConstructorsDesturctors() {
-
-        //    //AppendLine();
-        //    //AppendLine( "static #CLASS_NAME#(){" );
-        //    //AppendLine( "}" );
-
-        //}
 
         protected override void OnGetRegion_InterfaceImplementationMethods()
         {
@@ -329,7 +464,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             AppendLine("#CLASS_NAME_PREFIX#DataObject IGateway<#CLASS_NAME_PREFIX#DataObject," + pkType + ">.SelectByPrimaryKey( " + pkType + " id ){");
             IndentIncrement();
 
-            if (m_Table.PrimaryKey == null || m_Table.PrimaryKey.Columns.Length == 0)
+            if (m_IView.PrimaryKey == null || m_IView.PrimaryKey.Columns.Length == 0)
             {
                 AppendLine("return null;");
             }
@@ -346,9 +481,9 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             #region IGateway<T>.Insert
 
             AppendLine();
-            AppendLine("void IGateway<#CLASS_NAME_PREFIX#DataObject," + pkType + ">.Insert( #CLASS_NAME_PREFIX#DataObject dataObject ){");
+            AppendLine("void IGateway<#CLASS_NAME_PREFIX#DataObject," + pkType + ">.Insert( #CONCRETE_DATA_ENTITY_TYPE_NAME# dataObject ){");
             IndentIncrement();
-            AppendLine("#CLASS_NAME#.Insert( (#CONCRETE_DATA_ENTITY_TYPE_NAME#)dataObject );");
+            AppendLine("#CLASS_NAME#.Insert( dataObject );");
             IndentDecrement();
             AppendLine("}");
 
@@ -357,9 +492,9 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             #region IGateway<T>.Update
 
             AppendLine();
-            AppendLine("void IGateway<#CLASS_NAME_PREFIX#DataObject," + pkType + ">.Update( #CLASS_NAME_PREFIX#DataObject dataObject ){");
+            AppendLine("void IGateway<#CLASS_NAME_PREFIX#DataObject," + pkType + ">.Update( #CONCRETE_DATA_ENTITY_TYPE_NAME# dataObject ){");
             IndentIncrement();
-            AppendLine("#CLASS_NAME#.Update( (#CONCRETE_DATA_ENTITY_TYPE_NAME#)dataObject );");
+            AppendLine("#CLASS_NAME#.Update( dataObject );");
             IndentDecrement();
             AppendLine("}");
 
@@ -368,9 +503,9 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             #region IGateway<T>.Delete
 
             AppendLine();
-            AppendLine("void IGateway<#CLASS_NAME_PREFIX#DataObject," + pkType + ">.Delete( #CLASS_NAME_PREFIX#DataObject dataObject ){");
+            AppendLine("void IGateway<#CLASS_NAME_PREFIX#DataObject," + pkType + ">.Delete( #CONCRETE_DATA_ENTITY_TYPE_NAME# dataObject ){");
             IndentIncrement();
-            AppendLine("#CLASS_NAME#.Delete( (#CONCRETE_DATA_ENTITY_TYPE_NAME#)dataObject );");
+            AppendLine("#CLASS_NAME#.Delete( dataObject );");
             IndentDecrement();
             AppendLine("}");
 
@@ -378,137 +513,6 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
 
             AppendLine();
             AppendLine("#endregion");
-
-            AppendLine();
-            AppendLine("#endregion");
-
-        }
-
-        protected override void OnGetRegion_PublicProperties()
-        {
-
-            AppendLine();
-            AppendLine("#region properties");
-
-            #region Instance
-
-            AppendLine();
-            AppendLine("public static #CLASS_NAME# Instance {");
-            IndentIncrement();
-            AppendLine("get {");
-            IndentIncrement();
-            AppendLine("return m_Instance;");
-            IndentDecrement();
-            AppendLine("}");
-            IndentDecrement();
-            AppendLine("}");
-
-            #endregion
-
-            #region static FieldDefinitionArray
-
-            AppendLine();
-            AppendLine("public static FieldDefinition[] FieldDefinitionArray {");
-            IndentIncrement();
-            AppendLine("get {");
-            IndentIncrement();
-            AppendLine("return m_FieldDefinitions.FieldDefinitionArray;");
-            IndentDecrement();
-            AppendLine("}");
-            IndentDecrement();
-            AppendLine("}");
-
-            #endregion
-
-            #region static FieldDefinitions
-
-            AppendLine();
-            AppendLine("public static FieldDefinitionGroup FieldDefinitions {");
-            IndentIncrement();
-            AppendLine("get {");
-            IndentIncrement();
-            AppendLine("return m_FieldDefinitions;");
-            IndentDecrement();
-            AppendLine("}");
-            IndentDecrement();
-            AppendLine("}");
-
-            #endregion
-
-            #region static DatabaseName
-
-            AppendLine();
-            AppendLine("public static string DatabaseName {");
-            IndentIncrement();
-            AppendLine("get {");
-            IndentIncrement();
-            AppendLine("return \"" + m_Table.DatabaseName + "\";");
-            IndentDecrement();
-            AppendLine("}");
-            IndentDecrement();
-            AppendLine("}");
-
-            #endregion
-
-            #region static SchemaName
-
-            AppendLine();
-            AppendLine("public static string SchemaName {");
-            IndentIncrement();
-            AppendLine("get {");
-            IndentIncrement();
-            AppendLine("return \"" + m_Table.Schema + "\";");
-            IndentDecrement();
-            AppendLine("}");
-            IndentDecrement();
-            AppendLine("}");
-
-            #endregion
-
-            #region static TableName
-
-            AppendLine();
-            AppendLine("public static string TableName {");
-            IndentIncrement();
-            AppendLine("get {");
-            IndentIncrement();
-            AppendLine("return \"[" + m_Table.Name + "]\";");
-            IndentDecrement();
-            AppendLine("}");
-            IndentDecrement();
-            AppendLine("}");
-
-            #endregion
-
-            #region static SchemaTableName
-
-            AppendLine();
-            AppendLine("public static string SchemaTableName {");
-            IndentIncrement();
-            AppendLine("get {");
-            IndentIncrement();
-            AppendLine("return SchemaName + \".\" + TableName;");
-            IndentDecrement();
-            AppendLine("}");
-            IndentDecrement();
-            AppendLine("}");
-
-            #endregion
-
-            #region static FullyQualifiedTableName
-
-            AppendLine();
-            AppendLine("public static string FullyQualifiedTableName {");
-            IndentIncrement();
-            AppendLine("get {");
-            IndentIncrement();
-            AppendLine("return DatabaseName + \".\" + SchemaName + \".\" + TableName;");
-            IndentDecrement();
-            AppendLine("}");
-            IndentDecrement();
-            AppendLine("}");
-
-            #endregion
 
             AppendLine();
             AppendLine("#endregion");
@@ -526,6 +530,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             OnCRUD_LoadByPrimaryKey();
             OnCRUD_Insert();
             OnCRUD_Update();
+            OnCRUD_UpdateByPrimaryKey();
             OnCRUD_Delete();
             OnCRUD_DeleteByPrimaryKey();
             OnCRUD_DeleteByFieldsList();
@@ -576,13 +581,13 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
         protected virtual void OnCRUD_SelectByPrimaryKey()
         {
 
-            if (m_Table.PrimaryKey == null || m_Table.PrimaryKey.Columns.Length == 0)
+            if (m_IView.PrimaryKey == null || m_IView.PrimaryKey.Columns.Length == 0)
             {
                 return;
             }
 
-            Column[] pkList = m_Table.PrimaryKey.Columns;
-            int columnCount = m_Table.PrimaryKey.Columns.Length;
+            Column[] pkList = m_IView.PrimaryKey.Columns;
+            int columnCount = m_IView.PrimaryKey.Columns.Length;
 
             AppendLine();
             AppendStartLine("public static #CONCRETE_DATA_ENTITY_TYPE_NAME# SelectByPrimaryKey( ");
@@ -643,13 +648,13 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
         protected virtual void OnCRUD_LoadByPrimaryKey()
         {
 
-            if (m_Table.PrimaryKey == null || m_Table.PrimaryKey.Columns.Length == 0)
+            if (m_IView.PrimaryKey == null || m_IView.PrimaryKey.Columns.Length == 0)
             {
                 return;
             }
 
-            Column[] pkList = m_Table.PrimaryKey.Columns;
-            int columnCount = m_Table.PrimaryKey.Columns.Length;
+            Column[] pkList = m_IView.PrimaryKey.Columns;
+            int columnCount = m_IView.PrimaryKey.Columns.Length;
 
             AppendLine();
             AppendLine("internal static void LoadByPrimaryKey( #CONCRETE_DATA_ENTITY_TYPE_NAME# dataObject, ");
@@ -841,13 +846,13 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
         protected virtual void OnCRUD_UpdateByPrimaryKey()
         {
 
-            if (m_Table.PrimaryKey == null || m_Table.PrimaryKey.Columns.Length == 0)
+            if (m_IView.PrimaryKey == null || m_IView.PrimaryKey.Columns.Length == 0)
             {
                 return;
             }
 
-            Column[] pkList = m_Table.PrimaryKey.Columns;
-            int columnCount = m_Table.PrimaryKey.Columns.Length;
+            Column[] pkList = m_IView.PrimaryKey.Columns;
+            int columnCount = m_IView.PrimaryKey.Columns.Length;
 
             AppendLine();
             AppendLine("public static void Update( #CONCRETE_DATA_ENTITY_TYPE_NAME# dataObject ){");
@@ -987,6 +992,57 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
 
         }
 
+        protected virtual void OnCRUD_DeleteByPrimaryKey()
+        {
+
+            if (m_IView.PrimaryKey == null || m_IView.PrimaryKey.Columns.Length == 0)
+            {
+                return;
+            }
+
+            Column[] pkList = m_IView.PrimaryKey.Columns;
+            int columnCount = m_IView.PrimaryKey.Columns.Length;
+
+            #region variable declaration
+
+            AppendLine();
+            AppendStartLine("public static void DeleteByPrimaryKey( ");
+            Append(base.PK_PARAMETER_LIST);
+            AppendEndLine(" ){");
+            IndentIncrement();
+            AppendLine();
+            AppendLine("List<FieldValue> fieldValueList = new List<FieldValue>( );");
+
+            #endregion
+
+            #region initialization of the fielddefinitions and fieldvalues
+
+            AppendLine();
+            for (int index = 0; index < columnCount; index++)
+            {
+                AppendStartLine("fieldValueList.Add(");
+                Append(" new FieldValue( m_FieldDefinitions.");
+                Append(pkList[index].PropertyName);
+                Append(", ");
+                Append(Utility.FormatCamel(pkList[index].PropertyName));
+                AppendEndLine(" ) );");
+            }
+
+            #endregion
+
+            #region run query
+
+            AppendLine();
+            AppendLine("DeleteByFields(fieldValueList);");
+            AppendLine();
+
+            #endregion
+
+            IndentDecrement();
+            AppendLine("}");
+
+        }
+
         protected virtual void OnCRUD_DeleteByFieldsList()
         {
 
@@ -1036,57 +1092,6 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
 
             AppendLine();
             AppendLine("GatewayHelper.ExecuteNonQueryFromSql(deleteQuery.ToString(), fieldValueArray);");
-
-            #endregion
-
-            IndentDecrement();
-            AppendLine("}");
-
-        }
-
-        protected virtual void OnCRUD_DeleteByPrimaryKey()
-        {
-
-            if (m_Table.PrimaryKey == null || m_Table.PrimaryKey.Columns.Length == 0)
-            {
-                return;
-            }
-
-            Column[] pkList = m_Table.PrimaryKey.Columns;
-            int columnCount = m_Table.PrimaryKey.Columns.Length;
-
-            #region variable declaration
-
-            AppendLine();
-            AppendStartLine("public static void DeleteByPrimaryKey( ");
-            Append(base.PK_PARAMETER_LIST);
-            AppendEndLine(" ){");
-            IndentIncrement();
-            AppendLine();
-            AppendLine("List<FieldValue> fieldValueList = new List<FieldValue>( );");
-
-            #endregion
-
-            #region initialization of the fielddefinitions and fieldvalues
-
-            AppendLine();
-            for (int index = 0; index < columnCount; index++)
-            {
-                AppendStartLine("fieldValueList.Add(");
-                Append(" new FieldValue( m_FieldDefinitions.");
-                Append(pkList[index].PropertyName);
-                Append(", ");
-                Append(Utility.FormatCamel(pkList[index].PropertyName));
-                AppendEndLine(" ) );");
-            }
-
-            #endregion
-
-            #region run query
-
-            AppendLine();
-            AppendLine("DeleteByFields(fieldValueList);");
-            AppendLine();
 
             #endregion
 
@@ -1160,8 +1165,8 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
         protected void AddMethod_GetDataObjectFromReader()
         {
 
-            Column[] columns = m_Table.Columns;
-            int columnCount = m_Table.Columns.Length;
+            Column[] columns = m_IView.Columns;
+            int columnCount = m_IView.Columns.Length;
 
             #region get data object from reader
 
@@ -1283,10 +1288,10 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             IndentIncrement();
 
             // add fielddefinition objects
-            for (int index = 0; index < m_Table.Columns.Length; index++)
+            for (int index = 0; index < m_IView.Columns.Length; index++)
             {
-                AppendStartLine(Get_NewFieldDefinition(m_Table, index));
-                if (index < m_Table.Columns.Length - 1)
+                AppendStartLine(Get_NewFieldDefinition(m_IView, index));
+                if (index < m_IView.Columns.Length - 1)
                 {
                     Append(",");
                 }
@@ -1311,10 +1316,10 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             IndentDecrement();
             AppendLine("}");
 
-            for (int index = 0; index < m_Table.Columns.Length; index++)
+            for (int index = 0; index < m_IView.Columns.Length; index++)
             {
                 AppendLine();
-                AppendLine("public FieldDefinition " + m_Table.Columns[index].PropertyName + " {");
+                AppendLine("public FieldDefinition " + m_IView.Columns[index].PropertyName + " {");
                 IndentIncrement();
 
                 AppendLine("get {");

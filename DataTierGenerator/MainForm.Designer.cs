@@ -204,6 +204,7 @@ namespace TotalSafety.DataTierGenerator {
             this.m_GuiProjectTree.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_GuiProjectTree.Location = new System.Drawing.Point(0, 0);
             this.m_GuiProjectTree.Name = "m_GuiProjectTree";
+            treeNode1.Checked = true;
             treeNode1.Name = "Node0";
             treeNode1.Text = "No project to display.";
             treeNode2.Name = "Node1";

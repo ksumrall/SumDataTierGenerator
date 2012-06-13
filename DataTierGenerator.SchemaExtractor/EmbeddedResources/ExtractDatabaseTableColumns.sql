@@ -2,7 +2,7 @@ SELECT SCHEMA_NAME(t.schema_id) AS schema_name
     ,t.[name] AS table_name
     ,c.[name] AS column_name
     ,c.[column_id]
-    ,TYPE_NAME(c.user_type_id) AS [data_type]
+    ,TYPE_NAME(c.system_type_id) AS [data_type]
     ,c.[max_length]
     ,c.[precision]
     ,c.[scale]

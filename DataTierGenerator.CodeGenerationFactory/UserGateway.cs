@@ -66,10 +66,6 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
 
         }
 
-        #endregion
-
-        #region event handlers / overrides
-
         protected override void OnGetRegion_ConstructorsDestructors() {
 
             AppendLine();
@@ -88,12 +84,12 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
 
         protected virtual void OnCRUD_Update() {
 
-            if ( m_Table.PrimaryKey == null || m_Table.PrimaryKey.Columns.Length == 0 ) {
+            if ( m_IView.PrimaryKey == null || m_IView.PrimaryKey.Columns.Length == 0 ) {
                 return;
             }
 
             //List<Column> pkList = m_Table.PrimaryKey.Columns;
-            int columnCount = m_Table.PrimaryKey.Columns.Length;
+            int columnCount = m_IView.PrimaryKey.Columns.Length;
 
             AppendLine();
             AppendLine( "public void Update( #CONCRETE_DATA_ENTITY_TYPE_NAME# dataObject ){" );

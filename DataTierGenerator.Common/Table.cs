@@ -38,24 +38,12 @@ namespace TotalSafety.DataTierGenerator.Common
     /// <summary>
     /// Class that stores information for tables in a database.
     /// </summary>
-    public partial class Table
+    public partial class Table : IView
     {
 
         #region private and protected member variables
 
-        //private string m_Name;
-        //private DateTime m_CreateDate;
-        //private DateTime m_ModifyDate;
-        //private string m_DatabaseName;
-        //private string m_Schema;
-        //private string m_Description;
-        private ColumnList m_ColumnList;
-        //private Index m_PrimaryKey;
-        private List<Index> m_ForeignKeyList;
-
         private string m_ClassName;
-
-        private bool m_BuildClass;
 
         #endregion
 
@@ -66,18 +54,11 @@ namespace TotalSafety.DataTierGenerator.Common
         /// </summary>
         public Table()
         {
-            //m_ColumnList = new ColumnList();
-            //m_PrimaryKey = null;
-            //m_ForeignKeyList = new List<Index>();
-
-            //m_Schema = "";
-            //m_Name = "";
-            //m_Description = "";
-
             m_ClassName = "";
         }
 
-        public Table(XmlNode tableNode):this()
+        public Table(XmlNode tableNode)
+            : this()
         {
             /*
             <table name="Transaction" create_date="8/21/2010 7:19:37 PM" modify_date="11/7/2010 3:10:50 PM">
@@ -112,22 +93,6 @@ namespace TotalSafety.DataTierGenerator.Common
              * */
             Name = tableNode.Attributes["name"].Value;
 
-            //node = tableNode.SelectSingleNode("./DatabaseName");
-            //if (node != null)
-            //    m_DatabaseName = node.Value;
-
-            //node = tableNode.SelectSingleNode("./Schema");
-            //if (node != null)
-            //    m_Schema = node.Value;
-
-            //node = tableNode.SelectSingleNode("./Name");
-            //if (node != null)
-            //    m_Name = node.Value;
-
-            //node = tableNode.SelectSingleNode("./Description");
-            //if (node != null)
-            //    m_Description = node.Value;
-
             XmlNodeList list = tableNode.SelectNodes(".//columns//column");
 
             List<Column> columnList = new List<Column>();
@@ -137,122 +102,47 @@ namespace TotalSafety.DataTierGenerator.Common
             }
             Columns = columnList.ToArray();
 
-        }
+            // add primary key
+            XmlNode keyNode = tableNode.SelectSingleNode(".//primary_key");
+            if (keyNode != null)
+            {
+                PrimaryKey = new TablePrimaryKey();
+                PrimaryKey.Name = keyNode.Attributes["name"].Value;
+                list = keyNode.SelectNodes(".//key_column");
+                TablePrimaryKeyKeyColumn kk;
+                List<TablePrimaryKeyKeyColumn> kkl = new List<TablePrimaryKeyKeyColumn>();
+                foreach (XmlNode node in list)
+                {
+                    kk = new TablePrimaryKeyKeyColumn();
+                    kk.ColumnName = node.Attributes["column_name"].Value;
+                    kk.KeyOrdinal = node.Attributes["key_ordinal"].Value;
+                    kkl.Add(kk);
+                }
+                PrimaryKey.KeyColumn = kkl.ToArray();
+            }
 
-        #endregion
+            // add foreign keys
+            XmlNodeList keyList = tableNode.SelectNodes(".//foreign_keys/foreign_key");
+            if (keyList.Count > 0)
+            {
+                TableForeignKey foreignKey;
+                List<TableForeignKey> foreignKeys = new List<TableForeignKey>();
+                foreach (XmlNode node in keyList)
+                {
+                    foreignKey = new TableForeignKey();
+                    foreignKey.Name = node.Attributes["name"].Value;
+                    list = node.SelectNodes(".//column");
+                    columnList.Clear();
+                    foreach (XmlNode columnNode in list)
+                    {
+                        columnList.Add(new Column(columnNode));
+                    }
+                    foreignKey.Columns = columnList.ToArray();
 
-        #region public database related properties
-
-        /// <summary>
-        /// Contains the list of Column instances that define the table.
-        /// </summary>
-        //public ColumnList Columns
-        //{
-        //    get
-        //    {
-        //        return m_ColumnList;
-        //    }
-        //}
-
-        /// <summary>
-        /// DatabaseName of the table.
-        /// </summary>
-        //public string DatabaseName
-        //{
-        //    get
-        //    {
-        //        return m_DatabaseName;
-        //    }
-        //    set
-        //    {
-        //        m_DatabaseName = value;
-        //    }
-        //}
-
-        /// <summary>
-        /// Schema of the table.
-        /// </summary>
-        //public string Schema
-        //{
-        //    get
-        //    {
-        //        return m_Schema;
-        //    }
-        //    set
-        //    {
-        //        m_Schema = value;
-        //    }
-        //}
-
-        /// <summary>
-        /// Name of the table.
-        /// </summary>
-        //public string Name
-        //{
-        //    get
-        //    {
-        //        return m_Name;
-        //    }
-        //    set
-        //    {
-        //        m_Name = value;
-
-        //        if (string.IsNullOrEmpty(m_ClassName))
-        //        {
-        //            m_ClassName = m_Name;
-        //        }
-        //    }
-        //}
-
-        //public string Description
-        //{
-        //    get
-        //    {
-        //        return m_Description;
-        //    }
-        //    set
-        //    {
-        //        m_Description = value;
-        //    }
-        //}
-
-        /// <summary>
-        /// Contains the list of primary key Column instances that define the table.
-        /// </summary>
-        //public Index PrimaryKey
-        //{
-        //    get
-        //    {
-        //        return m_PrimaryKey;
-        //    }
-        //    set
-        //    {
-        //        m_PrimaryKey = value;
-        //    }
-        //}
-
-        /// <summary>
-        /// Contains the list of Column instances that define the table.  The Hashtable returned 
-        /// is keyed on the foreign key name, and the value associated with the key is an 
-        /// ArrayList of Column instances that compose the foreign key.
-        /// </summary>
-        //[XmlIgnore]
-        //public List<Index> ForeignKeys
-        //{
-        //    get
-        //    {
-        //        return m_ForeignKeyList;
-        //    }
-        //}
-
-        #endregion
-
-        #region public project related properties
-
-        public bool BuildClass
-        {
-            get { return m_BuildClass; }
-            set { m_BuildClass = value; }
+                    foreignKeys.Add(foreignKey);
+                }
+                ForeignKeys = foreignKeys.ToArray();
+            }
         }
 
         #endregion
@@ -265,6 +155,22 @@ namespace TotalSafety.DataTierGenerator.Common
             XmlNode node = xmlDoc.CreateElement(Name);
 
             return node;
+        }
+
+        public Column GetPkColumn(string name)
+        {
+            Column pkColumn = null;
+
+            foreach (Column column in Columns)
+            {
+                if (column.Name == name)
+                {
+                    pkColumn = column;
+                    break;
+                }
+            }
+
+            return pkColumn;
         }
 
         #endregion

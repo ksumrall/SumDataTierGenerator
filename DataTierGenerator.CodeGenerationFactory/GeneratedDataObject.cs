@@ -89,7 +89,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             AppendLine( "internal bool m_IsDirty;" );
             AppendLine();
             AppendLine( "internal FieldValue[] m_FieldValues = new FieldValue[" + base.COLUMN_COUNT + "];" );
-            if (m_Table.PrimaryKey != null && m_Table.PrimaryKey.Columns.Length > 0)
+            if (m_IView.PrimaryKey != null && m_IView.PrimaryKey.Columns.Length > 0)
             {
                 AppendLine( "internal FieldValue[] m_PrimaryKeyFieldValues = new FieldValue[" + base.PK_COLUMN_COUNT + "];" );
             } else {
@@ -114,7 +114,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
 
             AppendLine();
             // build the regular field values
-            columnCount = m_Table.Columns.Length;
+            columnCount = m_IView.Columns.Length;
             for( int index = 0; index < columnCount; index++ ) {
                 AppendStartLine( "m_FieldValues[" );
                 Append( index.ToString() );
@@ -123,15 +123,15 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
                 AppendEndLine( "] );" );
             }
 
-            if (m_Table.PrimaryKey != null && m_Table.PrimaryKey.Columns.Length > 0)
+            if (m_IView.PrimaryKey != null && m_IView.PrimaryKey.Columns.Length > 0)
             {
                 AppendLine();
                 // build the primary key field values
-                columnCount = m_Table.PrimaryKey.Columns.Length;
+                columnCount = m_IView.PrimaryKey.Columns.Length;
                 for( int index = 0; index < columnCount; index++ ) {
                     AppendStartLine( "m_PrimaryKeyFieldValues[" );
                     Append( index.ToString() );
-                    AppendEndLine( "] = m_FieldValues[( int )" + CLASS_NAME_PREFIX + "FieldIndex." + m_Table.PrimaryKey.Columns[index].PropertyName + "];" );
+                    AppendEndLine( "] = m_FieldValues[( int )" + CLASS_NAME_PREFIX + "FieldIndex." + m_IView.PrimaryKey.Columns[index].PropertyName + "];" );
                 }
             }
 
@@ -349,7 +349,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
 
             IndentIncrement();
 
-            foreach( Column column in m_Table.Columns ) {
+            foreach( Column column in m_IView.Columns ) {
 
                 AppendLine();
 
@@ -381,7 +381,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
 
             bool isNullableType;
 
-            foreach( Column column in m_Table.Columns ) {
+            foreach( Column column in m_IView.Columns ) {
 
                 AppendLine();
 

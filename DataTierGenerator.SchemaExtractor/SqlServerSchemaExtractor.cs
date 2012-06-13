@@ -108,10 +108,6 @@ namespace TotalSafety.DataTierGenerator.SchemaExtractor
 
             #endregion
 
-            #region get all the schemas needed for processing
-
-            #endregion
-
             return xDoc;
         }
 
@@ -228,45 +224,7 @@ namespace TotalSafety.DataTierGenerator.SchemaExtractor
 
                 xmlElement = xDoc.CreateElement("columns");
                 tableColumnsView = new DataView(tableColumns, string.Format("schema_name = '{0}' AND table_name = '{1}'", schemaName, tableName), "", DataViewRowState.CurrentRows);
-                foreach (DataRowView drvC in tableColumnsView)
-                {
-                    columnElement = xDoc.CreateElement("column");
-                    columnElement.Attributes.Append(GetXmlAttribute(xDoc, "name", drvC["column_name"].ToString()));
-                    columnElement.Attributes.Append(GetXmlAttribute(xDoc, "id", drvC["column_id"].ToString()));
-                    columnElement.Attributes.Append(GetXmlAttribute(xDoc, "data_type", drvC["data_type"].ToString()));
-                    columnElement.Attributes.Append(GetXmlAttribute(xDoc, "max_length", drvC["max_length"].ToString()));
-                    columnElement.Attributes.Append(GetXmlAttribute(xDoc, "precision", drvC["precision"].ToString()));
-                    columnElement.Attributes.Append(GetXmlAttribute(xDoc, "scale", drvC["scale"].ToString()));
-                    columnElement.Attributes.Append(GetXmlAttribute(xDoc, "is_nullable", drvC["is_nullable"].ToString()));
-                    columnElement.Attributes.Append(GetXmlAttribute(xDoc, "is_computed", drvC["is_computed"].ToString()));
-                    columnElement.Attributes.Append(GetXmlAttribute(xDoc, "is_rowguidcol", drvC["is_rowguidcol"].ToString()));
-                    columnElement.Attributes.Append(GetXmlAttribute(xDoc, "is_identity", drvC["is_identity"].ToString()));
-                    columnElement.Attributes.Append(GetXmlAttribute(xDoc, "description", drvC["description"].ToString()));
-                    columnElement.Attributes.Append(GetXmlAttribute(xDoc, "default_definition", drvC["default_definition"].ToString()));
-
-                    // get the enumerated type name
-                    xPath =
-                        "/Databases/Database[@Name='MSSQL']/FromDatabase/Type[@Name='"
-                        + drvC["data_type"].ToString() + "']/System.Data.SqlDbType";
-                    node = m_DataMappingXml.SelectSingleNode(xPath);
-                    columnElement.Attributes.Append(GetXmlAttribute(xDoc, "EnumeratedTypeName", node.Attributes["Value"].Value));
-
-                    // get the ClrType
-                    xPath =
-                        "/Databases/Database[@Name='MSSQL']/FromDatabase/Type[@Name='"
-                        + drvC["data_type"].ToString() + "']/System";
-                    node = m_DataMappingXml.SelectSingleNode(xPath);
-                    columnElement.Attributes.Append(GetXmlAttribute(xDoc, "ClrType", node.Attributes["Value"].Value));
-
-                    // get the Language Type
-                    xPath =
-                        "/Databases/Database[@Name='MSSQL']/FromDatabase/Type[@Name='"
-                        + drvC["data_type"].ToString() + "']/CSharp";
-                    node = m_DataMappingXml.SelectSingleNode(xPath);
-                    columnElement.Attributes.Append(GetXmlAttribute(xDoc, "LanguageType", node.Attributes["Value"].Value));
-
-                    xmlElement.AppendChild(columnElement);
-                }
+                LoadColumns(xmlElement, tableColumnsView);
                 tableElement.AppendChild(xmlElement);
 
                 #endregion
@@ -280,9 +238,9 @@ namespace TotalSafety.DataTierGenerator.SchemaExtractor
                     xmlElement.Attributes.Append(GetXmlAttribute(xDoc, "name", primaryKeyView[0]["index_name"].ToString()));
                     foreach (DataRowView drvP in primaryKeyView)
                     {
-                        columnElement = xDoc.CreateElement("column");
-                        columnElement.Attributes.Append(GetXmlAttribute(xDoc, "name", drvP["column_name"].ToString()));
-                        columnElement.Attributes.Append(GetXmlAttribute(xDoc, "id", drvP["key_ordinal"].ToString()));
+                        columnElement = xDoc.CreateElement("key_column");
+                        columnElement.Attributes.Append(GetXmlAttribute(xDoc, "column_name", drvP["column_name"].ToString()));
+                        columnElement.Attributes.Append(GetXmlAttribute(xDoc, "key_ordinal", drvP["key_ordinal"].ToString()));
 
                         xmlElement.AppendChild(columnElement);
                     }
@@ -405,6 +363,54 @@ namespace TotalSafety.DataTierGenerator.SchemaExtractor
 
         }
 
+        private void LoadColumns(XmlElement containerElement, DataView columnsView)
+        {
+            string xPath;
+            XmlNode node;
+            XmlElement columnElement;
+            XmlDocument xDoc = containerElement.OwnerDocument;
+
+            foreach (DataRowView drvC in columnsView)
+            {
+                columnElement = xDoc.CreateElement("column");
+                columnElement.Attributes.Append(GetXmlAttribute(xDoc, "name", drvC["column_name"].ToString()));
+                columnElement.Attributes.Append(GetXmlAttribute(xDoc, "id", drvC["column_id"].ToString()));
+                columnElement.Attributes.Append(GetXmlAttribute(xDoc, "data_type", drvC["data_type"].ToString()));
+                columnElement.Attributes.Append(GetXmlAttribute(xDoc, "max_length", drvC["max_length"].ToString()));
+                columnElement.Attributes.Append(GetXmlAttribute(xDoc, "precision", drvC["precision"].ToString()));
+                columnElement.Attributes.Append(GetXmlAttribute(xDoc, "scale", drvC["scale"].ToString()));
+                columnElement.Attributes.Append(GetXmlAttribute(xDoc, "is_nullable", drvC["is_nullable"].ToString()));
+                columnElement.Attributes.Append(GetXmlAttribute(xDoc, "is_computed", drvC["is_computed"].ToString()));
+                columnElement.Attributes.Append(GetXmlAttribute(xDoc, "is_rowguidcol", drvC["is_rowguidcol"].ToString()));
+                columnElement.Attributes.Append(GetXmlAttribute(xDoc, "is_identity", drvC["is_identity"].ToString()));
+                columnElement.Attributes.Append(GetXmlAttribute(xDoc, "description", drvC["description"].ToString()));
+                columnElement.Attributes.Append(GetXmlAttribute(xDoc, "default_definition", drvC["default_definition"].ToString()));
+                
+                // get the enumerated type name
+                xPath =
+                    "/Databases/Database[@Name='MSSQL']/FromDatabase/Type[@Name='"
+                    + drvC["data_type"].ToString() + "']/System.Data.SqlDbType";
+                node = m_DataMappingXml.SelectSingleNode(xPath);
+                columnElement.Attributes.Append(GetXmlAttribute(xDoc, "EnumeratedTypeName", node.Attributes["Value"].Value));
+
+                // get the ClrType
+                xPath =
+                    "/Databases/Database[@Name='MSSQL']/FromDatabase/Type[@Name='"
+                    + drvC["data_type"].ToString() + "']/System";
+                node = m_DataMappingXml.SelectSingleNode(xPath);
+                columnElement.Attributes.Append(GetXmlAttribute(xDoc, "ClrType", node.Attributes["Value"].Value));
+
+                // get the Language Type
+                xPath =
+                    "/Databases/Database[@Name='MSSQL']/FromDatabase/Type[@Name='"
+                    + drvC["data_type"].ToString() + "']/CSharp";
+                node = m_DataMappingXml.SelectSingleNode(xPath);
+                columnElement.Attributes.Append(GetXmlAttribute(xDoc, "LanguageType", node.Attributes["Value"].Value));
+
+                containerElement.AppendChild(columnElement);
+            }
+        }
+
         private void LoadFunctions(XmlElement containerElement, DataTable functions, DataTable parameters)
         {
             string xPath;
@@ -448,7 +454,7 @@ namespace TotalSafety.DataTierGenerator.SchemaExtractor
                     childElement.Attributes.Append(GetXmlAttribute(xDoc, "name", parameterName));
                     childElement.Attributes.Append(GetXmlAttribute(xDoc, "id", drvP["parameter_id"].ToString()));
                     childElement.Attributes.Append(GetXmlAttribute(xDoc, "description", drvP["description"].ToString()));
-                    childElement.Attributes.Append(GetXmlAttribute(xDoc, "data_type", drvP["parameter_type"].ToString()));
+                    childElement.Attributes.Append(GetXmlAttribute(xDoc, "data_type", drvP["data_type"].ToString()));
                     childElement.Attributes.Append(GetXmlAttribute(xDoc, "max_length", drvP["max_length"].ToString()));
                     childElement.Attributes.Append(GetXmlAttribute(xDoc, "precision", drvP["precision"].ToString()));
                     childElement.Attributes.Append(GetXmlAttribute(xDoc, "scale", drvP["scale"].ToString()));

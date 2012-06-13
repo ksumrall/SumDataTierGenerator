@@ -21,18 +21,14 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
         protected bool m_IsAbstract = false;
         protected bool m_IsStatic = false;
 
-        protected Table m_Table;
+        protected IView m_IView;
         private string m_COLUMN_COUNT;
 
-        private string m_PK_COLUMN_COUNT;
-        private string m_PK_ARGUMENT_LIST;
-        private string m_PK_PARAMETER_LIST;
-        private string m_PK_PARAMETER_TYPE_LIST;
-        private string m_PK_WHERE_FILTER;
 
         private string m_SELECT_COLUMN_LIST_ALL;
 
         // general substitutions
+        protected string m_FILE_NAME;
         protected string m_NAMESPACE;
         protected string m_TABLE_NAME; // for use in queries
         protected string m_CLASS_NAME; // pascal case [_]tableName<DataObject | BusinessObject | Gateway>
@@ -54,15 +50,17 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
 
         #region constructors / desturctors
 
-        public GeneratorBase(string rootNamespace, Table table)
+        public GeneratorBase(string rootNamespace, IView iView)
         {
 
             m_FileBuilder = new StringBuilder();
+
             if (!string.IsNullOrEmpty(rootNamespace))
             {
                 m_NAMESPACE = rootNamespace;
             }
-            Table = table;
+
+            IView = iView;
 
         }
 
@@ -130,15 +128,15 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             }
         }
 
-        public virtual Table Table
+        public virtual IView IView
         {
             get
             {
-                return m_Table;
+                return m_IView;
             }
             set
             {
-                m_Table = value;
+                m_IView = value;
 
                 // clear everything
                 m_TABLE_NAME = "";
@@ -148,10 +146,6 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
                 m_CLASS_VARIABLE_NAME_PREFIX = "";
 
                 m_COLUMN_COUNT = "";
-                m_PK_COLUMN_COUNT = "";
-                m_PK_ARGUMENT_LIST = "";
-                m_PK_PARAMETER_LIST = "";
-                m_PK_WHERE_FILTER = "";
 
                 m_SELECT_COLUMN_LIST_ALL = "";
 
@@ -160,6 +154,14 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
                 m_ABSTRACT_GATEWAY_TYPE_NAME = "";
                 m_CONCRETE_GATEWAY_TYPE_NAME = "";
 
+            }
+        }
+
+        public virtual string FILE_NAME
+        {
+            get
+            {
+                return m_FILE_NAME;
             }
         }
 
@@ -184,7 +186,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             {
                 if (m_TABLE_NAME == "")
                 {
-                    m_TABLE_NAME = Table.Name;
+                    m_TABLE_NAME = IView.Name;
                 }
 
                 return m_TABLE_NAME;
@@ -200,146 +202,10 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             {
                 if (m_COLUMN_COUNT == "")
                 {
-                    m_COLUMN_COUNT = Table.Columns.Length.ToString();
+                    m_COLUMN_COUNT = IView.Columns.Length.ToString();
                 }
 
                 return m_COLUMN_COUNT;
-            }
-        }
-
-        /// <summary>
-        /// number of columns making up the primary key
-        /// </summary>
-        public string PK_COLUMN_COUNT
-        {
-            get
-            {
-                if (m_PK_COLUMN_COUNT == "")
-                {
-                    if (m_Table.PrimaryKey != null && m_Table.PrimaryKey.Columns.Length > 0)
-                    {
-                        m_PK_COLUMN_COUNT = m_Table.PrimaryKey.Columns.Length.ToString();
-                    }
-                }
-
-                return m_PK_COLUMN_COUNT;
-            }
-        }
-
-        /// <summary>
-        /// number of columns making up the primary key
-        /// </summary>
-        public string PK_ARGUMENT_LIST
-        {
-            get
-            {
-                if (m_PK_ARGUMENT_LIST == "")
-                {
-
-                    if (m_Table.PrimaryKey != null && m_Table.PrimaryKey.Columns.Length > 0)
-                    {
-                        Column[] pkList = m_Table.PrimaryKey.Columns;
-                        int columnCount = m_Table.PrimaryKey.Columns.Length;
-
-                        for (int index = 0; index < columnCount; index++)
-                        {
-                            m_PK_ARGUMENT_LIST += Utility.FormatCamel(pkList[index].PropertyName);
-                            if (index < columnCount - 1)
-                            {
-                                m_PK_ARGUMENT_LIST += ",";
-                            }
-                        }
-                    }
-                }
-
-                return m_PK_ARGUMENT_LIST;
-            }
-        }
-
-        /// <summary>
-        /// number of columns making up the primary key
-        /// </summary>
-        public string PK_PARAMETER_LIST
-        {
-            get
-            {
-                if (m_PK_PARAMETER_LIST == "")
-                {
-
-                    if (m_Table.PrimaryKey != null && m_Table.PrimaryKey.Columns.Length > 0)
-                    {
-                        Column[] pkList = m_Table.PrimaryKey.Columns;
-                        int columnCount = m_Table.PrimaryKey.Columns.Length;
-
-                        for (int index = 0; index < columnCount; index++)
-                        {
-                            m_PK_PARAMETER_LIST += pkList[index].LanguageType + " "
-                            + Utility.FormatCamel(pkList[index].PropertyName);
-                            if (index < columnCount - 1)
-                            {
-                                m_PK_PARAMETER_LIST += ",";
-                            }
-                        }
-                    }
-                }
-
-                return m_PK_PARAMETER_LIST;
-            }
-        }
-
-        public string PK_PARAMETER_TYPE_LIST
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(m_PK_PARAMETER_TYPE_LIST))
-                {
-
-                    if (m_Table.PrimaryKey != null && m_Table.PrimaryKey.Columns.Length > 0)
-                    {
-                        Column[] pkList = m_Table.PrimaryKey.Columns;
-                        int columnCount = m_Table.PrimaryKey.Columns.Length;
-
-                        for (int index = 0; index < columnCount; index++)
-                        {
-                            m_PK_PARAMETER_TYPE_LIST += pkList[index].LanguageType;
-                            if (index < columnCount - 1)
-                            {
-                                m_PK_PARAMETER_TYPE_LIST += ",";
-                            }
-                        }
-                    }
-                }
-
-                return m_PK_PARAMETER_TYPE_LIST;
-            }
-        }
-
-        public string PK_WHERE_FILTER
-        {
-            get
-            {
-                if (m_PK_WHERE_FILTER == "")
-                {
-
-                    if (m_Table.PrimaryKey != null && m_Table.PrimaryKey.Columns.Length > 0)
-                    {
-
-                        Column[] pkList = m_Table.PrimaryKey.Columns;
-                        int columnCount = m_Table.PrimaryKey.Columns.Length;
-
-                        for (int index = 0; index < columnCount; index++)
-                        {
-                            m_PK_WHERE_FILTER += "[" + pkList[index].Name + "] = @"
-                            + pkList[index].PropertyName;
-                            if (index < columnCount - 1)
-                            {
-                                m_PK_WHERE_FILTER += " AND ";
-                            }
-                        }
-                    }
-                }
-
-                return m_PK_WHERE_FILTER;
             }
         }
 
@@ -365,7 +231,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             {
                 if (m_CLASS_NAME == "")
                 {
-                    m_CLASS_NAME = Utility.FormatPascal(Table.Name.Replace(" ", "_"));
+                    m_CLASS_NAME = CLASS_NAME_PREFIX;
                 }
 
                 return m_CLASS_NAME;
@@ -411,7 +277,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             {
                 if (m_CLASS_NAME_PREFIX == "")
                 {
-                    m_CLASS_NAME_PREFIX = Utility.FormatPascal(Table.Name.Replace(" ", "_"));
+                    m_CLASS_NAME_PREFIX = Utility.FormatPascal(IView.Name.Replace(" ", "_"));
                 }
 
                 return m_CLASS_NAME_PREFIX;
@@ -427,7 +293,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             {
                 if (m_CLASS_VARIABLE_NAME_PREFIX == "")
                 {
-                    m_CLASS_VARIABLE_NAME_PREFIX = Utility.FormatCamel(Table.Name.Replace(" ", "_"));
+                    m_CLASS_VARIABLE_NAME_PREFIX = CLASS_NAME;
                 }
 
                 return m_CLASS_VARIABLE_NAME_PREFIX;
@@ -445,8 +311,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
                 if (m_CONCRETE_DATA_ENTITY_TYPE_NAME == "")
                 {
                     m_CONCRETE_DATA_ENTITY_TYPE_NAME =
-                        Utility.FormatPascal(Table.Name.Replace(" ", "_"))
-                        + "DataObject";
+                        CLASS_NAME_PREFIX + "DataObject";
                 }
 
                 return m_CONCRETE_DATA_ENTITY_TYPE_NAME;
@@ -464,8 +329,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
                 if (m_CONCRETE_GATEWAY_TYPE_NAME == "")
                 {
                     m_CONCRETE_GATEWAY_TYPE_NAME =
-                        Utility.FormatPascal(Table.Name.Replace(" ", "_"))
-                        + "Gateway";
+                        CLASS_NAME_PREFIX + "Gateway";
 
                 }
 
@@ -504,11 +368,11 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             }
         }
 
-        protected string Get_NewFieldDefinition(Table table, int index)
+        protected string Get_NewFieldDefinition(IView iView, int index)
         {
 
             StringBuilder newFieldDefinition = new StringBuilder();
-            Column column = table.Columns[index];
+            Column column = iView.Columns[index];
             string isReadOnly = "false";
 
             newFieldDefinition.Append("new FieldDefinition(\"");
@@ -518,9 +382,9 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             newFieldDefinition.Append("\", typeof(");
             newFieldDefinition.Append(column.LanguageType);
             newFieldDefinition.Append("), \"");
-            newFieldDefinition.Append(m_Table.Schema);
+            newFieldDefinition.Append(m_IView.Schema);
             newFieldDefinition.Append("\", \"");
-            newFieldDefinition.Append(m_Table.Name);
+            newFieldDefinition.Append(m_IView.Name);
             newFieldDefinition.Append("\", \"");
             newFieldDefinition.Append(column.Name);
             newFieldDefinition.Append("\", \"");
@@ -553,14 +417,14 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
                 newFieldDefinition.Append(column.Precision);
             }
             newFieldDefinition.Append(", ");
-            if (table.PrimaryKey != null && ((IList)table.PrimaryKey.Columns).Contains(column))
-            {
-                newFieldDefinition.Append("true");
-            }
-            else
-            {
-                newFieldDefinition.Append("false");
-            }
+            //if (iView.PrimaryKey != null && ((IList)iView.PrimaryKey.Columns).Contains(column))
+            //{
+            //    newFieldDefinition.Append("true");
+            //}
+            //else
+            //{
+            //    newFieldDefinition.Append("false");
+            //}
             newFieldDefinition.Append(", ");
             if (column.IsIdentity)
             {
@@ -612,13 +476,14 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
 
             m_IndentLevel = 0;
 
-            #region get file comments
+            #region add file comments
 
             AppendLine("// ===============================================================================");
             AppendLine("//");
             AppendLine("// #FILE_NAME#");
             AppendLine("//");
             AppendLine("// This file contains the implementations of the class #CLASS_NAME#");
+            AppendLine("//");
 
             OnGetFileComments();
 
@@ -626,7 +491,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             AppendLine("// ===============================================================================");
             AppendLine("// Release history");
             AppendLine("// ACTION   DATE        AUTHOR              NOTES");
-            AppendLine("//");
+            AppendLine("// Created  " + DateTime.Now.ToShortDateString());
             AppendLine("// ===============================================================================");
 
             #endregion
@@ -639,7 +504,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
 
             #endregion
 
-            #region get the namespace and class body
+            #region add the namespace and class body
 
             AppendLine();
             AppendLine("namespace #NAMESPACE# {");
@@ -655,6 +520,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
 
             #endregion
 
+            m_FileBuilder.Replace("#FILE_NAME#", FILE_NAME);
             m_FileBuilder.Replace("#NAMESPACE#", Namespace);
             m_FileBuilder.Replace("#TABLE_NAME#", TABLE_NAME);
             m_FileBuilder.Replace("#CLASS_NAME#", CLASS_NAME);
@@ -662,7 +528,6 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             m_FileBuilder.Replace("#CLASS_VARIABLE_NAME_PREFIX#", CLASS_VARIABLE_NAME_PREFIX);
             m_FileBuilder.Replace("#CONCRETE_DATA_ENTITY_TYPE_NAME#", CONCRETE_DATA_ENTITY_TYPE_NAME);
             m_FileBuilder.Replace("#CONCRETE_GATEWAY_TYPE_NAME#", CONCRETE_GATEWAY_TYPE_NAME);
-            m_FileBuilder.Replace("#PK_PARAMETER_LIST#", PK_PARAMETER_LIST);
             m_FileBuilder.Replace("#COLUMN_COUNT#", COLUMN_COUNT);
 
             return m_FileBuilder.ToString();
@@ -722,8 +587,8 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
         {
 
             StringBuilder columnList = new StringBuilder();
-            Column[] columns = m_Table.Columns;
-            int columnCount = m_Table.Columns.Length;
+            Column[] columns = m_IView.Columns;
+            int columnCount = m_IView.Columns.Length;
 
             for (int index = 0; index < columnCount; index++)
             {
@@ -781,39 +646,15 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
 
             IndentIncrement();
 
-            AddRegionHeader("private and protected member variables");
             OnGetRegion_PrivateProtectedMemberVariables();
-            AddRegionFooter();
-
-            AddRegionHeader("internal structured members");
             OnGetRegion_InternalStructuredMembers();
-            AddRegionFooter();
-
-            AddRegionHeader("constructors / destructors");
             OnGetRegion_ConstructorsDestructors();
-            AddRegionFooter();
-
-            AddRegionHeader("public properties");
             OnGetRegion_PublicProperties();
-            AddRegionFooter();
-
-            AddRegionHeader("event handlers / overrides");
             OnGetRegion_EventHandlersAndOverrides();
-            AddRegionFooter();
-
             OnGetRegion_InterfaceImplementationMethods();
-
-            AddRegionHeader("public methods");
             OnGetRegion_PublicMethods();
-            AddRegionFooter();
-
-            AddRegionHeader("protected methods");
             OnGetRegion_ProtectedMethods();
-            AddRegionFooter();
-
-            AddRegionHeader("private methods");
             OnGetRegion_PrivateMethods();
-            AddRegionFooter();
 
             IndentDecrement();
 
@@ -840,23 +681,16 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
 
         #region private implementation
 
-        private void AddRegionHeader(string comment)
+        protected void AddRegionHeader(string comment)
         {
-
-            StringBuilder sb = new StringBuilder();
-
-            sb.AppendLine();
-            sb.AppendLine("#region " + comment);
-
+            AppendLine("#region " + comment);
+            AppendLine();
         }
-        private void AddRegionFooter()
+        protected void AddRegionFooter()
         {
-
-            StringBuilder sb = new StringBuilder();
-
-            sb.AppendLine();
-            sb.AppendLine("#endregion");
-
+            AppendLine();
+            AppendLine("#endregion");
+            AppendLine();
         }
 
         #endregion

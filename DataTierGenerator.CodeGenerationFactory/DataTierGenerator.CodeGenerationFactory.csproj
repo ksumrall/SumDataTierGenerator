@@ -41,6 +41,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UserViewGateway.cs" />
+    <Compile Include="UserTableGateway.cs" />
+    <Compile Include="GeneratedViewDataObject.cs" />
+    <Compile Include="GeneratedTableDataObject.cs" />
+    <Compile Include="GeneratedTableGateway.cs" />
+    <Compile Include="GeneratedViewGateway.cs" />
     <Compile Include="DalProjectGenerator.cs" />
     <EmbeddedResource Include="EmbeddedResources\FieldDefinition.cs" />
     <EmbeddedResource Include="EmbeddedResources\TypeDefaultValue.cs" />
@@ -48,11 +54,8 @@
     <EmbeddedResource Include="EmbeddedResources\IGateway.cs" />
     <EmbeddedResource Include="EmbeddedResources\IFieldValues.cs" />
     <EmbeddedResource Include="EmbeddedResources\IDataObject.cs" />
-    <Compile Include="GeneratedDataObject.cs" />
-    <Compile Include="GeneratedGateway.cs" />
     <Compile Include="GeneratorBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UserGateway.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataTierGenerator.Common\DataTierGenerator.Common.csproj">
@@ -61,7 +64,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="EmbeddedResources\DataMapping.xml" />
+    <EmbeddedResource Include="EmbeddedResources\_DataMapping.xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="EmbeddedResources\ProjectTemplate.csproj" />
