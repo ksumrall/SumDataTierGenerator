@@ -417,14 +417,21 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
                 newFieldDefinition.Append(column.Precision);
             }
             newFieldDefinition.Append(", ");
-            //if (iView.PrimaryKey != null && ((IList)iView.PrimaryKey.Columns).Contains(column))
-            //{
-            //    newFieldDefinition.Append("true");
-            //}
-            //else
-            //{
-            //    newFieldDefinition.Append("false");
-            //}
+            if (iView.GetType() == typeof(Table))
+            {
+                if (((Table)iView).PrimaryKey != null && ((IList)((Table)iView).PrimaryKey.PkColumns).Contains(column))
+                {
+                    newFieldDefinition.Append("true");
+                }
+                else
+                {
+                    newFieldDefinition.Append("false");
+                }
+            }
+            else
+            {
+                newFieldDefinition.Append("false");
+            }
             newFieldDefinition.Append(", ");
             if (column.IsIdentity)
             {

@@ -143,9 +143,9 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             {
                 if (m_PK_COLUMN_COUNT == "")
                 {
-                    if (m_Table.PrimaryKey != null && m_Table.PrimaryKey.KeyColumn.Length > 0)
+                    if (m_Table.PrimaryKey != null && m_Table.PrimaryKey.PkColumns.Length > 0)
                     {
-                        m_PK_COLUMN_COUNT = m_Table.PrimaryKey.KeyColumn.Length.ToString();
+                        m_PK_COLUMN_COUNT = m_Table.PrimaryKey.PkColumns.Length.ToString();
                     }
                 }
 
@@ -163,10 +163,10 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
                 if (m_PK_ARGUMENT_LIST == "")
                 {
 
-                    if (m_Table.PrimaryKey != null && m_Table.PrimaryKey.KeyColumn.Length > 0)
+                    if (m_Table.PrimaryKey != null && m_Table.PrimaryKey.PkColumns.Length > 0)
                     {
-                        TablePrimaryKeyKeyColumn[] pkList = m_Table.PrimaryKey.KeyColumn;
-                        int columnCount = m_Table.PrimaryKey.KeyColumn.Length;
+                        PkColumn[] pkList = m_Table.PrimaryKey.PkColumns;
+                        int columnCount = m_Table.PrimaryKey.PkColumns.Length;
 
                         for (int index = 0; index < columnCount; index++)
                         {
@@ -193,10 +193,10 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
                 if (m_PK_PARAMETER_LIST == "")
                 {
 
-                    if (m_Table.PrimaryKey != null && m_Table.PrimaryKey.KeyColumn.Length > 0)
+                    if (m_Table.PrimaryKey != null && m_Table.PrimaryKey.PkColumns.Length > 0)
                     {
-                        TablePrimaryKeyKeyColumn[] pkList = m_Table.PrimaryKey.KeyColumn;
-                        int columnCount = m_Table.PrimaryKey.KeyColumn.Length;
+                        PkColumn[] pkList = m_Table.PrimaryKey.PkColumns;
+                        int columnCount = m_Table.PrimaryKey.PkColumns.Length;
                         Column pkColumn;
 
                         for (int index = 0; index < columnCount; index++)
@@ -223,10 +223,10 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
                 if (string.IsNullOrEmpty(m_PK_PARAMETER_TYPE_LIST))
                 {
 
-                    if (m_Table.PrimaryKey != null && m_Table.PrimaryKey.KeyColumn.Length > 0)
+                    if (m_Table.PrimaryKey != null && m_Table.PrimaryKey.PkColumns.Length > 0)
                     {
-                        TablePrimaryKeyKeyColumn[] pkList = m_Table.PrimaryKey.KeyColumn;
-                        int columnCount = m_Table.PrimaryKey.KeyColumn.Length;
+                        PkColumn[] pkList = m_Table.PrimaryKey.PkColumns;
+                        int columnCount = m_Table.PrimaryKey.PkColumns.Length;
 
                         for (int index = 0; index < columnCount; index++)
                         {
@@ -250,11 +250,11 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
                 if (m_PK_WHERE_FILTER == "")
                 {
 
-                    if (m_Table.PrimaryKey != null && m_Table.PrimaryKey.KeyColumn.Length > 0)
+                    if (m_Table.PrimaryKey != null && m_Table.PrimaryKey.PkColumns.Length > 0)
                     {
 
-                        TablePrimaryKeyKeyColumn[] pkList = m_Table.PrimaryKey.KeyColumn;
-                        int columnCount = m_Table.PrimaryKey.KeyColumn.Length;
+                        PkColumn[] pkList = m_Table.PrimaryKey.PkColumns;
+                        int columnCount = m_Table.PrimaryKey.PkColumns.Length;
                         Column pkColumn;
 
                         for (int index = 0; index < columnCount; index++)
@@ -626,7 +626,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             AppendLine("#CLASS_NAME_PREFIX#DataObject IGateway<#CLASS_NAME_PREFIX#DataObject," + pkType + ">.SelectByPrimaryKey( " + pkType + " id ){");
             IndentIncrement();
 
-            if (m_Table.PrimaryKey == null || m_Table.PrimaryKey.KeyColumn.Length == 0)
+            if (m_Table.PrimaryKey == null || m_Table.PrimaryKey.PkColumns.Length == 0)
             {
                 AppendLine("return null;");
             }
@@ -739,13 +739,13 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
         protected virtual void OnCRUD_SelectByPrimaryKey()
         {
 
-            if (m_Table.PrimaryKey == null || m_Table.PrimaryKey.KeyColumn.Length == 0)
+            if (m_Table.PrimaryKey == null || m_Table.PrimaryKey.PkColumns.Length == 0)
             {
                 return;
             }
 
-            TablePrimaryKeyKeyColumn[] pkList = m_Table.PrimaryKey.KeyColumn;
-            int columnCount = m_Table.PrimaryKey.KeyColumn.Length;
+            PkColumn[] pkList = m_Table.PrimaryKey.PkColumns;
+            int columnCount = m_Table.PrimaryKey.PkColumns.Length;
 
             AppendLine();
             AppendStartLine("public static #CONCRETE_DATA_ENTITY_TYPE_NAME# SelectByPrimaryKey( ");
@@ -806,13 +806,13 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
         protected virtual void OnCRUD_LoadByPrimaryKey()
         {
 
-            if (m_Table.PrimaryKey == null || m_Table.PrimaryKey.KeyColumn.Length == 0)
+            if (m_Table.PrimaryKey == null || m_Table.PrimaryKey.PkColumns.Length == 0)
             {
                 return;
             }
 
-            TablePrimaryKeyKeyColumn[] pkList = m_Table.PrimaryKey.KeyColumn;
-            int columnCount = m_Table.PrimaryKey.KeyColumn.Length;
+            PkColumn[] pkList = m_Table.PrimaryKey.PkColumns;
+            int columnCount = m_Table.PrimaryKey.PkColumns.Length;
 
             AppendLine();
             AppendStartLine("internal static void LoadByPrimaryKey( #CONCRETE_DATA_ENTITY_TYPE_NAME# dataObject, ");
@@ -1004,16 +1004,16 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
         protected virtual void OnCRUD_UpdateByPrimaryKey()
         {
 
-            if (m_Table.PrimaryKey == null || m_Table.PrimaryKey.KeyColumn.Length == 0)
+            if (m_Table.PrimaryKey == null || m_Table.PrimaryKey.PkColumns.Length == 0)
             {
                 return;
             }
 
-            TablePrimaryKeyKeyColumn[] pkList = m_Table.PrimaryKey.KeyColumn;
-            int columnCount = m_Table.PrimaryKey.KeyColumn.Length;
+            PkColumn[] pkList = m_Table.PrimaryKey.PkColumns;
+            int columnCount = m_Table.PrimaryKey.PkColumns.Length;
 
             AppendLine();
-            AppendLine("public static void Update( #CONCRETE_DATA_ENTITY_TYPE_NAME# dataObject ){");
+            AppendLine("public static void UpdateByPrimaryKey( #CONCRETE_DATA_ENTITY_TYPE_NAME# dataObject ){");
             IndentIncrement();
 
             #region variable declaration
@@ -1153,13 +1153,13 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
         protected virtual void OnCRUD_DeleteByPrimaryKey()
         {
 
-            if (m_Table.PrimaryKey == null || m_Table.PrimaryKey.KeyColumn.Length == 0)
+            if (m_Table.PrimaryKey == null || m_Table.PrimaryKey.PkColumns.Length == 0)
             {
                 return;
             }
 
-            TablePrimaryKeyKeyColumn[] pkList = m_Table.PrimaryKey.KeyColumn;
-            int columnCount = m_Table.PrimaryKey.KeyColumn.Length;
+            PkColumn[] pkList = m_Table.PrimaryKey.PkColumns;
+            int columnCount = m_Table.PrimaryKey.PkColumns.Length;
 
             #region variable declaration
 

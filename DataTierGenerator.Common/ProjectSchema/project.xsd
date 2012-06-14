@@ -79,34 +79,9 @@
     <xs:element name="Table">
         <xs:complexType>
             <xs:sequence minOccurs="0" maxOccurs="1">
-                <xs:element name="PrimaryKey" minOccurs="0" maxOccurs="1">
-                    <xs:complexType>
-                        <xs:sequence minOccurs="1" maxOccurs="1">
-                            <xs:element name="KeyColumn" minOccurs="1" maxOccurs="unbounded">
-                                <xs:complexType>
-                                    <xs:attribute name="ColumnName" type="xs:string" use="required" />
-                                    <xs:attribute name="KeyOrdinal" type="xs:string" use="required" />
-                                </xs:complexType>
-                            </xs:element>
-                        </xs:sequence>
-                        <xs:attribute name="Name" type="xs:string" use="required" />
-                    </xs:complexType>
-                </xs:element>
-                <xs:element name="ForeignKeys" minOccurs="0" maxOccurs="1">
-                    <xs:complexType>
-                        <xs:sequence minOccurs="0" maxOccurs="1">
-                            <xs:element name="ForeignKey" minOccurs="0" maxOccurs="unbounded" >
-                                <xs:complexType>
-                                    <xs:sequence minOccurs="1" maxOccurs="1">
-                                        <xs:element ref="Columns" minOccurs="1" maxOccurs="1" />
-                                    </xs:sequence>
-                                    <xs:attribute name="Name" type="xs:string" use="required" />
-                                </xs:complexType>
-                            </xs:element>
-                        </xs:sequence>
-                    </xs:complexType>
-                </xs:element>
                 <xs:element ref="Columns" minOccurs="1" maxOccurs="1" />
+                <xs:element ref="PrimaryKey" minOccurs="0" maxOccurs="1" />
+                <xs:element ref="ForeignKeys" minOccurs="0" maxOccurs="1" />
             </xs:sequence>
             <xs:attribute name="Name" type="xs:string" use="required" />
             <xs:attribute name="DatabaseName" type="xs:string" use="required" />
@@ -175,6 +150,57 @@
             <xs:attribute name="IsRowGuid" type="xs:boolean" use="required" />
             <xs:attribute name="IsComputed" type="xs:boolean" use="required" />
             <xs:attribute name="Description" type="xs:string" use="required" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="PrimaryKey">
+        <xs:complexType>
+            <xs:sequence minOccurs="1" maxOccurs="1">
+                <xs:element ref="PkColumns" minOccurs="1" maxOccurs="1" />
+            </xs:sequence>
+            <xs:attribute name="Name" type="xs:string" use="required" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ForeignKey">
+        <xs:complexType>
+            <xs:sequence minOccurs="1" maxOccurs="1">
+                <xs:element ref="FkColumns" minOccurs="1" maxOccurs="1" />
+            </xs:sequence>
+            <xs:attribute name="Name" type="xs:string" use="required" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="PkColumns">
+        <xs:complexType>
+            <xs:sequence minOccurs="1" maxOccurs="1">
+                <xs:element ref="PkColumn" minOccurs="1" maxOccurs="unbounded" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="FkColumns">
+        <xs:complexType>
+            <xs:sequence minOccurs="1" maxOccurs="1">
+                <xs:element ref="FkColumn" minOccurs="1" maxOccurs="unbounded" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="PkColumn">
+        <xs:complexType>
+            <xs:attribute name="ColumnName" type="xs:string" use="required" />
+            <xs:attribute name="KeyOrdinal" type="xs:string" use="required" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="FkColumn">
+        <xs:complexType>
+            <xs:attribute name="constraint_column_name" type="xs:string" use="required" />
+            <xs:attribute name="constraint_column_id" type="xs:string" use="required" />
+            <xs:attribute name="referenced_table" type="xs:string" use="required" />
+            <xs:attribute name="referenced_column_name" type="xs:string" use="required" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ForeignKeys">
+        <xs:complexType>
+            <xs:sequence minOccurs="0" maxOccurs="1">
+                <xs:element ref="ForeignKey" minOccurs="1" maxOccurs="unbounded" />
+            </xs:sequence>
         </xs:complexType>
     </xs:element>
     <xs:element name="Parameters">

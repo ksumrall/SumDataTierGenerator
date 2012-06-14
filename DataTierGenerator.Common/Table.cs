@@ -80,13 +80,13 @@ namespace TotalSafety.DataTierGenerator.Common
                 </primary_key>
                 <foreign_keys>
                     <foreign_key name="FK_OrderTransactions_TransactionTypes">
-                        <column constraint_column_name="TransactionTypeID" constraint_column_id="1" referenced_object="TransactionType" referenced_column_name="TransactionTypeID" />
+                        <fk_column constraint_column_name="TransactionTypeID" constraint_column_id="1" referenced_object="TransactionType" referenced_column_name="TransactionTypeID" />
                     </foreign_key>
                     <foreign_key name="FK_Transaction_Order1">
-                        <column constraint_column_name="OrderId" constraint_column_id="1" referenced_object="Order" referenced_column_name="OrderId" />
+                        <fk_column constraint_column_name="OrderId" constraint_column_id="1" referenced_object="Order" referenced_column_name="OrderId" />
                     </foreign_key>
                     <foreign_key name="FK_Transaction_Transaction">
-                        <column constraint_column_name="TransactionId" constraint_column_id="1" referenced_object="Transaction" referenced_column_name="TransactionId" />
+                        <fk_column constraint_column_name="TransactionId" constraint_column_id="1" referenced_object="Transaction" referenced_column_name="TransactionId" />
                     </foreign_key>
                 </foreign_keys>
             </table>
@@ -106,38 +106,45 @@ namespace TotalSafety.DataTierGenerator.Common
             XmlNode keyNode = tableNode.SelectSingleNode(".//primary_key");
             if (keyNode != null)
             {
-                PrimaryKey = new TablePrimaryKey();
+                PrimaryKey = new PrimaryKey();
                 PrimaryKey.Name = keyNode.Attributes["name"].Value;
-                list = keyNode.SelectNodes(".//key_column");
-                TablePrimaryKeyKeyColumn kk;
-                List<TablePrimaryKeyKeyColumn> kkl = new List<TablePrimaryKeyKeyColumn>();
+                list = keyNode.SelectNodes(".//pk_column");
+                PkColumn pkc;
+                List<PkColumn> pkcl = new List<PkColumn>();
                 foreach (XmlNode node in list)
                 {
-                    kk = new TablePrimaryKeyKeyColumn();
-                    kk.ColumnName = node.Attributes["column_name"].Value;
-                    kk.KeyOrdinal = node.Attributes["key_ordinal"].Value;
-                    kkl.Add(kk);
+                    pkc = new PkColumn();
+                    pkc.ColumnName = node.Attributes["column_name"].Value;
+                    pkc.KeyOrdinal = node.Attributes["key_ordinal"].Value;
+                    pkcl.Add(pkc);
                 }
-                PrimaryKey.KeyColumn = kkl.ToArray();
+                PrimaryKey.PkColumns = pkcl.ToArray();
             }
 
             // add foreign keys
             XmlNodeList keyList = tableNode.SelectNodes(".//foreign_keys/foreign_key");
             if (keyList.Count > 0)
             {
-                TableForeignKey foreignKey;
-                List<TableForeignKey> foreignKeys = new List<TableForeignKey>();
+                ForeignKey foreignKey;
+                FkColumn fkColumn;
+                List<ForeignKey> foreignKeys = new List<ForeignKey>();
+                List<FkColumn> fkColumnList = new List<FkColumn>();
                 foreach (XmlNode node in keyList)
                 {
-                    foreignKey = new TableForeignKey();
+                    foreignKey = new ForeignKey();
                     foreignKey.Name = node.Attributes["name"].Value;
-                    list = node.SelectNodes(".//column");
-                    columnList.Clear();
+                    list = node.SelectNodes(".//fk_column");
+                    fkColumnList.Clear();
                     foreach (XmlNode columnNode in list)
                     {
-                        columnList.Add(new Column(columnNode));
+                        fkColumn = new FkColumn();
+                        fkColumn.constraint_column_name = columnNode.Attributes["constraint_column_name"].Value;
+                        fkColumn.constraint_column_id = columnNode.Attributes["constraint_column_id"].Value;
+                        fkColumn.referenced_table = columnNode.Attributes["referenced_table"].Value;
+                        fkColumn.referenced_column_name = columnNode.Attributes["referenced_column_name"].Value;
+                        fkColumnList.Add(fkColumn);
                     }
-                    foreignKey.Columns = columnList.ToArray();
+                    foreignKey.FkColumns = fkColumnList.ToArray();
 
                     foreignKeys.Add(foreignKey);
                 }

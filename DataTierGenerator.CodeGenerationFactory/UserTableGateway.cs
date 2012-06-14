@@ -95,13 +95,13 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
         protected virtual void OnCRUD_Update()
         {
 
-            if (m_Table.PrimaryKey == null || m_Table.PrimaryKey.KeyColumn.Length == 0)
+            if (m_Table.PrimaryKey == null || m_Table.PrimaryKey.PkColumns.Length == 0)
             {
                 return;
             }
 
             //List<Column> pkList = m_Table.PrimaryKey.Columns;
-            int columnCount = m_Table.PrimaryKey.KeyColumn.Length;
+            int columnCount = m_Table.PrimaryKey.PkColumns.Length;
 
             AppendLine();
             AppendLine("public void Update( #CONCRETE_DATA_ENTITY_TYPE_NAME# dataObject ){");

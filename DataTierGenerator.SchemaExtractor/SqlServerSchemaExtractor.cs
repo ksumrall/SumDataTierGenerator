@@ -238,7 +238,7 @@ namespace TotalSafety.DataTierGenerator.SchemaExtractor
                     xmlElement.Attributes.Append(GetXmlAttribute(xDoc, "name", primaryKeyView[0]["index_name"].ToString()));
                     foreach (DataRowView drvP in primaryKeyView)
                     {
-                        columnElement = xDoc.CreateElement("key_column");
+                        columnElement = xDoc.CreateElement("pk_column");
                         columnElement.Attributes.Append(GetXmlAttribute(xDoc, "column_name", drvP["column_name"].ToString()));
                         columnElement.Attributes.Append(GetXmlAttribute(xDoc, "key_ordinal", drvP["key_ordinal"].ToString()));
 
@@ -270,10 +270,10 @@ namespace TotalSafety.DataTierGenerator.SchemaExtractor
                             prevName = foreignKeyName;
                         }
 
-                        columnElement = xDoc.CreateElement("column");
+                        columnElement = xDoc.CreateElement("fk_column");
                         columnElement.Attributes.Append(GetXmlAttribute(xDoc, "constraint_column_name", drvF["constraint_column_name"].ToString()));
                         columnElement.Attributes.Append(GetXmlAttribute(xDoc, "constraint_column_id", drvF["constraint_column_id"].ToString()));
-                        columnElement.Attributes.Append(GetXmlAttribute(xDoc, "referenced_object", drvF["referenced_object"].ToString()));
+                        columnElement.Attributes.Append(GetXmlAttribute(xDoc, "referenced_table", drvF["referenced_object"].ToString()));
                         columnElement.Attributes.Append(GetXmlAttribute(xDoc, "referenced_column_name", drvF["referenced_column_name"].ToString()));
 
                         xmlElement.AppendChild(columnElement);

@@ -62,11 +62,11 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
         {
             get
             {
-                if (m_PK_COLUMN_COUNT == "")
+                if (string.IsNullOrEmpty(m_PK_COLUMN_COUNT))
                 {
-                    if (m_Table.PrimaryKey != null && m_Table.PrimaryKey.KeyColumn.Length > 0)
+                    if (m_Table.PrimaryKey != null && m_Table.PrimaryKey.PkColumns.Length > 0)
                     {
-                        m_PK_COLUMN_COUNT = m_Table.PrimaryKey.KeyColumn.Length.ToString();
+                        m_PK_COLUMN_COUNT = m_Table.PrimaryKey.PkColumns.Length.ToString();
                     }
                 }
 
@@ -81,13 +81,13 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
         {
             get
             {
-                if (m_PK_ARGUMENT_LIST == "")
+                if (string.IsNullOrEmpty(m_PK_ARGUMENT_LIST))
                 {
 
-                    if (m_Table.PrimaryKey != null && m_Table.PrimaryKey.KeyColumn.Length > 0)
+                    if (m_Table.PrimaryKey != null && m_Table.PrimaryKey.PkColumns.Length > 0)
                     {
-                        TablePrimaryKeyKeyColumn[] pkList = m_Table.PrimaryKey.KeyColumn;
-                        int columnCount = m_Table.PrimaryKey.KeyColumn.Length;
+                        PkColumn[] pkList = m_Table.PrimaryKey.PkColumns;
+                        int columnCount = m_Table.PrimaryKey.PkColumns.Length;
 
                         for (int index = 0; index < columnCount; index++)
                         {
@@ -111,13 +111,13 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
         {
             get
             {
-                if (m_PK_PARAMETER_LIST == "")
+                if (string.IsNullOrEmpty(m_PK_PARAMETER_LIST))
                 {
 
-                    if (m_Table.PrimaryKey != null && m_Table.PrimaryKey.KeyColumn.Length > 0)
+                    if (m_Table.PrimaryKey != null && m_Table.PrimaryKey.PkColumns.Length > 0)
                     {
-                        TablePrimaryKeyKeyColumn[] pkList = m_Table.PrimaryKey.KeyColumn;
-                        int columnCount = m_Table.PrimaryKey.KeyColumn.Length;
+                        PkColumn[] pkList = m_Table.PrimaryKey.PkColumns;
+                        int columnCount = m_Table.PrimaryKey.PkColumns.Length;
                         Column pkColumn;
 
                         for (int index = 0; index < columnCount; index++)
@@ -189,7 +189,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             AppendLine("internal bool m_IsDirty;");
             AppendLine();
             AppendLine("internal FieldValue[] m_FieldValues = new FieldValue[" + base.COLUMN_COUNT + "];");
-            if (m_Table.PrimaryKey != null && m_Table.PrimaryKey.KeyColumn.Length > 0)
+            if (m_Table.PrimaryKey != null && m_Table.PrimaryKey.PkColumns.Length > 0)
             {
                 AppendLine("internal FieldValue[] m_PrimaryKeyFieldValues = new FieldValue[" + PK_COLUMN_COUNT + "];");
             }
@@ -227,17 +227,17 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
                 AppendEndLine("] );");
             }
 
-            if (m_Table.PrimaryKey != null && m_Table.PrimaryKey.KeyColumn.Length > 0)
+            if (m_Table.PrimaryKey != null && m_Table.PrimaryKey.PkColumns.Length > 0)
             {
                 AppendLine();
                 // build the primary key field values
-                columnCount = m_Table.PrimaryKey.KeyColumn.Length;
+                columnCount = m_Table.PrimaryKey.PkColumns.Length;
                 for (int index = 0; index < columnCount; index++)
                 {
                     AppendStartLine("m_PrimaryKeyFieldValues[");
                     Append(index.ToString());
                     AppendEndLine("] = m_FieldValues[( int )" + CLASS_NAME_PREFIX + "FieldIndex."
-                        + m_Table.GetPkColumn(m_Table.PrimaryKey.KeyColumn[index].ColumnName).PropertyName + "];");
+                        + m_Table.GetPkColumn(m_Table.PrimaryKey.PkColumns[index].ColumnName).PropertyName + "];");
                 }
             }
 

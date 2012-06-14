@@ -266,11 +266,11 @@ namespace TotalSafety.DataTierGenerator.Common {
     [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
     public partial class Table {
         
-        private TablePrimaryKey primaryKeyField;
-        
-        private TableForeignKey[] foreignKeysField;
-        
         private Column[] columnsField;
+        
+        private PrimaryKey primaryKeyField;
+        
+        private ForeignKey[] foreignKeysField;
         
         private string nameField;
         
@@ -283,8 +283,18 @@ namespace TotalSafety.DataTierGenerator.Common {
         private bool buildField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public TablePrimaryKey PrimaryKey {
+        [System.Xml.Serialization.XmlArrayItemAttribute("Column", IsNullable=false)]
+        public Column[] Columns {
+            get {
+                return this.columnsField;
+            }
+            set {
+                this.columnsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public PrimaryKey PrimaryKey {
             get {
                 return this.primaryKeyField;
             }
@@ -294,25 +304,13 @@ namespace TotalSafety.DataTierGenerator.Common {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        [System.Xml.Serialization.XmlArrayItemAttribute("ForeignKey", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=false)]
-        public TableForeignKey[] ForeignKeys {
+        [System.Xml.Serialization.XmlArrayItemAttribute("ForeignKey", IsNullable=false)]
+        public ForeignKey[] ForeignKeys {
             get {
                 return this.foreignKeysField;
             }
             set {
                 this.foreignKeysField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute("Column", IsNullable=false)]
-        public Column[] Columns {
-            get {
-                return this.columnsField;
-            }
-            set {
-                this.columnsField = value;
             }
         }
         
@@ -368,111 +366,6 @@ namespace TotalSafety.DataTierGenerator.Common {
             }
             set {
                 this.buildField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.1")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-    public partial class TablePrimaryKey {
-        
-        private TablePrimaryKeyKeyColumn[] keyColumnField;
-        
-        private string nameField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("KeyColumn", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public TablePrimaryKeyKeyColumn[] KeyColumn {
-            get {
-                return this.keyColumnField;
-            }
-            set {
-                this.keyColumnField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string Name {
-            get {
-                return this.nameField;
-            }
-            set {
-                this.nameField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.1")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-    public partial class TablePrimaryKeyKeyColumn {
-        
-        private string columnNameField;
-        
-        private string keyOrdinalField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string ColumnName {
-            get {
-                return this.columnNameField;
-            }
-            set {
-                this.columnNameField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string KeyOrdinal {
-            get {
-                return this.keyOrdinalField;
-            }
-            set {
-                this.keyOrdinalField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.1")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-    public partial class TableForeignKey {
-        
-        private Column[] columnsField;
-        
-        private string nameField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute("Column", IsNullable=false)]
-        public Column[] Columns {
-            get {
-                return this.columnsField;
-            }
-            set {
-                this.columnsField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string Name {
-            get {
-                return this.nameField;
-            }
-            set {
-                this.nameField = value;
             }
         }
     }
@@ -678,6 +571,176 @@ namespace TotalSafety.DataTierGenerator.Common {
             }
             set {
                 this.descriptionField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.1")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
+    public partial class PrimaryKey {
+        
+        private PkColumn[] pkColumnsField;
+        
+        private string nameField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("PkColumn", IsNullable=false)]
+        public PkColumn[] PkColumns {
+            get {
+                return this.pkColumnsField;
+            }
+            set {
+                this.pkColumnsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string Name {
+            get {
+                return this.nameField;
+            }
+            set {
+                this.nameField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.1")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
+    public partial class PkColumn {
+        
+        private string columnNameField;
+        
+        private string keyOrdinalField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string ColumnName {
+            get {
+                return this.columnNameField;
+            }
+            set {
+                this.columnNameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string KeyOrdinal {
+            get {
+                return this.keyOrdinalField;
+            }
+            set {
+                this.keyOrdinalField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.1")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
+    public partial class ForeignKey {
+        
+        private FkColumn[] fkColumnsField;
+        
+        private string nameField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("FkColumn", IsNullable=false)]
+        public FkColumn[] FkColumns {
+            get {
+                return this.fkColumnsField;
+            }
+            set {
+                this.fkColumnsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string Name {
+            get {
+                return this.nameField;
+            }
+            set {
+                this.nameField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.1")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
+    public partial class FkColumn {
+        
+        private string constraint_column_nameField;
+        
+        private string constraint_column_idField;
+        
+        private string referenced_tableField;
+        
+        private string referenced_column_nameField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string constraint_column_name {
+            get {
+                return this.constraint_column_nameField;
+            }
+            set {
+                this.constraint_column_nameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string constraint_column_id {
+            get {
+                return this.constraint_column_idField;
+            }
+            set {
+                this.constraint_column_idField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string referenced_table {
+            get {
+                return this.referenced_tableField;
+            }
+            set {
+                this.referenced_tableField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string referenced_column_name {
+            get {
+                return this.referenced_column_nameField;
+            }
+            set {
+                this.referenced_column_nameField = value;
             }
         }
     }
@@ -1246,6 +1309,75 @@ namespace TotalSafety.DataTierGenerator.Common {
             }
             set {
                 this.columnField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.1")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
+    public partial class PkColumns {
+        
+        private PkColumn[] pkColumnField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("PkColumn")]
+        public PkColumn[] PkColumn {
+            get {
+                return this.pkColumnField;
+            }
+            set {
+                this.pkColumnField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.1")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
+    public partial class FkColumns {
+        
+        private FkColumn[] fkColumnField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("FkColumn")]
+        public FkColumn[] FkColumn {
+            get {
+                return this.fkColumnField;
+            }
+            set {
+                this.fkColumnField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.1")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
+    public partial class ForeignKeys {
+        
+        private ForeignKey[] foreignKeyField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("ForeignKey")]
+        public ForeignKey[] ForeignKey {
+            get {
+                return this.foreignKeyField;
+            }
+            set {
+                this.foreignKeyField = value;
             }
         }
     }
