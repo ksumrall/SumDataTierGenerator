@@ -50,3 +50,6 @@ C:\_TFSProjects\DataTierGenerator\DataTierGenerator\bin\Debug\DataTierGenerator.
 C:\_TFSProjects\DataTierGenerator\DataTierGenerator\bin\Debug\DataTierGenerator.SchemaExtractor.pdb
 C:\_TFSProjects\DataTierGenerator\DataTierGenerator\obj\Debug\ResGen.read.1.tlog
 C:\_TFSProjects\DataTierGenerator\DataTierGenerator\obj\Debug\ResGen.write.1.tlog
+C:\1.DevelopmentWork\2.TS_OpenProjects\_TotalSafety_R_and_D\DataTierGenerator\DataTierGenerator\bin\Debug\DataTierGenerator.exe.config
+C:\1.DevelopmentWork\2.TS_OpenProjects\_TotalSafety_R_and_D\DataTierGenerator\DataTierGenerator\obj\Debug\DataTierGenerator.exe
+C:\1.DevelopmentWork\2.TS_OpenProjects\_TotalSafety_R_and_D\DataTierGenerator\DataTierGenerator\obj\Debug\DataTierGenerator.pdb

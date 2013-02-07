@@ -60,14 +60,14 @@
             this.groupBox1.Size = new System.Drawing.Size(334, 106);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "m_GuiConnectionGroupBox";
+            this.groupBox1.Text = "Database Connection Properties";
             // 
             // m_GuiConnectionDetailsButton
             // 
             this.m_GuiConnectionDetailsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_GuiConnectionDetailsButton.Location = new System.Drawing.Point(305, 73);
+            this.m_GuiConnectionDetailsButton.Location = new System.Drawing.Point(253, 36);
             this.m_GuiConnectionDetailsButton.Name = "m_GuiConnectionDetailsButton";
-            this.m_GuiConnectionDetailsButton.Size = new System.Drawing.Size(23, 23);
+            this.m_GuiConnectionDetailsButton.Size = new System.Drawing.Size(75, 60);
             this.m_GuiConnectionDetailsButton.TabIndex = 4;
             this.m_GuiConnectionDetailsButton.Text = "...";
             this.m_GuiConnectionDetailsButton.UseVisualStyleBackColor = true;
@@ -79,7 +79,8 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.m_GuiConnectionStringTextBox.Location = new System.Drawing.Point(6, 75);
             this.m_GuiConnectionStringTextBox.Name = "m_GuiConnectionStringTextBox";
-            this.m_GuiConnectionStringTextBox.Size = new System.Drawing.Size(293, 20);
+            this.m_GuiConnectionStringTextBox.ReadOnly = true;
+            this.m_GuiConnectionStringTextBox.Size = new System.Drawing.Size(241, 20);
             this.m_GuiConnectionStringTextBox.TabIndex = 3;
             // 
             // m_GuiDbProviderTextBox
@@ -89,7 +90,7 @@
             this.m_GuiDbProviderTextBox.Location = new System.Drawing.Point(6, 36);
             this.m_GuiDbProviderTextBox.Name = "m_GuiDbProviderTextBox";
             this.m_GuiDbProviderTextBox.ReadOnly = true;
-            this.m_GuiDbProviderTextBox.Size = new System.Drawing.Size(322, 20);
+            this.m_GuiDbProviderTextBox.Size = new System.Drawing.Size(241, 20);
             this.m_GuiDbProviderTextBox.TabIndex = 2;
             // 
             // label2
@@ -124,7 +125,7 @@
             this.groupBox2.Size = new System.Drawing.Size(334, 103);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "m_GuiCodeGenerationGroupBox";
+            this.groupBox2.Text = "Code Generation Properties";
             // 
             // m_GuiOutputPathButton
             // 

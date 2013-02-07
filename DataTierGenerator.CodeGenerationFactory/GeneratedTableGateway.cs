@@ -365,13 +365,13 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             base.OnGetRegion_InternalStructuredMembers();
 
             AddRegionFooter();
-        
+
         }
 
         protected override void OnGetRegion_PublicProperties()
         {
 
-            AddRegionHeader("#region properties");
+            AddRegionHeader("properties");
 
             #region Instance
 
@@ -506,7 +506,6 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
                 pkType = "int";
             }
 
-            AppendLine();
             AppendLine("#region IGateway Members");
 
             AppendLine();
@@ -678,6 +677,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
 
             AppendLine();
             AppendLine("#endregion");
+            AppendLine();
 
         }
 
@@ -727,7 +727,19 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             AppendLine();
             AppendLine("string query;");
             AppendLine();
-            AppendLine("query = GatewayHelper.BuildSelectAllQuery( SchemaTableName, FieldDefinitionArray );");
+
+            string m_ProviderType = "Microsoft SQL Server Compact 3.5 (SqlCeClient)";
+            switch (m_ProviderType)
+            {
+                case "Microsoft SQL Server (SqlClient)":
+                    AppendLine("query = GatewayHelper.BuildSelectAllQuery( SchemaTableName, FieldDefinitionArray );");
+                    break;
+
+                case "Microsoft SQL Server Compact 3.5 (SqlCeClient)":
+                    AppendLine("query = GatewayHelper.BuildSelectAllQuery( TableName, FieldDefinitionArray );");
+                    break;
+            }
+
             AppendLine();
             AppendLine("return #CLASS_NAME#.GetDataObjectsByQuery( query, (FieldValue[])null );");
             AppendLine();
@@ -767,7 +779,6 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
 
             #region initialization of the fielddefinitions and fieldvalues
 
-            AppendLine();
             for (int index = 0; index < columnCount; index++)
             {
                 AppendStartLine("fieldValueList.Add(");
@@ -783,7 +794,19 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             #region run query to get the object
 
             AppendLine();
-            AppendLine("query = GatewayHelper.BuildSelectByFieldsQuery( SchemaTableName, FieldDefinitionArray );");
+
+            string m_ProviderType = "Microsoft SQL Server Compact 3.5 (SqlCeClient)";
+            switch (m_ProviderType)
+            {
+                case "Microsoft SQL Server (SqlClient)":
+                    AppendLine("query = GatewayHelper.BuildSelectByFieldsQuery( SchemaTableName, FieldDefinitionArray );");
+                    break;
+
+                case "Microsoft SQL Server Compact 3.5 (SqlCeClient)":
+                    AppendLine("query = GatewayHelper.BuildSelectByFieldsQuery( TableName, FieldDefinitionArray );");
+                    break;
+            }
+
             AppendLine();
             AppendLine("dataObjects = #CLASS_NAME#.GetDataObjectsByQuery(query, fieldValueList );");
             AppendLine();
@@ -838,7 +861,19 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
 
             #endregion
             AppendLine();
-            AppendLine("query = GatewayHelper.BuildSelectByFieldsQuery( SchemaTableName, FieldDefinitionArray );");
+
+            string m_ProviderType = "Microsoft SQL Server Compact 3.5 (SqlCeClient)";
+            switch (m_ProviderType)
+            {
+                case "Microsoft SQL Server (SqlClient)":
+                    AppendLine("query = GatewayHelper.BuildSelectByFieldsQuery( SchemaTableName, FieldDefinitionArray );");
+                    break;
+
+                case "Microsoft SQL Server Compact 3.5 (SqlCeClient)":
+                    AppendLine("query = GatewayHelper.BuildSelectByFieldsQuery( TableName, FieldDefinitionArray );");
+                    break;
+            }
+
             AppendLine();
             AppendLine("#CLASS_NAME#.LoadDataObjectByQuery(dataObject, query, fieldValueList );");
             AppendLine();
@@ -851,39 +886,76 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
         {
 
             AppendLine();
-            AppendLine("public static void Insert( #CONCRETE_DATA_ENTITY_TYPE_NAME# dataObject ){");
+            AppendLine("public static #CONCRETE_DATA_ENTITY_TYPE_NAME# Insert( #CONCRETE_DATA_ENTITY_TYPE_NAME# dataObject ){");
             IndentIncrement();
 
             #region variable declaration
 
             AppendLine();
+            AppendLine("#CONCRETE_DATA_ENTITY_TYPE_NAME# newDataObject = null;");
             AppendLine("GatewayHelper.ParameterizedQuery parameterizedQuery;");
             AppendLine("List<FieldDefinition> fieldDefinitions = new List<FieldDefinition>();");
-            AppendLine();
-            AppendLine("List<#CONCRETE_DATA_ENTITY_TYPE_NAME#> dataObjects;");
 
             #endregion
 
             #region run query to get the object
 
             AppendLine();
-            AppendLine("parameterizedQuery = GatewayHelper.BuildInsertQuery( SchemaTableName, (IFieldValues)dataObject );");
-            AppendLine();
-            AppendLine("dataObjects = #CLASS_NAME#.GetDataObjectsByQuery(parameterizedQuery.Query, parameterizedQuery.ParameterFieldValueList );");
-            AppendLine();
-            AppendLine("if ( dataObjects.Count == 1 ) {");
-            IndentIncrement();
-            AppendLine("dataObject.IsDirty = false;");
-            AppendLine();
-            AppendLine("for ( int index = 0; index < FieldDefinitionArray.Length; index++ ) {");
-            IndentIncrement();
-            AppendLine("((IFieldValues)dataObject).FieldValues[index].Value = ((IFieldValues)dataObjects[0]).FieldValues[index].Value;");
-            AppendLine("((IFieldValues)dataObject).FieldValues[index].IsDirty = false;");
-            AppendLine("dataObject.IsNew = false;");
-            IndentDecrement();
-            AppendLine("}");
-            IndentDecrement();
-            AppendLine("}");
+
+            string m_ProviderType = "Microsoft SQL Server Compact 3.5 (SqlCeClient)";
+            switch (m_ProviderType)
+            {
+                case "Microsoft SQL Server (SqlClient)":
+                    AppendLine("List<#CONCRETE_DATA_ENTITY_TYPE_NAME#> dataObjects;");
+                    AppendLine();
+                    AppendLine("parameterizedQuery = GatewayHelper.BuildInsertQuery( SchemaTableName, (IFieldValues)dataObject );");
+                    AppendLine();
+                    AppendLine("dataObjects = #CLASS_NAME#.GetDataObjectsByQuery(parameterizedQuery.Query, parameterizedQuery.ParameterFieldValueList );");
+                    AppendLine();
+                    AppendLine("if ( dataObjects.Count == 1 ) {");
+                    IndentIncrement();
+                    AppendLine("dataObject.IsDirty = false;");
+                    AppendLine();
+                    AppendLine("for ( int index = 0; index < FieldDefinitionArray.Length; index++ ) {");
+                    IndentIncrement();
+                    AppendLine("((IFieldValues)dataObject).FieldValues[index].Value = ((IFieldValues)dataObjects[0]).FieldValues[index].Value;");
+                    AppendLine("((IFieldValues)dataObject).FieldValues[index].IsDirty = false;");
+                    AppendLine("dataObject.IsNew = false;");
+                    IndentDecrement();
+                    AppendLine("}");
+                    IndentDecrement();
+                    AppendLine("}");
+                    break;
+
+                case "Microsoft SQL Server Compact 3.5 (SqlCeClient)":
+                    AppendLine("parameterizedQuery = GatewayHelper.BuildInsertQuery( TableName, (IFieldValues)dataObject );");
+                    // TODO: change the select by primary key query to be more flexible
+                    AppendLine("string identityQuery = \"SELECT * FROM #CLASS_NAME_PREFIX# WHERE "
+                        + m_Table.PrimaryKey.PkColumns[0].ColumnName + " = @@IDENTITY\";");
+                    AppendLine();
+                    AppendLine("SqlCeDatabase db = new SqlCeDatabase(GatewayHelper.ConnectionString);");
+                    AppendLine("db.Open();");
+                    AppendLine("int recordsAffected =");
+                    IndentIncrement();
+                    AppendLine("GatewayHelper.ExecuteNonQueryFromSql(db, parameterizedQuery.Query, parameterizedQuery.ParameterFieldValueList.ToArray());");
+                    IndentDecrement();
+                    AppendLine("if (recordsAffected > 0)");
+                    AppendLine("{");
+                    IndentIncrement();
+                    AppendLine("IDataReader rdr = GatewayHelper.ExecuteReaderFromSql(db, identityQuery, (FieldValue[])null);");
+                    AppendLine("rdr.Read();");
+                    AppendLine("newDataObject = GetDataObjectFromReader(rdr);");
+                    AppendLine("rdr.Close();");
+                    AppendLine("rdr.Dispose();");
+                    IndentDecrement();
+                    AppendLine("}");
+                    AppendLine();
+                    AppendLine("db.Dispose();");
+                    AppendLine();
+                    AppendLine("return newDataObject;");
+                    break;
+            }
+
 
             #endregion
 
@@ -942,11 +1014,26 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             //AppendLine ("}");
 
             AppendLine();
-            AppendLine("query.AppendLine( GatewayHelper.BuildUpdateByPrimaryKeyQuery( SchemaTableName, (IFieldValues)dataObject ) );");
+            string m_ProviderType = "Microsoft SQL Server Compact 3.5 (SqlCeClient)";
+            switch (m_ProviderType)
+            {
+                case "Microsoft SQL Server (SqlClient)":
+                    AppendLine("query.AppendLine( GatewayHelper.BuildUpdateByPrimaryKeyQuery( SchemaTableName, (IFieldValues)dataObject ) );");
+                    break;
+
+                case "Microsoft SQL Server Compact 3.5 (SqlCeClient)":
+                    AppendLine("query.AppendLine( GatewayHelper.BuildUpdateByPrimaryKeyQuery( TableName, (IFieldValues)dataObject ) );");
+                    break;
+            }
 
             AppendLine();
             AppendLine("// get the select all clause");
-            AppendLine("query.AppendLine( GatewayHelper.BuildSelectByPrimaryKeyQuery( SchemaTableName, (IFieldValues)dataObject ) );");
+            switch (m_ProviderType)
+            {
+                case "Microsoft SQL Server (SqlClient)":
+                    AppendLine("query.AppendLine( GatewayHelper.BuildSelectByPrimaryKeyQuery( SchemaTableName, (IFieldValues)dataObject ) );");
+                    break;
+            }
 
             #endregion
 
@@ -977,22 +1064,44 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
 
             #region run query to get the object
 
-            AppendLine();
-            AppendLine("dataObjects = #CLASS_NAME#.GetDataObjectsByQuery( query.ToString(), ((IFieldValues)dataObject).FieldValues );");
-            AppendLine();
-            AppendLine("if ( dataObjects.Count == 1 ) {");
-            IndentIncrement();
-            AppendLine("dataObject.IsDirty = false;");
-            AppendLine();
-            AppendLine("for ( int index = 0; index < FieldDefinitionArray.Length; index++ ) {");
-            IndentIncrement();
-            AppendLine("((IFieldValues)dataObject).FieldValues[index].Value = ((IFieldValues)dataObjects[0]).FieldValues[index].Value;");
-            AppendLine("((IFieldValues)dataObject).FieldValues[index].IsDirty = false;");
-            AppendLine("dataObject.IsNew = false;");
-            IndentDecrement();
-            AppendLine("}");
-            IndentDecrement();
-            AppendLine("}");
+            switch (m_ProviderType)
+            {
+                case "Microsoft SQL Server (SqlClient)":
+                    AppendLine();
+                    AppendLine("dataObjects = #CLASS_NAME#.GetDataObjectsByQuery( query.ToString(), ((IFieldValues)dataObject).FieldValues );");
+                    AppendLine();
+                    AppendLine("if ( dataObjects.Count == 1 ) {");
+                    IndentIncrement();
+                    AppendLine("dataObject.IsDirty = false;");
+                    AppendLine();
+                    AppendLine("for ( int index = 0; index < FieldDefinitionArray.Length; index++ ) {");
+                    IndentIncrement();
+                    AppendLine("((IFieldValues)dataObject).FieldValues[index].Value = ((IFieldValues)dataObjects[0]).FieldValues[index].Value;");
+                    AppendLine("((IFieldValues)dataObject).FieldValues[index].IsDirty = false;");
+                    AppendLine("dataObject.IsNew = false;");
+                    IndentDecrement();
+                    AppendLine("}");
+                    IndentDecrement();
+                    AppendLine("}");
+                    break;
+
+                case "Microsoft SQL Server Compact 3.5 (SqlCeClient)":
+                    AppendLine();
+                    AppendLine("int count = GatewayHelper.ExecuteNonQueryFromSql( query.ToString(), ((IFieldValues)dataObject).FieldValues );");
+                    AppendLine();
+                    AppendLine("if ( count > 0 ) {");
+                    IndentIncrement();
+                    AppendLine("dataObject.IsDirty = false;");
+                    AppendLine();
+                    AppendLine("for ( int index = 0; index < FieldDefinitionArray.Length; index++ ) {");
+                    IndentIncrement();
+                    AppendLine("((IFieldValues)dataObject).FieldValues[index].IsDirty = false;");
+                    IndentDecrement();
+                    AppendLine("}");
+                    IndentDecrement();
+                    AppendLine("}");
+                    break;
+            }
 
             #endregion
 
@@ -1034,7 +1143,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
 
             AppendLine();
             AppendLine("// gather all the changed fields");
-            AppendLine("for( int index = 0; index < FieldDefinitions.Length; index++ ){");
+            AppendLine("for( int index = 0; index < FieldDefinitions.FieldDefinitionArray.Length; index++ ){");
             IndentIncrement();
             AppendLine();
 
@@ -1042,7 +1151,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             IndentIncrement();
             AppendLine();
 
-            AppendLine("fieldDefinitions.Add( FieldDefinitions[index] );");
+            AppendLine("fieldDefinitions.Add( FieldDefinitions.FieldDefinitionArray[index] );");
             AppendLine("fields.Add( ((IFieldValues)dataObject).FieldValues[index] );");
 
             AppendLine();
@@ -1054,7 +1163,17 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             AppendLine("}");
 
             AppendLine();
-            AppendLine("query = GatewayHelper.BuildUpdateByPrimaryKeyQuery( SchemaTableName, FieldDefinitionArray, ((IFieldValues)dataObject).FieldValues );");
+            string m_ProviderType = "Microsoft SQL Server Compact 3.5 (SqlCeClient)";
+            switch (m_ProviderType)
+            {
+                case "Microsoft SQL Server (SqlClient)":
+                    AppendLine("query = GatewayHelper.BuildUpdateByPrimaryKeyQuery( SchemaTableName, (IFieldValues)dataObject );");
+                    break;
+
+                case "Microsoft SQL Server Compact 3.5 (SqlCeClient)":
+                    AppendLine("query = GatewayHelper.BuildUpdateByPrimaryKeyQuery( TableName, (IFieldValues)dataObject );");
+                    break;
+            }
 
             #endregion
 
@@ -1062,15 +1181,15 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
 
             AppendLine();
             AppendLine("// gather the primary key fields");
-            AppendLine("for( int index = 0; index < FieldDefinitions.Length; index++ ){");
+            AppendLine("for( int index = 0; index < FieldDefinitions.FieldDefinitionArray.Length; index++ ){");
             IndentIncrement();
             AppendLine();
 
-            AppendLine("if( FieldDefinitions[index].IsPrimaryKey ){");
+            AppendLine("if( FieldDefinitions.FieldDefinitionArray[index].IsPrimaryKey ){");
             IndentIncrement();
             AppendLine();
 
-            AppendLine("fieldDefinitions.Add( FieldDefinitions[index] );");
+            AppendLine("fieldDefinitions.Add( FieldDefinitions.FieldDefinitionArray[index] );");
             AppendLine("fields.Add( ((IFieldValues)dataObject).FieldValues[index] );");
 
             AppendLine();
@@ -1091,7 +1210,18 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             AppendLine();
 
             AppendLine("//query += Environment.NewLine;");
-            AppendLine("//query += GatewayHelper.BuildSelectAllQuery( SchemaTableName, FieldDefinitions );");
+
+            switch (m_ProviderType)
+            {
+                case "Microsoft SQL Server (SqlClient)":
+                    AppendLine("//query += GatewayHelper.BuildSelectAllQuery( SchemaTableName, FieldDefinitions );");
+                    break;
+
+                case "Microsoft SQL Server Compact 3.5 (SqlCeClient)":
+                    AppendLine("//query += GatewayHelper.BuildSelectAllQuery( TableName, FieldDefinitions );");
+                    break;
+            }
+
             AppendLine("//query += Environment.NewLine;");
             AppendLine("//query += GatewayHelper.BuildWhereClause( pkFieldDefinitions.ToArray() );");
 
@@ -1105,7 +1235,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             IndentIncrement();
             AppendLine("dataObject.IsDirty = false;");
             AppendLine();
-            AppendLine("for ( int index = 0; index < FieldDefinitions.Length; index++ ) {");
+            AppendLine("for ( int index = 0; index < FieldDefinitions.FieldDefinitionArray.Length; index++ ) {");
             IndentIncrement();
             AppendLine("((IFieldValues)dataObject).FieldValues[index].Value = ((IFieldValues)dataObjects[0]).FieldValues[index].Value;");
             AppendLine("((IFieldValues)dataObject).FieldValues[index].IsDirty = false;");
@@ -1241,7 +1371,17 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             #region build the query
 
             AppendLine();
-            AppendLine("deleteQuery.AppendLine(GatewayHelper.BuildDeleteQuery(SchemaTableName));");
+            string m_ProviderType = "Microsoft SQL Server Compact 3.5 (SqlCeClient)";
+            switch (m_ProviderType)
+            {
+                case "Microsoft SQL Server (SqlClient)":
+                    AppendLine("deleteQuery.AppendLine(GatewayHelper.BuildDeleteQuery(SchemaTableName));");
+                    break;
+
+                case "Microsoft SQL Server Compact 3.5 (SqlCeClient)":
+                    AppendLine("deleteQuery.AppendLine(GatewayHelper.BuildDeleteQuery(TableName));");
+                    break;
+            }
             AppendLine("deleteQuery.AppendLine(GatewayHelper.BuildWhereClause(fieldValueArray));");
 
             #endregion
@@ -1308,6 +1448,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             AppendLine("if ( dataReader != null ) {");
             IndentIncrement();
             AppendLine("dataReader.Close( );");
+            AppendLine("dataReader.Dispose( );");
             IndentDecrement();
             AppendLine("}");
             IndentDecrement();

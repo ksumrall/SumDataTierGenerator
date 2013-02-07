@@ -25,6 +25,7 @@ namespace TotalSafety.DataTierGenerator {
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
             this.m_GuiDataLayerNamespaceTextBox = new System.Windows.Forms.TextBox();
+            this.miscSettingsModelBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.m_GuiDataLayerOutputDirectoryButton = new System.Windows.Forms.Button();
@@ -34,7 +35,6 @@ namespace TotalSafety.DataTierGenerator {
             this.m_GuiConnectionStringDialogButton = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.m_GuiConnectionString = new System.Windows.Forms.TextBox();
-            this.miscSettingsModelBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.label4 = new System.Windows.Forms.Label();
             this.m_GuiDbProviderTextBox = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.miscSettingsModelBindingSource)).BeginInit();
@@ -49,6 +49,10 @@ namespace TotalSafety.DataTierGenerator {
             this.m_GuiDataLayerNamespaceTextBox.Name = "m_GuiDataLayerNamespaceTextBox";
             this.m_GuiDataLayerNamespaceTextBox.Size = new System.Drawing.Size(431, 20);
             this.m_GuiDataLayerNamespaceTextBox.TabIndex = 16;
+            // 
+            // miscSettingsModelBindingSource
+            // 
+            this.miscSettingsModelBindingSource.DataSource = typeof(TotalSafety.DataTierGenerator.MVP.MiscSettingsModel);
             // 
             // label1
             // 
@@ -118,9 +122,9 @@ namespace TotalSafety.DataTierGenerator {
             // m_GuiConnectionStringDialogButton
             // 
             this.m_GuiConnectionStringDialogButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_GuiConnectionStringDialogButton.Location = new System.Drawing.Point(419, 67);
+            this.m_GuiConnectionStringDialogButton.Location = new System.Drawing.Point(365, 25);
             this.m_GuiConnectionStringDialogButton.Name = "m_GuiConnectionStringDialogButton";
-            this.m_GuiConnectionStringDialogButton.Size = new System.Drawing.Size(24, 24);
+            this.m_GuiConnectionStringDialogButton.Size = new System.Drawing.Size(78, 66);
             this.m_GuiConnectionStringDialogButton.TabIndex = 27;
             this.m_GuiConnectionStringDialogButton.TabStop = false;
             this.m_GuiConnectionStringDialogButton.Text = "...";
@@ -144,12 +148,8 @@ namespace TotalSafety.DataTierGenerator {
             this.m_GuiConnectionString.Location = new System.Drawing.Point(12, 70);
             this.m_GuiConnectionString.Name = "m_GuiConnectionString";
             this.m_GuiConnectionString.ReadOnly = true;
-            this.m_GuiConnectionString.Size = new System.Drawing.Size(401, 20);
+            this.m_GuiConnectionString.Size = new System.Drawing.Size(347, 20);
             this.m_GuiConnectionString.TabIndex = 26;
-            // 
-            // miscSettingsModelBindingSource
-            // 
-            this.miscSettingsModelBindingSource.DataSource = typeof(TotalSafety.DataTierGenerator.MVP.MiscSettingsModel);
             // 
             // label4
             // 
@@ -168,7 +168,7 @@ namespace TotalSafety.DataTierGenerator {
             this.m_GuiDbProviderTextBox.Location = new System.Drawing.Point(12, 25);
             this.m_GuiDbProviderTextBox.Name = "m_GuiDbProviderTextBox";
             this.m_GuiDbProviderTextBox.ReadOnly = true;
-            this.m_GuiDbProviderTextBox.Size = new System.Drawing.Size(428, 20);
+            this.m_GuiDbProviderTextBox.Size = new System.Drawing.Size(347, 20);
             this.m_GuiDbProviderTextBox.TabIndex = 29;
             // 
             // MiscSettings

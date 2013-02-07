@@ -11,6 +11,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
     {
 
         private Table m_Table;
+        private string m_PK_PARAMETER_TYPE_LIST;
 
         #region constructors / desturctors
 
@@ -28,7 +29,18 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             : base(rootNamespace, table)
         {
             m_Table = table;
-            this.SUBCLASS_NAME = "IGateway";
+            string pkType = PK_PARAMETER_TYPE_LIST;
+
+            if (!string.IsNullOrEmpty(pkType))
+            {
+                this.SUBCLASS_NAME = "IGateway<#CLASS_NAME_PREFIX#DataObject,"
+                    + PK_PARAMETER_TYPE_LIST
+                    + ">";
+            }
+            else
+            {
+                this.SUBCLASS_NAME = "IGateway<#CLASS_NAME_PREFIX#DataObject,int>";
+            }
         }
 
         #endregion
@@ -48,6 +60,33 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
                 }
 
                 return m_CLASS_NAME;
+            }
+        }
+
+        public string PK_PARAMETER_TYPE_LIST
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(m_PK_PARAMETER_TYPE_LIST))
+                {
+
+                    if (m_Table.PrimaryKey != null && m_Table.PrimaryKey.PkColumns.Length > 0)
+                    {
+                        PkColumn[] pkList = m_Table.PrimaryKey.PkColumns;
+                        int columnCount = m_Table.PrimaryKey.PkColumns.Length;
+
+                        for (int index = 0; index < columnCount; index++)
+                        {
+                            m_PK_PARAMETER_TYPE_LIST += m_Table.GetPkColumn(pkList[index].ColumnName).LanguageType;
+                            if (index < columnCount - 1)
+                            {
+                                m_PK_PARAMETER_TYPE_LIST += ",";
+                            }
+                        }
+                    }
+                }
+
+                return m_PK_PARAMETER_TYPE_LIST;
             }
         }
 

@@ -68,9 +68,19 @@ namespace TotalSafety.DataTierGenerator.SchemaExtractor
             ISchemaExtractor se = null;
             XmlDocument xDoc = null;
 
-            if (m_ProviderType == "Microsoft SQL Server (SqlClient)")
+            switch(m_ProviderType)
             {
-                se = new SqlServerSchemaExtractor(m_ConnectionString);
+                case "Microsoft SQL Server (SqlClient)":
+                    se = new SqlServerSchemaExtractor(m_ConnectionString);
+                    break;
+
+                case "Microsoft SQL Server Compact 3.5 (SqlCeClient)":
+                    se = new SqlCeServerSchemaExtractor(m_ConnectionString);
+                    break;
+
+                default:
+                    se = null;
+                    break;
             }
 
             if (se != null)

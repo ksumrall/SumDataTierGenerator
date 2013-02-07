@@ -298,7 +298,19 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             AppendLine("\t\t} else if (IsDirty) {");
             AppendLine("\t\t\t#CONCRETE_GATEWAY_TYPE_NAME#.Update (this);");
             AppendLine("\t\t}");
-            AppendLine("\t} catch (System.Data.SqlClient.SqlException sqex) {");
+
+            string m_ProviderType = "Microsoft SQL Server Compact 3.5 (SqlCeClient)";
+            switch (m_ProviderType)
+            {
+                case "Microsoft SQL Server (SqlClient)":
+                    AppendLine("\t} catch (System.Data.SqlClient.SqlException sqex) {");
+                    break;
+
+                case "Microsoft SQL Server Compact 3.5 (SqlCeClient)":
+                    AppendLine("\t} catch (System.Data.SqlServerCe.SqlCeException sqex) {");
+                    break;
+            }
+
             AppendLine("\t\tthrow new System.Data.DataException (sqex.Message);");
             AppendLine("\t}");
             AppendLine("}");

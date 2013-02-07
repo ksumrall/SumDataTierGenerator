@@ -46,6 +46,10 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
         {
             m_DalNamespace = project.Configuration.CodeGenerationDetails.Namespace;
             m_DalProjectDirectory = project.Configuration.CodeGenerationDetails.OutputPath;
+            if (!m_DalProjectDirectory.EndsWith("\\"))
+            {
+                m_DalProjectDirectory += "\\";
+            }
             m_SchemaList.AddRange(project.Schemas);
         }
 
@@ -187,7 +191,17 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             File.WriteAllText(m_DalProjectDirectory + "Common\\TypeDefaultValue.cs", fileContents);
 
             // create the GatewayHelper
-            fileContents = Utility.GetResource(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.CodeGenerationFactory.EmbeddedResources.GatewayHelper.cs");
+            string m_ProviderType = "Microsoft SQL Server Compact 3.5 (SqlCeClient)";
+            switch (m_ProviderType)
+            {
+                case "Microsoft SQL Server (SqlClient)":
+                    fileContents = Utility.GetResource(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.CodeGenerationFactory.EmbeddedResources.GatewayHelper.cs");
+                    break;
+
+                case "Microsoft SQL Server Compact 3.5 (SqlCeClient)":
+                    fileContents = Utility.GetResource(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.CodeGenerationFactory.EmbeddedResources.GatewayHelperSqlCe.cs");
+                    break;
+            }
             fileContents = fileContents.Replace("#ROOT_NAMESPACE#", m_DalNamespace);
             File.WriteAllText(m_DalProjectDirectory + "Common\\GatewayHelper.cs", fileContents);
 
@@ -211,8 +225,18 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
                 , m_DalProjectDirectory + "bin\\Microsoft.Practices.EnterpriseLibrary.Common.dll");
 
             // create the Microsoft.Practices.EnterpriseLibrary.Data.dll
-            Utility.SaveResourceFile(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.CodeGenerationFactory.EmbeddedResources.Microsoft.Practices.EnterpriseLibrary.Data.dll"
-                , m_DalProjectDirectory + "bin\\Microsoft.Practices.EnterpriseLibrary.Data.dll");
+            switch (m_ProviderType)
+            {
+                case "Microsoft SQL Server (SqlClient)":
+                    Utility.SaveResourceFile(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.CodeGenerationFactory.EmbeddedResources.Microsoft.Practices.EnterpriseLibrary.Data.dll"
+                        , m_DalProjectDirectory + "bin\\Microsoft.Practices.EnterpriseLibrary.Data.dll");
+                    break;
+
+                case "Microsoft SQL Server Compact 3.5 (SqlCeClient)":
+                    Utility.SaveResourceFile(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.CodeGenerationFactory.EmbeddedResources.Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.dll"
+                , m_DalProjectDirectory + "bin\\Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.dll");
+                    break;
+            }
 
             // create the Microsoft.Practices.EnterpriseLibrary.ObjectBuilder.dll
             Utility.SaveResourceFile(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.CodeGenerationFactory.EmbeddedResources.Microsoft.Practices.ObjectBuilder.dll"
@@ -230,7 +254,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             {
                 foreach (Table table in tableList)
                 {
-                    if (1==1 || table.Build)
+                    if (1 == 1 || table.Build)
                     {
                         itemGroup.AppendLine(GenerateTableDataGatewayGeneratedClass(projectNamespace, projectDirectory, table));
 

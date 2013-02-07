@@ -417,22 +417,22 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
                 newFieldDefinition.Append(column.Precision);
             }
             newFieldDefinition.Append(", ");
+            var isPk = "false";
             if (iView.GetType() == typeof(Table))
             {
-                if (((Table)iView).PrimaryKey != null && ((IList)((Table)iView).PrimaryKey.PkColumns).Contains(column))
+                if (((Table)iView).PrimaryKey != null)
                 {
-                    newFieldDefinition.Append("true");
-                }
-                else
-                {
-                    newFieldDefinition.Append("false");
+                    foreach (var keyColumn in ((Table)iView).PrimaryKey.PkColumns)
+                    {
+                        if (keyColumn.ColumnName == column.Name)
+                        {
+                            isPk = "true";
+                            break;
+                        }
+                    }
                 }
             }
-            else
-            {
-                newFieldDefinition.Append("false");
-            }
-            newFieldDefinition.Append(", ");
+            newFieldDefinition.Append(isPk + ", ");
             if (column.IsIdentity)
             {
                 newFieldDefinition.Append("true");

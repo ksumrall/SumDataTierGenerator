@@ -424,11 +424,35 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
 
             AppendLine("\ttry {");
             AppendLine("\t\tif (IsNew) {");
-            AppendLine("\t\t\t#CONCRETE_GATEWAY_TYPE_NAME#.Insert (this);");
+            AppendLine("\t\t\tvar obj = #CONCRETE_GATEWAY_TYPE_NAME#.Insert (this);");
+            AppendLine("\t\t\tforeach (FieldValue fieldValue in m_FieldValues)");
+            AppendLine("\t\t\t{");
+            AppendLine("\t\t\t\tfieldValue.Value = obj.m_FieldValues[fieldValue.FieldDefinition.FieldIndex].Value;");
+            AppendLine("\t\t\t\tfieldValue.IsDirty = false;");
+            AppendLine("\t\t\t}");
+            AppendLine("\t\t\tm_IsNew = false;");
+            AppendLine("\t\t\tm_IsDirty = false;");
             AppendLine("\t\t} else if (IsDirty) {");
             AppendLine("\t\t\t#CONCRETE_GATEWAY_TYPE_NAME#.Update (this);");
+            AppendLine("\t\t\tforeach (FieldValue fieldValue in m_FieldValues)");
+            AppendLine("\t\t\t{");
+            AppendLine("\t\t\t\tfieldValue.IsDirty = false;");
+            AppendLine("\t\t\t}");
+            AppendLine("\t\t\tm_IsDirty = false;");
             AppendLine("\t\t}");
-            AppendLine("\t} catch (System.Data.SqlClient.SqlException sqex) {");
+
+            string m_ProviderType = "Microsoft SQL Server Compact 3.5 (SqlCeClient)";
+            switch (m_ProviderType)
+            {
+                case "Microsoft SQL Server (SqlClient)":
+                    AppendLine("\t} catch (System.Data.SqlClient.SqlException sqex) {");
+                    break;
+
+                case "Microsoft SQL Server Compact 3.5 (SqlCeClient)":
+                    AppendLine("\t} catch (System.Data.SqlServerCe.SqlCeException sqex) {");
+                    break;
+            }
+
             AppendLine("\t\tthrow new System.Data.DataException (sqex.Message);");
             AppendLine("\t}");
             AppendLine("}");

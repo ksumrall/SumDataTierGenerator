@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="">
+  <ProjectName>New Project</ProjectName>
+  <Schemas>
+    <Schema Name="dbo">
+      <BuildClass>false</BuildClass>
+      <Tables>
+        <Table Name="Orders" Build="false">
+          <BuildClass>false</BuildClass>
+          <Columns>
+            <Column Name="OrderID" PropertyName="OrderID" DbType="int" Length="4" Precision="10" Scale="0" DefaultValue="" IsNullable="false" IsIdentity="true" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="CustomerID" PropertyName="CustomerID" DbType="nchar" Length="10" Precision="0" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="EmployeeID" PropertyName="EmployeeID" DbType="int" Length="4" Precision="10" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="OrderDate" PropertyName="OrderDate" DbType="datetime" Length="8" Precision="23" Scale="3" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="RequiredDate" PropertyName="RequiredDate" DbType="datetime" Length="8" Precision="23" Scale="3" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ShippedDate" PropertyName="ShippedDate" DbType="datetime" Length="8" Precision="23" Scale="3" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ShipVia" PropertyName="ShipVia" DbType="int" Length="4" Precision="10" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Freight" PropertyName="Freight" DbType="money" Length="8" Precision="19" Scale="4" DefaultValue="(0)" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ShipName" PropertyName="ShipName" DbType="nvarchar" Length="80" Precision="0" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ShipAddress" PropertyName="ShipAddress" DbType="nvarchar" Length="120" Precision="0" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ShipCity" PropertyName="ShipCity" DbType="nvarchar" Length="30" Precision="0" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ShipRegion" PropertyName="ShipRegion" DbType="nvarchar" Length="30" Precision="0" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ShipPostalCode" PropertyName="ShipPostalCode" DbType="nvarchar" Length="20" Precision="0" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ShipCountry" PropertyName="ShipCountry" DbType="nvarchar" Length="30" Precision="0" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+          </Columns>
+        </Table>
+        <Table Name="Products" Build="false">
+          <BuildClass>false</BuildClass>
+          <Columns>
+            <Column Name="ProductID" PropertyName="ProductID" DbType="int" Length="4" Precision="10" Scale="0" DefaultValue="" IsNullable="false" IsIdentity="true" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ProductName" PropertyName="ProductName" DbType="nvarchar" Length="80" Precision="0" Scale="0" DefaultValue="" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="SupplierID" PropertyName="SupplierID" DbType="int" Length="4" Precision="10" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="CategoryID" PropertyName="CategoryID" DbType="int" Length="4" Precision="10" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="QuantityPerUnit" PropertyName="QuantityPerUnit" DbType="nvarchar" Length="40" Precision="0" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="UnitPrice" PropertyName="UnitPrice" DbType="money" Length="8" Precision="19" Scale="4" DefaultValue="(0)" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="UnitsInStock" PropertyName="UnitsInStock" DbType="smallint" Length="2" Precision="5" Scale="0" DefaultValue="(0)" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="UnitsOnOrder" PropertyName="UnitsOnOrder" DbType="smallint" Length="2" Precision="5" Scale="0" DefaultValue="(0)" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ReorderLevel" PropertyName="ReorderLevel" DbType="smallint" Length="2" Precision="5" Scale="0" DefaultValue="(0)" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Discontinued" PropertyName="Discontinued" DbType="bit" Length="1" Precision="1" Scale="0" DefaultValue="(0)" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+          </Columns>
+        </Table>
+        <Table Name="Order Details" Build="false">
+          <BuildClass>false</BuildClass>
+          <Columns>
+            <Column Name="OrderID" PropertyName="OrderID" DbType="int" Length="4" Precision="10" Scale="0" DefaultValue="" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ProductID" PropertyName="ProductID" DbType="int" Length="4" Precision="10" Scale="0" DefaultValue="" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="UnitPrice" PropertyName="UnitPrice" DbType="money" Length="8" Precision="19" Scale="4" DefaultValue="(0)" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Quantity" PropertyName="Quantity" DbType="smallint" Length="2" Precision="5" Scale="0" DefaultValue="(1)" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Discount" PropertyName="Discount" DbType="real" Length="4" Precision="24" Scale="0" DefaultValue="(0)" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+          </Columns>
+        </Table>
+        <Table Name="CustomerCustomerDemo" Build="false">
+          <BuildClass>false</BuildClass>
+          <Columns>
+            <Column Name="CustomerID" PropertyName="CustomerID" DbType="nchar" Length="10" Precision="0" Scale="0" DefaultValue="" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="CustomerTypeID" PropertyName="CustomerTypeID" DbType="nchar" Length="20" Precision="0" Scale="0" DefaultValue="" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+          </Columns>
+        </Table>
+        <Table Name="CustomerDemographics" Build="false">
+          <BuildClass>false</BuildClass>
+          <Columns>
+            <Column Name="CustomerTypeID" PropertyName="CustomerTypeID" DbType="nchar" Length="20" Precision="0" Scale="0" DefaultValue="" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="CustomerDesc" PropertyName="CustomerDesc" DbType="ntext" Length="16" Precision="0" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+          </Columns>
+        </Table>
+        <Table Name="Region" Build="false">
+          <BuildClass>false</BuildClass>
+          <Columns>
+            <Column Name="RegionID" PropertyName="RegionID" DbType="int" Length="4" Precision="10" Scale="0" DefaultValue="" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="RegionDescription" PropertyName="RegionDescription" DbType="nchar" Length="100" Precision="0" Scale="0" DefaultValue="" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+          </Columns>
+        </Table>
+        <Table Name="Territories" Build="false">
+          <BuildClass>false</BuildClass>
+          <Columns>
+            <Column Name="TerritoryID" PropertyName="TerritoryID" DbType="nvarchar" Length="40" Precision="0" Scale="0" DefaultValue="" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="TerritoryDescription" PropertyName="TerritoryDescription" DbType="nchar" Length="100" Precision="0" Scale="0" DefaultValue="" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="RegionID" PropertyName="RegionID" DbType="int" Length="4" Precision="10" Scale="0" DefaultValue="" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+          </Columns>
+        </Table>
+        <Table Name="EmployeeTerritories" Build="false">
+          <BuildClass>false</BuildClass>
+          <Columns>
+            <Column Name="EmployeeID" PropertyName="EmployeeID" DbType="int" Length="4" Precision="10" Scale="0" DefaultValue="" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="TerritoryID" PropertyName="TerritoryID" DbType="nvarchar" Length="40" Precision="0" Scale="0" DefaultValue="" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+          </Columns>
+        </Table>
+        <Table Name="Employees" Build="false">
+          <BuildClass>false</BuildClass>
+          <Columns>
+            <Column Name="EmployeeID" PropertyName="EmployeeID" DbType="int" Length="4" Precision="10" Scale="0" DefaultValue="" IsNullable="false" IsIdentity="true" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="LastName" PropertyName="LastName" DbType="nvarchar" Length="40" Precision="0" Scale="0" DefaultValue="" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="FirstName" PropertyName="FirstName" DbType="nvarchar" Length="20" Precision="0" Scale="0" DefaultValue="" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Title" PropertyName="Title" DbType="nvarchar" Length="60" Precision="0" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="TitleOfCourtesy" PropertyName="TitleOfCourtesy" DbType="nvarchar" Length="50" Precision="0" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="BirthDate" PropertyName="BirthDate" DbType="datetime" Length="8" Precision="23" Scale="3" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="HireDate" PropertyName="HireDate" DbType="datetime" Length="8" Precision="23" Scale="3" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Address" PropertyName="Address" DbType="nvarchar" Length="120" Precision="0" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="City" PropertyName="City" DbType="nvarchar" Length="30" Precision="0" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Region" PropertyName="Region" DbType="nvarchar" Length="30" Precision="0" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="PostalCode" PropertyName="PostalCode" DbType="nvarchar" Length="20" Precision="0" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Country" PropertyName="Country" DbType="nvarchar" Length="30" Precision="0" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="HomePhone" PropertyName="HomePhone" DbType="nvarchar" Length="48" Precision="0" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Extension" PropertyName="Extension" DbType="nvarchar" Length="8" Precision="0" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Photo" PropertyName="Photo" DbType="image" Length="16" Precision="0" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Notes" PropertyName="Notes" DbType="ntext" Length="16" Precision="0" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ReportsTo" PropertyName="ReportsTo" DbType="int" Length="4" Precision="10" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="PhotoPath" PropertyName="PhotoPath" DbType="nvarchar" Length="510" Precision="0" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+          </Columns>
+        </Table>
+        <Table Name="Categories" Build="false">
+          <BuildClass>false</BuildClass>
+          <Columns>
+            <Column Name="CategoryID" PropertyName="CategoryID" DbType="int" Length="4" Precision="10" Scale="0" DefaultValue="" IsNullable="false" IsIdentity="true" IsRowGuid="false" IsComputed="false" Description="This is the primary key column." />
+            <Column Name="CategoryName" PropertyName="CategoryName" DbType="nvarchar" Length="30" Precision="0" Scale="0" DefaultValue="" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Description" PropertyName="Description" DbType="ntext" Length="16" Precision="0" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Picture" PropertyName="Picture" DbType="image" Length="16" Precision="0" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+          </Columns>
+        </Table>
+        <Table Name="Customers" Build="false">
+          <BuildClass>false</BuildClass>
+          <Columns>
+            <Column Name="CustomerID" PropertyName="CustomerID" DbType="nchar" Length="10" Precision="0" Scale="0" DefaultValue="" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="CompanyName" PropertyName="CompanyName" DbType="nvarchar" Length="80" Precision="0" Scale="0" DefaultValue="" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ContactName" PropertyName="ContactName" DbType="nvarchar" Length="60" Precision="0" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ContactTitle" PropertyName="ContactTitle" DbType="nvarchar" Length="60" Precision="0" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Address" PropertyName="Address" DbType="nvarchar" Length="120" Precision="0" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="City" PropertyName="City" DbType="nvarchar" Length="30" Precision="0" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Region" PropertyName="Region" DbType="nvarchar" Length="30" Precision="0" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="PostalCode" PropertyName="PostalCode" DbType="nvarchar" Length="20" Precision="0" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Country" PropertyName="Country" DbType="nvarchar" Length="30" Precision="0" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Phone" PropertyName="Phone" DbType="nvarchar" Length="48" Precision="0" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Fax" PropertyName="Fax" DbType="nvarchar" Length="48" Precision="0" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+          </Columns>
+        </Table>
+        <Table Name="Shippers" Build="false">
+          <BuildClass>false</BuildClass>
+          <Columns>
+            <Column Name="ShipperID" PropertyName="ShipperID" DbType="int" Length="4" Precision="10" Scale="0" DefaultValue="" IsNullable="false" IsIdentity="true" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="CompanyName" PropertyName="CompanyName" DbType="nvarchar" Length="80" Precision="0" Scale="0" DefaultValue="" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Phone" PropertyName="Phone" DbType="nvarchar" Length="48" Precision="0" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+          </Columns>
+        </Table>
+        <Table Name="Suppliers" Build="false">
+          <BuildClass>false</BuildClass>
+          <Columns>
+            <Column Name="SupplierID" PropertyName="SupplierID" DbType="int" Length="4" Precision="10" Scale="0" DefaultValue="" IsNullable="false" IsIdentity="true" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="CompanyName" PropertyName="CompanyName" DbType="nvarchar" Length="80" Precision="0" Scale="0" DefaultValue="" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ContactName" PropertyName="ContactName" DbType="nvarchar" Length="60" Precision="0" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ContactTitle" PropertyName="ContactTitle" DbType="nvarchar" Length="60" Precision="0" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Address" PropertyName="Address" DbType="nvarchar" Length="120" Precision="0" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="City" PropertyName="City" DbType="nvarchar" Length="30" Precision="0" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Region" PropertyName="Region" DbType="nvarchar" Length="30" Precision="0" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="PostalCode" PropertyName="PostalCode" DbType="nvarchar" Length="20" Precision="0" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Country" PropertyName="Country" DbType="nvarchar" Length="30" Precision="0" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Phone" PropertyName="Phone" DbType="nvarchar" Length="48" Precision="0" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Fax" PropertyName="Fax" DbType="nvarchar" Length="48" Precision="0" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="HomePage" PropertyName="HomePage" DbType="ntext" Length="16" Precision="0" Scale="0" DefaultValue="" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+          </Columns>
+        </Table>
+      </Tables>
+      <Views>
+        <View Name="Customer and Suppliers by City" Build="false">
+          <BuildClass>false</BuildClass>
+          <Columns>
+            <Column Name="City" PropertyName="City" DbType="nvarchar" Length="30" Precision="0" Scale="0" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="CompanyName" PropertyName="CompanyName" DbType="nvarchar" Length="80" Precision="0" Scale="0" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ContactName" PropertyName="ContactName" DbType="nvarchar" Length="60" Precision="0" Scale="0" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Relationship" PropertyName="Relationship" DbType="varchar" Length="9" Precision="0" Scale="0" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+          </Columns>
+        </View>
+        <View Name="Alphabetical list of products" Build="false">
+          <BuildClass>false</BuildClass>
+          <Columns>
+            <Column Name="ProductID" PropertyName="ProductID" DbType="int" Length="4" Precision="10" Scale="0" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ProductName" PropertyName="ProductName" DbType="nvarchar" Length="80" Precision="0" Scale="0" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="SupplierID" PropertyName="SupplierID" DbType="int" Length="4" Precision="10" Scale="0" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="CategoryID" PropertyName="CategoryID" DbType="int" Length="4" Precision="10" Scale="0" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="QuantityPerUnit" PropertyName="QuantityPerUnit" DbType="nvarchar" Length="40" Precision="0" Scale="0" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="UnitPrice" PropertyName="UnitPrice" DbType="money" Length="8" Precision="19" Scale="4" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="UnitsInStock" PropertyName="UnitsInStock" DbType="smallint" Length="2" Precision="5" Scale="0" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="UnitsOnOrder" PropertyName="UnitsOnOrder" DbType="smallint" Length="2" Precision="5" Scale="0" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ReorderLevel" PropertyName="ReorderLevel" DbType="smallint" Length="2" Precision="5" Scale="0" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Discontinued" PropertyName="Discontinued" DbType="bit" Length="1" Precision="1" Scale="0" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="CategoryName" PropertyName="CategoryName" DbType="nvarchar" Length="30" Precision="0" Scale="0" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+          </Columns>
+        </View>
+        <View Name="Current Product List" Build="false">
+          <BuildClass>false</BuildClass>
+          <Columns>
+            <Column Name="ProductID" PropertyName="ProductID" DbType="int" Length="4" Precision="10" Scale="0" IsNullable="false" IsIdentity="true" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ProductName" PropertyName="ProductName" DbType="nvarchar" Length="80" Precision="0" Scale="0" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+          </Columns>
+        </View>
+        <View Name="Orders Qry" Build="false">
+          <BuildClass>false</BuildClass>
+          <Columns>
+            <Column Name="OrderID" PropertyName="OrderID" DbType="int" Length="4" Precision="10" Scale="0" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="CustomerID" PropertyName="CustomerID" DbType="nchar" Length="10" Precision="0" Scale="0" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="EmployeeID" PropertyName="EmployeeID" DbType="int" Length="4" Precision="10" Scale="0" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="OrderDate" PropertyName="OrderDate" DbType="datetime" Length="8" Precision="23" Scale="3" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="RequiredDate" PropertyName="RequiredDate" DbType="datetime" Length="8" Precision="23" Scale="3" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ShippedDate" PropertyName="ShippedDate" DbType="datetime" Length="8" Precision="23" Scale="3" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ShipVia" PropertyName="ShipVia" DbType="int" Length="4" Precision="10" Scale="0" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Freight" PropertyName="Freight" DbType="money" Length="8" Precision="19" Scale="4" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ShipName" PropertyName="ShipName" DbType="nvarchar" Length="80" Precision="0" Scale="0" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ShipAddress" PropertyName="ShipAddress" DbType="nvarchar" Length="120" Precision="0" Scale="0" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ShipCity" PropertyName="ShipCity" DbType="nvarchar" Length="30" Precision="0" Scale="0" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ShipRegion" PropertyName="ShipRegion" DbType="nvarchar" Length="30" Precision="0" Scale="0" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ShipPostalCode" PropertyName="ShipPostalCode" DbType="nvarchar" Length="20" Precision="0" Scale="0" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ShipCountry" PropertyName="ShipCountry" DbType="nvarchar" Length="30" Precision="0" Scale="0" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="CompanyName" PropertyName="CompanyName" DbType="nvarchar" Length="80" Precision="0" Scale="0" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Address" PropertyName="Address" DbType="nvarchar" Length="120" Precision="0" Scale="0" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="City" PropertyName="City" DbType="nvarchar" Length="30" Precision="0" Scale="0" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Region" PropertyName="Region" DbType="nvarchar" Length="30" Precision="0" Scale="0" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="PostalCode" PropertyName="PostalCode" DbType="nvarchar" Length="20" Precision="0" Scale="0" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Country" PropertyName="Country" DbType="nvarchar" Length="30" Precision="0" Scale="0" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+          </Columns>
+        </View>
+        <View Name="Products Above Average Price" Build="false">
+          <BuildClass>false</BuildClass>
+          <Columns>
+            <Column Name="ProductName" PropertyName="ProductName" DbType="nvarchar" Length="80" Precision="0" Scale="0" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="UnitPrice" PropertyName="UnitPrice" DbType="money" Length="8" Precision="19" Scale="4" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+          </Columns>
+        </View>
+        <View Name="Products by Category" Build="false">
+          <BuildClass>false</BuildClass>
+          <Columns>
+            <Column Name="CategoryName" PropertyName="CategoryName" DbType="nvarchar" Length="30" Precision="0" Scale="0" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ProductName" PropertyName="ProductName" DbType="nvarchar" Length="80" Precision="0" Scale="0" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="QuantityPerUnit" PropertyName="QuantityPerUnit" DbType="nvarchar" Length="40" Precision="0" Scale="0" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="UnitsInStock" PropertyName="UnitsInStock" DbType="smallint" Length="2" Precision="5" Scale="0" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Discontinued" PropertyName="Discontinued" DbType="bit" Length="1" Precision="1" Scale="0" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+          </Columns>
+        </View>
+        <View Name="Quarterly Orders" Build="false">
+          <BuildClass>false</BuildClass>
+          <Columns>
+            <Column Name="CustomerID" PropertyName="CustomerID" DbType="nchar" Length="10" Precision="0" Scale="0" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="CompanyName" PropertyName="CompanyName" DbType="nvarchar" Length="80" Precision="0" Scale="0" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="City" PropertyName="City" DbType="nvarchar" Length="30" Precision="0" Scale="0" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Country" PropertyName="Country" DbType="nvarchar" Length="30" Precision="0" Scale="0" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+          </Columns>
+        </View>
+        <View Name="Invoices" Build="false">
+          <BuildClass>false</BuildClass>
+          <Columns>
+            <Column Name="ShipName" PropertyName="ShipName" DbType="nvarchar" Length="80" Precision="0" Scale="0" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ShipAddress" PropertyName="ShipAddress" DbType="nvarchar" Length="120" Precision="0" Scale="0" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ShipCity" PropertyName="ShipCity" DbType="nvarchar" Length="30" Precision="0" Scale="0" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ShipRegion" PropertyName="ShipRegion" DbType="nvarchar" Length="30" Precision="0" Scale="0" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ShipPostalCode" PropertyName="ShipPostalCode" DbType="nvarchar" Length="20" Precision="0" Scale="0" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ShipCountry" PropertyName="ShipCountry" DbType="nvarchar" Length="30" Precision="0" Scale="0" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="CustomerID" PropertyName="CustomerID" DbType="nchar" Length="10" Precision="0" Scale="0" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="CustomerName" PropertyName="CustomerName" DbType="nvarchar" Length="80" Precision="0" Scale="0" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Address" PropertyName="Address" DbType="nvarchar" Length="120" Precision="0" Scale="0" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="City" PropertyName="City" DbType="nvarchar" Length="30" Precision="0" Scale="0" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Region" PropertyName="Region" DbType="nvarchar" Length="30" Precision="0" Scale="0" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="PostalCode" PropertyName="PostalCode" DbType="nvarchar" Length="20" Precision="0" Scale="0" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Country" PropertyName="Country" DbType="nvarchar" Length="30" Precision="0" Scale="0" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Salesperson" PropertyName="Salesperson" DbType="nvarchar" Length="62" Precision="0" Scale="0" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="OrderID" PropertyName="OrderID" DbType="int" Length="4" Precision="10" Scale="0" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="OrderDate" PropertyName="OrderDate" DbType="datetime" Length="8" Precision="23" Scale="3" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="RequiredDate" PropertyName="RequiredDate" DbType="datetime" Length="8" Precision="23" Scale="3" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ShippedDate" PropertyName="ShippedDate" DbType="datetime" Length="8" Precision="23" Scale="3" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ShipperName" PropertyName="ShipperName" DbType="nvarchar" Length="80" Precision="0" Scale="0" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ProductID" PropertyName="ProductID" DbType="int" Length="4" Precision="10" Scale="0" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ProductName" PropertyName="ProductName" DbType="nvarchar" Length="80" Precision="0" Scale="0" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="UnitPrice" PropertyName="UnitPrice" DbType="money" Length="8" Precision="19" Scale="4" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Quantity" PropertyName="Quantity" DbType="smallint" Length="2" Precision="5" Scale="0" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Discount" PropertyName="Discount" DbType="real" Length="4" Precision="24" Scale="0" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ExtendedPrice" PropertyName="ExtendedPrice" DbType="money" Length="8" Precision="19" Scale="4" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Freight" PropertyName="Freight" DbType="money" Length="8" Precision="19" Scale="4" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+          </Columns>
+        </View>
+        <View Name="Order Details Extended" Build="false">
+          <BuildClass>false</BuildClass>
+          <Columns>
+            <Column Name="OrderID" PropertyName="OrderID" DbType="int" Length="4" Precision="10" Scale="0" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ProductID" PropertyName="ProductID" DbType="int" Length="4" Precision="10" Scale="0" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ProductName" PropertyName="ProductName" DbType="nvarchar" Length="80" Precision="0" Scale="0" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="UnitPrice" PropertyName="UnitPrice" DbType="money" Length="8" Precision="19" Scale="4" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Quantity" PropertyName="Quantity" DbType="smallint" Length="2" Precision="5" Scale="0" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Discount" PropertyName="Discount" DbType="real" Length="4" Precision="24" Scale="0" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ExtendedPrice" PropertyName="ExtendedPrice" DbType="money" Length="8" Precision="19" Scale="4" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+          </Columns>
+        </View>
+        <View Name="Order Subtotals" Build="false">
+          <BuildClass>false</BuildClass>
+          <Columns>
+            <Column Name="OrderID" PropertyName="OrderID" DbType="int" Length="4" Precision="10" Scale="0" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Subtotal" PropertyName="Subtotal" DbType="money" Length="8" Precision="19" Scale="4" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+          </Columns>
+        </View>
+        <View Name="Product Sales for 1997" Build="false">
+          <BuildClass>false</BuildClass>
+          <Columns>
+            <Column Name="CategoryName" PropertyName="CategoryName" DbType="nvarchar" Length="30" Precision="0" Scale="0" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ProductName" PropertyName="ProductName" DbType="nvarchar" Length="80" Precision="0" Scale="0" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ProductSales" PropertyName="ProductSales" DbType="money" Length="8" Precision="19" Scale="4" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+          </Columns>
+        </View>
+        <View Name="Category Sales for 1997" Build="false">
+          <BuildClass>false</BuildClass>
+          <Columns>
+            <Column Name="CategoryName" PropertyName="CategoryName" DbType="nvarchar" Length="30" Precision="0" Scale="0" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="CategorySales" PropertyName="CategorySales" DbType="money" Length="8" Precision="19" Scale="4" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+          </Columns>
+        </View>
+        <View Name="Sales by Category" Build="false">
+          <BuildClass>false</BuildClass>
+          <Columns>
+            <Column Name="CategoryID" PropertyName="CategoryID" DbType="int" Length="4" Precision="10" Scale="0" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="CategoryName" PropertyName="CategoryName" DbType="nvarchar" Length="30" Precision="0" Scale="0" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ProductName" PropertyName="ProductName" DbType="nvarchar" Length="80" Precision="0" Scale="0" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ProductSales" PropertyName="ProductSales" DbType="money" Length="8" Precision="19" Scale="4" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+          </Columns>
+        </View>
+        <View Name="Sales Totals by Amount" Build="false">
+          <BuildClass>false</BuildClass>
+          <Columns>
+            <Column Name="SaleAmount" PropertyName="SaleAmount" DbType="money" Length="8" Precision="19" Scale="4" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="OrderID" PropertyName="OrderID" DbType="int" Length="4" Precision="10" Scale="0" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="CompanyName" PropertyName="CompanyName" DbType="nvarchar" Length="80" Precision="0" Scale="0" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="ShippedDate" PropertyName="ShippedDate" DbType="datetime" Length="8" Precision="23" Scale="3" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+          </Columns>
+        </View>
+        <View Name="Summary of Sales by Quarter" Build="false">
+          <BuildClass>false</BuildClass>
+          <Columns>
+            <Column Name="ShippedDate" PropertyName="ShippedDate" DbType="datetime" Length="8" Precision="23" Scale="3" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="OrderID" PropertyName="OrderID" DbType="int" Length="4" Precision="10" Scale="0" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Subtotal" PropertyName="Subtotal" DbType="money" Length="8" Precision="19" Scale="4" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+          </Columns>
+        </View>
+        <View Name="Summary of Sales by Year" Build="false">
+          <BuildClass>false</BuildClass>
+          <Columns>
+            <Column Name="ShippedDate" PropertyName="ShippedDate" DbType="datetime" Length="8" Precision="23" Scale="3" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="OrderID" PropertyName="OrderID" DbType="int" Length="4" Precision="10" Scale="0" IsNullable="false" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+            <Column Name="Subtotal" PropertyName="Subtotal" DbType="money" Length="8" Precision="19" Scale="4" IsNullable="true" IsIdentity="false" IsRowGuid="false" IsComputed="false" Description="" />
+          </Columns>
+        </View>
+      </Views>
+      <Functions />
+      <Procedures>
+        <Procedure Name="Ten Most Expensive Products" Build="false">
+          <BuildClass>false</BuildClass>
+          <Parameters />
+        </Procedure>
+        <Procedure Name="Employee Sales by Country" Build="false">
+          <BuildClass>false</BuildClass>
+          <Parameters>
+            <Parameter Name="@Beginning_Date" PropertyName="@Beginning_Date" DbType="datetime" Length="8" Precision="23" Scale="3" DefaultValue="" IsNullable="false" />
+            <Parameter Name="@Ending_Date" PropertyName="@Ending_Date" DbType="datetime" Length="8" Precision="23" Scale="3" DefaultValue="" IsNullable="false" />
+          </Parameters>
+        </Procedure>
+        <Procedure Name="Sales by Year" Build="false">
+          <BuildClass>false</BuildClass>
+          <Parameters>
+            <Parameter Name="@Beginning_Date" PropertyName="@Beginning_Date" DbType="datetime" Length="8" Precision="23" Scale="3" DefaultValue="" IsNullable="false" />
+            <Parameter Name="@Ending_Date" PropertyName="@Ending_Date" DbType="datetime" Length="8" Precision="23" Scale="3" DefaultValue="" IsNullable="false" />
+          </Parameters>
+        </Procedure>
+        <Procedure Name="CustOrdersDetail" Build="false">
+          <BuildClass>false</BuildClass>
+          <Parameters>
+            <Parameter Name="@OrderID" PropertyName="@OrderID" DbType="int" Length="4" Precision="10" Scale="0" DefaultValue="" IsNullable="false" />
+          </Parameters>
+        </Procedure>
+        <Procedure Name="CustOrdersOrders" Build="false">
+          <BuildClass>false</BuildClass>
+          <Parameters>
+            <Parameter Name="@CustomerID" PropertyName="@CustomerID" DbType="nchar" Length="10" Precision="0" Scale="0" DefaultValue="" IsNullable="false" />
+          </Parameters>
+        </Procedure>
+        <Procedure Name="CustOrderHist" Build="false">
+          <BuildClass>false</BuildClass>
+          <Parameters>
+            <Parameter Name="@CustomerID" PropertyName="@CustomerID" DbType="nchar" Length="10" Precision="0" Scale="0" DefaultValue="" IsNullable="false" />
+          </Parameters>
+        </Procedure>
+        <Procedure Name="SalesByCategory" Build="false">
+          <BuildClass>false</BuildClass>
+          <Parameters>
+            <Parameter Name="@CategoryName" PropertyName="@CategoryName" DbType="nvarchar" Length="30" Precision="0" Scale="0" DefaultValue="" IsNullable="false" />
+            <Parameter Name="@OrdYear" PropertyName="@OrdYear" DbType="nvarchar" Length="8" Precision="0" Scale="0" DefaultValue="" IsNullable="false" />
+          </Parameters>
+        </Procedure>
+      </Procedures>
+    </Schema>
+  </Schemas>
+</Project>

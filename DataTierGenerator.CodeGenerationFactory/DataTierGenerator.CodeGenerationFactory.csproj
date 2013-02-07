@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="EmbeddedResources\GatewayHelperSqlCe.cs" />
     <Compile Include="UserViewGateway.cs" />
     <Compile Include="UserTableGateway.cs" />
     <Compile Include="GeneratedViewDataObject.cs" />
@@ -77,6 +78,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="EmbeddedResources\Microsoft.Practices.ObjectBuilder.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="EmbeddedResources\Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
