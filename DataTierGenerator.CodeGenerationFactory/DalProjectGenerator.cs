@@ -210,7 +210,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             fileContents = fileContents.Replace("#ROOT_NAMESPACE#", m_DalNamespace);
             File.WriteAllText(m_DalProjectDirectory + "Common\\IGateway.cs", fileContents);
 
-            // create the IDataObject
+            // create the IFieldValues
             fileContents = Utility.GetResource(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.CodeGenerationFactory.EmbeddedResources.IFieldValues.cs");
             fileContents = fileContents.Replace("#ROOT_NAMESPACE#", m_DalNamespace);
             File.WriteAllText(m_DalProjectDirectory + "Common\\IFieldValues.cs", fileContents);

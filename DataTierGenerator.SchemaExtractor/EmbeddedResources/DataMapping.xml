@@ -38,6 +38,15 @@
                 <CSharp Value="string" />
                 <VbDotNet Value="String" />
             </Type>
+            <Type Name="date">
+                <System.Data.DbType Value="DateTime" />
+                <System.Data.SqlDbType Value="DateTime" />
+                <System.Data.OleDb.OleDbTypeEnum Value="DBTimeStamp" />
+                <System.Data.SqlTypes Value="SqlDateTime" />
+                <System Value="DateTime" />
+                <CSharp Value="DateTime" />
+                <VbDotNet Value="DateTime" />
+            </Type>
             <Type Name="datetime">
                 <System.Data.DbType Value="DateTime" />
                 <System.Data.SqlDbType Value="DateTime" />
