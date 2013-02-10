@@ -4,7 +4,7 @@ using System.Text;
 
 namespace #ROOT_NAMESPACE# {
 
-    public interface IDataObject<T> {
+    public interface IDataObject {
 
         bool IsNew {
             get;
@@ -14,10 +14,11 @@ namespace #ROOT_NAMESPACE# {
             get;
         }
 
+        /*
         void Save();
 
         void Delete();
-
+        */
     }
 
 }

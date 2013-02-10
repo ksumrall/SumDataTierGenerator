@@ -142,8 +142,16 @@ namespace SumDataTierGenerator.CodeGenerationFactory
             string[] objectDirectories = new string[] { 
                 "UserDataObjects\\"
                 , "UserGateway\\"
+                , "UserGateway\\Tables\\"
+                , "UserGateway\\Views\\"
+                , "UserGateway\\Functions\\"
+                , "UserGateway\\Procedures\\"
                 , "GeneratedClasses\\DataObject\\"
                 , "GeneratedClasses\\Gateway\\"
+                , "GeneratedClasses\\Gateway\\Tables\\"
+                , "GeneratedClasses\\Gateway\\Views\\"
+                , "GeneratedClasses\\Gateway\\Functions\\"
+                , "GeneratedClasses\\Gateway\\Procedures\\"
             };
 
             //If the directory already exists, CreateDirectory method does nothing.
@@ -163,18 +171,6 @@ namespace SumDataTierGenerator.CodeGenerationFactory
             {
                 // create the directory if it does not exist
                 Directory.CreateDirectory(rootPath + path);
-
-                // create the directory if it does not exist
-                Directory.CreateDirectory(rootPath + path + "Tables\\");
-
-                // create the directory if it does not exist
-                Directory.CreateDirectory(rootPath + path + "Views\\");
-
-                // create the directory if it does not exist
-                Directory.CreateDirectory(rootPath + path + "Functions\\");
-
-                // create the directory if it does not exist
-                Directory.CreateDirectory(rootPath + path + "Procedures\\");
             }
 
         }
@@ -354,12 +350,12 @@ namespace SumDataTierGenerator.CodeGenerationFactory
 
                 GeneratedTableDataObject dataObjectGenerator = new GeneratedTableDataObject(projectNamespace, providerType, table);
 
-                fullFileName = projectDirectory + "GeneratedClasses\\DataObject\\Tables\\" + dataObjectGenerator.CLASS_NAME + "_Generated.cs";
+                fullFileName = projectDirectory + "GeneratedClasses\\DataObject\\" + dataObjectGenerator.CLASS_NAME + "_Generated.cs";
 
                 fileContents = dataObjectGenerator.ToString();
                 File.WriteAllText(fullFileName, fileContents);
 
-                includeFile = "\t\t<Compile Include=\"GeneratedClasses\\DataObject\\Tables\\" + dataObjectGenerator.CLASS_NAME + "_Generated.cs" + "\" />";
+                includeFile = "\t\t<Compile Include=\"GeneratedClasses\\DataObject\\" + dataObjectGenerator.CLASS_NAME + "_Generated.cs" + "\" />";
 
             }
             catch (Exception exp)
@@ -484,12 +480,12 @@ namespace SumDataTierGenerator.CodeGenerationFactory
 
                 GeneratedViewDataObject dataObjectGenerator = new GeneratedViewDataObject(projectNamespace, providerType, view);
 
-                fullFileName = projectDirectory + "GeneratedClasses\\DataObject\\Views\\" + dataObjectGenerator.CLASS_NAME + "_Generated.cs";
+                fullFileName = projectDirectory + "GeneratedClasses\\DataObject\\" + dataObjectGenerator.CLASS_NAME + "_Generated.cs";
 
                 fileContents = dataObjectGenerator.ToString();
                 File.WriteAllText(fullFileName, fileContents);
 
-                includeFile = "\t\t<Compile Include=\"GeneratedClasses\\DataObject\\Views\\" + dataObjectGenerator.CLASS_NAME + "_Generated.cs" + "\" />";
+                includeFile = "\t\t<Compile Include=\"GeneratedClasses\\DataObject\\" + dataObjectGenerator.CLASS_NAME + "_Generated.cs" + "\" />";
 
             }
             catch (Exception exp)

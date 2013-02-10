@@ -423,7 +423,7 @@ namespace SumDataTierGenerator.CodeGenerationFactory
         {
 
             #region IDataObject implementation
-
+            /*
             AppendLine();
             AppendLine("public void Save() {");
 
@@ -465,7 +465,7 @@ namespace SumDataTierGenerator.CodeGenerationFactory
             AppendLine("public void Delete() {");
             AppendLine("\t#CONCRETE_GATEWAY_TYPE_NAME#.Delete (this);");
             AppendLine("}");
-
+            */
             #endregion
 
             AppendLine();
@@ -483,7 +483,7 @@ namespace SumDataTierGenerator.CodeGenerationFactory
         {
 
             AppendLine();
-            AppendLine("public interface I#CLASS_NAME# : IDataObject<#CLASS_NAME_PREFIX#Gateway>{");
+            AppendLine("public interface I#CLASS_NAME# : IDataObject{");
 
             IndentIncrement();
 
