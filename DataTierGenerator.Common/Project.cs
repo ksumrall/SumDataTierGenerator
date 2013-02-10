@@ -6,7 +6,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace TotalSafety.DataTierGenerator.Common
+namespace SumDataTierGenerator.Common
 {
 
     public partial class Project

@@ -6,5 +6,5 @@
     cause the file to be unrecognizable by the program.
 -->
 <GenericObjectDataSource DisplayName="MiscSettingsModel" Version="1.0" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
-   <TypeInfo>TotalSafety.DataTierGenerator.MVP.MiscSettingsModel, DataTierGenerator, Version=1.0.2473.21067, Culture=neutral, PublicKeyToken=null</TypeInfo>
+   <TypeInfo>SumDataTierGenerator.MVP.MiscSettingsModel, DataTierGenerator, Version=1.0.2473.21067, Culture=neutral, PublicKeyToken=null</TypeInfo>
 </GenericObjectDataSource>

@@ -1,4 +1,4 @@
-namespace TotalSafety.DataTierGenerator.Controls {
+namespace SumDataTierGenerator.Controls {
     partial class SqlServerLogin {
         /// <summary> 
         /// Required designer variable.
@@ -51,7 +51,7 @@ namespace TotalSafety.DataTierGenerator.Controls {
             // 
             // sqlConnectionSettingsModelBindingSource
             // 
-            this.sqlConnectionSettingsModelBindingSource.DataSource = typeof (TotalSafety.DataTierGenerator.MVP.SqlConnectionSettingsModel);
+            this.sqlConnectionSettingsModelBindingSource.DataSource = typeof (SumDataTierGenerator.MVP.SqlConnectionSettingsModel);
             // 
             // m_GuiDatabaseCombo
             // 

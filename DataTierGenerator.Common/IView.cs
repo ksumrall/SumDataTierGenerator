@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace TotalSafety.DataTierGenerator.Common
+namespace SumDataTierGenerator.Common
 {
     public interface IView
     {

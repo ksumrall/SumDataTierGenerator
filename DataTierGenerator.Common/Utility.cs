@@ -5,7 +5,7 @@ using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
-namespace TotalSafety.DataTierGenerator.Common
+namespace SumDataTierGenerator.Common
 {
     public sealed class Utility
     {
@@ -105,8 +105,8 @@ namespace TotalSafety.DataTierGenerator.Common
         /// <returns>The query that should be used for retrieving the list of tables for the specified database.</returns>
         public static string GetTableQuery(string databaseName)
         {
-            //return GetResource("TotalSafety.DataTierGenerator.Resource.TableQuery.sql", "#DatabaseName#", databaseName);
-            return GetResource("TotalSafety.DataTierGenerator.Resource.ExtractDatabaseTableSchema.sql");
+            //return GetResource("SumDataTierGenerator.Resource.TableQuery.sql", "#DatabaseName#", databaseName);
+            return GetResource("SumDataTierGenerator.Resource.ExtractDatabaseTableSchema.sql");
         }
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace TotalSafety.DataTierGenerator.Common
         /// <returns>The query that should be used for retrieving the list of columns for the specified table.</returns>
         public static string GetColumnQuery(string tableSchema, string tableName)
         {
-            string returnValue = GetResource("TotalSafety.DataTierGenerator.Resource.ExtractDatabaseColumnSchema.sql");
+            string returnValue = GetResource("SumDataTierGenerator.Resource.ExtractDatabaseColumnSchema.sql");
             returnValue = returnValue.Replace("#TableSchema#", tableSchema);
             returnValue = returnValue.Replace("#TableName#", tableName);
             return returnValue;
@@ -131,7 +131,7 @@ namespace TotalSafety.DataTierGenerator.Common
         /// <returns>The queries that should be used to create the specified database login.</returns>
         public static string GetUserQueries(string databaseName, string grantLoginName)
         {
-            string returnValue = GetResource( "TotalSafety.DataTierGenerator.Resource.User.sql" );
+            string returnValue = GetResource( "SumDataTierGenerator.Resource.User.sql" );
             returnValue = returnValue.Replace("#DatabaseName#", databaseName);
             returnValue = returnValue.Replace("#UserName#", grantLoginName);
             return returnValue;
@@ -144,7 +144,7 @@ namespace TotalSafety.DataTierGenerator.Common
         /// <returns>The query that should be used for retrieving the list of tables for the specified database.</returns>
         public static string Get(string databaseName)
         {
-            return GetResource("TotalSafety.DataTierGenerator.TableQuery.sql", "#DatabaseName#", databaseName);
+            return GetResource("SumDataTierGenerator.TableQuery.sql", "#DatabaseName#", databaseName);
         }
 
         /// <summary>

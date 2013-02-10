@@ -12,12 +12,12 @@ using System.Xml.Serialization;
 
 using Microsoft.Win32;
 
-using TotalSafety.DataTierGenerator.Common;
-using TotalSafety.DataTierGenerator.CodeGenerationFactory;
-using TotalSafety.DataTierGenerator.MVP;
-using TotalSafety.DataTierGenerator.SchemaExtractor;
+using SumDataTierGenerator.Common;
+using SumDataTierGenerator.CodeGenerationFactory;
+using SumDataTierGenerator.MVP;
+using SumDataTierGenerator.SchemaExtractor;
 
-namespace TotalSafety.DataTierGenerator
+namespace SumDataTierGenerator
 {
     /// <summary>
     /// Form used to collect the connection information for the code we're going to generate.

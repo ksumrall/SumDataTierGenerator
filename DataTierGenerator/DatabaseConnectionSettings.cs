@@ -6,9 +6,9 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-using TotalSafety.DataTierGenerator.MVP;
+using SumDataTierGenerator.MVP;
 
-namespace TotalSafety.DataTierGenerator {
+namespace SumDataTierGenerator {
 
     public partial class DatabaseConnectionSettings : Form {
 

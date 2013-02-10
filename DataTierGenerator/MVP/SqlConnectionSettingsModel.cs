@@ -5,7 +5,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Text;
 
-namespace TotalSafety.DataTierGenerator.MVP {
+namespace SumDataTierGenerator.MVP {
 
     public class SqlConnectionSettingsModel : IEditableObject {
 

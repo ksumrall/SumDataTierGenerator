@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using TotalSafety.DataTierGenerator.Common;
+using SumDataTierGenerator.Common;
 
-namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
+namespace SumDataTierGenerator.CodeGenerationFactory
 {
 
     public class GeneratedTableGateway : GeneratorBase
@@ -49,8 +49,13 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
         {
         }
 
-        public GeneratedTableGateway(string rootNamespace, Table table)
-            : base(rootNamespace, table)
+        public GeneratedTableGateway(string rootNamespace, string providerType)
+            : this(rootNamespace, providerType, null)
+        {
+        }
+
+        public GeneratedTableGateway(string rootNamespace, string providerType, Table table)
+            : base(rootNamespace, providerType, table)
         {
 
             m_Table = table;
@@ -728,7 +733,6 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             AppendLine("string query;");
             AppendLine();
 
-            string m_ProviderType = "Microsoft SQL Server Compact 3.5 (SqlCeClient)";
             switch (m_ProviderType)
             {
                 case "Microsoft SQL Server (SqlClient)":
@@ -795,7 +799,6 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
 
             AppendLine();
 
-            string m_ProviderType = "Microsoft SQL Server Compact 3.5 (SqlCeClient)";
             switch (m_ProviderType)
             {
                 case "Microsoft SQL Server (SqlClient)":
@@ -862,7 +865,6 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             #endregion
             AppendLine();
 
-            string m_ProviderType = "Microsoft SQL Server Compact 3.5 (SqlCeClient)";
             switch (m_ProviderType)
             {
                 case "Microsoft SQL Server (SqlClient)":
@@ -902,7 +904,6 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
 
             AppendLine();
 
-            string m_ProviderType = "Microsoft SQL Server Compact 3.5 (SqlCeClient)";
             switch (m_ProviderType)
             {
                 case "Microsoft SQL Server (SqlClient)":
@@ -914,17 +915,19 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
                     AppendLine();
                     AppendLine("if ( dataObjects.Count == 1 ) {");
                     IndentIncrement();
-                    AppendLine("dataObject.IsDirty = false;");
+                    AppendLine("newDataObject = new #CONCRETE_DATA_ENTITY_TYPE_NAME#();");
+                    AppendLine("newDataObject.IsDirty = false;");
+                    AppendLine("newDataObject.IsNew = false;");
                     AppendLine();
                     AppendLine("for ( int index = 0; index < FieldDefinitionArray.Length; index++ ) {");
                     IndentIncrement();
-                    AppendLine("((IFieldValues)dataObject).FieldValues[index].Value = ((IFieldValues)dataObjects[0]).FieldValues[index].Value;");
-                    AppendLine("((IFieldValues)dataObject).FieldValues[index].IsDirty = false;");
-                    AppendLine("dataObject.IsNew = false;");
+                    AppendLine("((IFieldValues)newDataObject).FieldValues[index].Value = ((IFieldValues)dataObjects[0]).FieldValues[index].Value;");
+                    AppendLine("((IFieldValues)newDataObject).FieldValues[index].IsDirty = false;");
                     IndentDecrement();
                     AppendLine("}");
                     IndentDecrement();
                     AppendLine("}");
+                    AppendLine("return newDataObject;");
                     break;
 
                 case "Microsoft SQL Server Compact 3.5 (SqlCeClient)":
@@ -1014,7 +1017,6 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             //AppendLine ("}");
 
             AppendLine();
-            string m_ProviderType = "Microsoft SQL Server Compact 3.5 (SqlCeClient)";
             switch (m_ProviderType)
             {
                 case "Microsoft SQL Server (SqlClient)":
@@ -1163,7 +1165,6 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             AppendLine("}");
 
             AppendLine();
-            string m_ProviderType = "Microsoft SQL Server Compact 3.5 (SqlCeClient)";
             switch (m_ProviderType)
             {
                 case "Microsoft SQL Server (SqlClient)":
@@ -1371,7 +1372,6 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             #region build the query
 
             AppendLine();
-            string m_ProviderType = "Microsoft SQL Server Compact 3.5 (SqlCeClient)";
             switch (m_ProviderType)
             {
                 case "Microsoft SQL Server (SqlClient)":

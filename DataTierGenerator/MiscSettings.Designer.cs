@@ -1,4 +1,4 @@
-namespace TotalSafety.DataTierGenerator {
+namespace SumDataTierGenerator {
     partial class MiscSettings {
         /// <summary>
         /// Required designer variable.
@@ -52,7 +52,7 @@ namespace TotalSafety.DataTierGenerator {
             // 
             // miscSettingsModelBindingSource
             // 
-            this.miscSettingsModelBindingSource.DataSource = typeof(TotalSafety.DataTierGenerator.MVP.MiscSettingsModel);
+            this.miscSettingsModelBindingSource.DataSource = typeof(SumDataTierGenerator.MVP.MiscSettingsModel);
             // 
             // label1
             // 

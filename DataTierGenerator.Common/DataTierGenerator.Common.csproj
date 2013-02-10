@@ -8,8 +8,8 @@
     <ProjectGuid>{187A5025-7CDB-490C-B03C-9F13CAF1715D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TotalSafety.DataTierGenerator.Common</RootNamespace>
-    <AssemblyName>DataTierGenerator.Common</AssemblyName>
+    <RootNamespace>SumDataTierGenerator.Common</RootNamespace>
+    <AssemblyName>SumDataTierGenerator.Common</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace TotalSafety.DataTierGenerator.Common
+namespace SumDataTierGenerator.Common
 {
     public class Index
     {

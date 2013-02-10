@@ -7,9 +7,9 @@ using System.Reflection;
 using System.Text;
 using System.Web;
 using System.Xml;
-using TotalSafety.DataTierGenerator.Common;
+using SumDataTierGenerator.Common;
 
-namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
+namespace SumDataTierGenerator.CodeGenerationFactory
 {
 
     public class DalProjectGenerator
@@ -26,6 +26,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
         private List<Function> m_FunctionList;
         private List<Procedure> m_ProcedureList;
         private XmlDocument m_DataMappingXml;
+        private string m_ProviderType;
 
         #endregion
 
@@ -39,6 +40,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             m_FunctionList = new List<Function>();
             m_ProcedureList = new List<Procedure>();
             m_GenProjectFile = false;
+            m_ProviderType = "";
         }
 
         public DalProjectGenerator(Project project)
@@ -46,6 +48,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
         {
             m_DalNamespace = project.Configuration.CodeGenerationDetails.Namespace;
             m_DalProjectDirectory = project.Configuration.CodeGenerationDetails.OutputPath;
+            m_ProviderType = project.Configuration.DbConnectionDetails.DbProviderType;
             if (!m_DalProjectDirectory.EndsWith("\\"))
             {
                 m_DalProjectDirectory += "\\";
@@ -108,20 +111,20 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
 
             foreach (Schema schema in SchemaList)
             {
-                itemGroup.AppendLine(GenerateTables(m_DalNamespace, m_DalProjectDirectory, new List<Table>(schema.Tables)));
+                itemGroup.AppendLine(GenerateTables(m_DalNamespace, m_DalProjectDirectory, m_ProviderType, new List<Table>(schema.Tables)));
 
-                itemGroup.AppendLine(GenerateViews(m_DalNamespace, m_DalProjectDirectory, new List<View>(schema.Views)));
+                itemGroup.AppendLine(GenerateViews(m_DalNamespace, m_DalProjectDirectory, m_ProviderType, new List<View>(schema.Views)));
 
-                //itemGroup.AppendLine(GenerateFunctions(m_DalNamespace, m_DalProjectDirectory, new List<Function>(schema.Function)));
+                //itemGroup.AppendLine(GenerateFunctions(m_DalNamespace, m_DalProjectDirectory, m_ProviderType, new List<Function>(schema.Function)));
 
-                //itemGroup.AppendLine(GenerateProcedures(m_DalNamespace, m_DalProjectDirectory, new List<Procedure>(schema.Procedure)));
+                //itemGroup.AppendLine(GenerateProcedures(m_DalNamespace, m_DalProjectDirectory, m_ProviderType, new List<Procedure>(schema.Procedure)));
             }
 
             if (m_GenProjectFile)
             {
                 // create Project File
                 string projectFile;
-                projectFile = Utility.GetResource(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.CodeGenerationFactory.EmbeddedResources.ProjectTemplate.csproj");
+                projectFile = Utility.GetResource(Assembly.GetExecutingAssembly(), "SumDataTierGenerator.CodeGenerationFactory.EmbeddedResources.ProjectTemplate.csproj");
                 projectFile = projectFile.Replace("$guid1$", Guid.NewGuid().ToString());
                 projectFile = projectFile.Replace("$safeprojectname$", m_DalNamespace);
                 projectFile = projectFile.Replace("$CompileItem$", itemGroup.ToString());
@@ -181,72 +184,71 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             string fileContents;
 
             // create FieldDefinition
-            fileContents = Utility.GetResource(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.CodeGenerationFactory.EmbeddedResources.FieldDefinition.cs");
+            fileContents = Utility.GetResource(Assembly.GetExecutingAssembly(), "SumDataTierGenerator.CodeGenerationFactory.EmbeddedResources.FieldDefinition.cs");
             fileContents = fileContents.Replace("#ROOT_NAMESPACE#", m_DalNamespace);
             File.WriteAllText(m_DalProjectDirectory + "Common\\FieldDefinition.cs", fileContents);
 
             // create the TypeDefaultValue
-            fileContents = Utility.GetResource(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.CodeGenerationFactory.EmbeddedResources.TypeDefaultValue.cs");
+            fileContents = Utility.GetResource(Assembly.GetExecutingAssembly(), "SumDataTierGenerator.CodeGenerationFactory.EmbeddedResources.TypeDefaultValue.cs");
             fileContents = fileContents.Replace("#ROOT_NAMESPACE#", m_DalNamespace);
             File.WriteAllText(m_DalProjectDirectory + "Common\\TypeDefaultValue.cs", fileContents);
 
             // create the GatewayHelper
-            string m_ProviderType = "Microsoft SQL Server Compact 3.5 (SqlCeClient)";
             switch (m_ProviderType)
             {
                 case "Microsoft SQL Server (SqlClient)":
-                    fileContents = Utility.GetResource(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.CodeGenerationFactory.EmbeddedResources.GatewayHelper.cs");
+                    fileContents = Utility.GetResource(Assembly.GetExecutingAssembly(), "SumDataTierGenerator.CodeGenerationFactory.EmbeddedResources.GatewayHelper.cs");
                     break;
 
                 case "Microsoft SQL Server Compact 3.5 (SqlCeClient)":
-                    fileContents = Utility.GetResource(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.CodeGenerationFactory.EmbeddedResources.GatewayHelperSqlCe.cs");
+                    fileContents = Utility.GetResource(Assembly.GetExecutingAssembly(), "SumDataTierGenerator.CodeGenerationFactory.EmbeddedResources.GatewayHelperSqlCe.cs");
                     break;
             }
             fileContents = fileContents.Replace("#ROOT_NAMESPACE#", m_DalNamespace);
             File.WriteAllText(m_DalProjectDirectory + "Common\\GatewayHelper.cs", fileContents);
 
             // create the IGateway
-            fileContents = Utility.GetResource(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.CodeGenerationFactory.EmbeddedResources.IGateway.cs");
+            fileContents = Utility.GetResource(Assembly.GetExecutingAssembly(), "SumDataTierGenerator.CodeGenerationFactory.EmbeddedResources.IGateway.cs");
             fileContents = fileContents.Replace("#ROOT_NAMESPACE#", m_DalNamespace);
             File.WriteAllText(m_DalProjectDirectory + "Common\\IGateway.cs", fileContents);
 
             // create the IFieldValues
-            fileContents = Utility.GetResource(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.CodeGenerationFactory.EmbeddedResources.IFieldValues.cs");
+            fileContents = Utility.GetResource(Assembly.GetExecutingAssembly(), "SumDataTierGenerator.CodeGenerationFactory.EmbeddedResources.IFieldValues.cs");
             fileContents = fileContents.Replace("#ROOT_NAMESPACE#", m_DalNamespace);
             File.WriteAllText(m_DalProjectDirectory + "Common\\IFieldValues.cs", fileContents);
 
             // create the IDataObject
-            fileContents = Utility.GetResource(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.CodeGenerationFactory.EmbeddedResources.IDataObject.cs");
+            fileContents = Utility.GetResource(Assembly.GetExecutingAssembly(), "SumDataTierGenerator.CodeGenerationFactory.EmbeddedResources.IDataObject.cs");
             fileContents = fileContents.Replace("#ROOT_NAMESPACE#", m_DalNamespace);
             File.WriteAllText(m_DalProjectDirectory + "Common\\IDataObject.cs", fileContents);
 
             // create the Microsoft.Practices.EnterpriseLibrary.Common.dll
-            Utility.SaveResourceFile(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.CodeGenerationFactory.EmbeddedResources.Microsoft.Practices.EnterpriseLibrary.Common.dll"
+            Utility.SaveResourceFile(Assembly.GetExecutingAssembly(), "SumDataTierGenerator.CodeGenerationFactory.EmbeddedResources.Microsoft.Practices.EnterpriseLibrary.Common.dll"
                 , m_DalProjectDirectory + "bin\\Microsoft.Practices.EnterpriseLibrary.Common.dll");
 
             // create the Microsoft.Practices.EnterpriseLibrary.Data.dll
             switch (m_ProviderType)
             {
                 case "Microsoft SQL Server (SqlClient)":
-                    Utility.SaveResourceFile(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.CodeGenerationFactory.EmbeddedResources.Microsoft.Practices.EnterpriseLibrary.Data.dll"
+                    Utility.SaveResourceFile(Assembly.GetExecutingAssembly(), "SumDataTierGenerator.CodeGenerationFactory.EmbeddedResources.Microsoft.Practices.EnterpriseLibrary.Data.dll"
                         , m_DalProjectDirectory + "bin\\Microsoft.Practices.EnterpriseLibrary.Data.dll");
                     break;
 
                 case "Microsoft SQL Server Compact 3.5 (SqlCeClient)":
-                    Utility.SaveResourceFile(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.CodeGenerationFactory.EmbeddedResources.Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.dll"
+                    Utility.SaveResourceFile(Assembly.GetExecutingAssembly(), "SumDataTierGenerator.CodeGenerationFactory.EmbeddedResources.Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.dll"
                 , m_DalProjectDirectory + "bin\\Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.dll");
                     break;
             }
 
             // create the Microsoft.Practices.EnterpriseLibrary.ObjectBuilder.dll
-            Utility.SaveResourceFile(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.CodeGenerationFactory.EmbeddedResources.Microsoft.Practices.ObjectBuilder.dll"
+            Utility.SaveResourceFile(Assembly.GetExecutingAssembly(), "SumDataTierGenerator.CodeGenerationFactory.EmbeddedResources.Microsoft.Practices.ObjectBuilder.dll"
                 , m_DalProjectDirectory + "bin\\Microsoft.Practices.ObjectBuilder.dll");
 
         }
 
         #region table creation implementation
 
-        private string GenerateTables(string projectNamespace, string projectDirectory, List<Table> tableList)
+        private string GenerateTables(string projectNamespace, string projectDirectory, string providerType, List<Table> tableList)
         {
             StringBuilder itemGroup = new StringBuilder();
 
@@ -256,11 +258,11 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
                 {
                     if (1 == 1 || table.Build)
                     {
-                        itemGroup.AppendLine(GenerateTableDataGatewayGeneratedClass(projectNamespace, projectDirectory, table));
+                        itemGroup.AppendLine(GenerateTableDataGatewayGeneratedClass(projectNamespace, projectDirectory, providerType, table));
 
-                        itemGroup.AppendLine(GenerateTableDataGatewayUserClass(projectNamespace, projectDirectory, table));
+                        itemGroup.AppendLine(GenerateTableDataGatewayUserClass(projectNamespace, projectDirectory, providerType, table));
 
-                        itemGroup.AppendLine(GenerateTableDataEntityGeneratedClass(projectNamespace, projectDirectory, table));
+                        itemGroup.AppendLine(GenerateTableDataEntityGeneratedClass(projectNamespace, projectDirectory, providerType, table));
                     }
                 }
             }
@@ -268,7 +270,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             return itemGroup.ToString();
         }
 
-        private string GenerateTableDataGatewayGeneratedClass(string projectNamespace, string projectDirectory, Table table)
+        private string GenerateTableDataGatewayGeneratedClass(string projectNamespace, string projectDirectory, string providerType, Table table)
         {
             string fullFileName;
             string fileContents;
@@ -279,7 +281,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             {
 
                 GeneratedTableGateway generatedGateway =
-                    new GeneratedTableGateway(projectNamespace, table);
+                    new GeneratedTableGateway(projectNamespace, providerType, table);
 
                 fullFileName = projectDirectory + "GeneratedClasses\\Gateway\\Tables\\" + generatedGateway.FILE_NAME;
 
@@ -301,7 +303,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             return includeFile;
         }
 
-        private string GenerateTableDataGatewayUserClass(string projectNamespace, string projectDirectory, Table table)
+        private string GenerateTableDataGatewayUserClass(string projectNamespace, string projectDirectory, string providerType, Table table)
         {
             string fullFileName;
             string fileContents;
@@ -312,7 +314,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             {
 
                 UserTableGateway userGateway =
-                    new UserTableGateway(projectNamespace, table);
+                    new UserTableGateway(projectNamespace, providerType, table);
 
                 fullFileName = projectDirectory + "UserGateway\\Tables\\" + userGateway.CLASS_NAME + ".cs";
 
@@ -340,7 +342,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             return includeFile;
         }
 
-        private string GenerateTableDataEntityGeneratedClass(string projectNamespace, string projectDirectory, Table table)
+        private string GenerateTableDataEntityGeneratedClass(string projectNamespace, string projectDirectory, string providerType, Table table)
         {
             string fullFileName;
             string fileContents;
@@ -350,7 +352,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             try
             {
 
-                GeneratedTableDataObject dataObjectGenerator = new GeneratedTableDataObject(projectNamespace, table);
+                GeneratedTableDataObject dataObjectGenerator = new GeneratedTableDataObject(projectNamespace, providerType, table);
 
                 fullFileName = projectDirectory + "GeneratedClasses\\DataObject\\Tables\\" + dataObjectGenerator.CLASS_NAME + "_Generated.cs";
 
@@ -376,7 +378,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
 
         #region view creation implementation
 
-        private string GenerateViews(string projectNamespace, string projectDirectory, List<View> viewList)
+        private string GenerateViews(string projectNamespace, string projectDirectory, string providerType, List<View> viewList)
         {
             StringBuilder itemGroup = new StringBuilder();
 
@@ -386,11 +388,11 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
                 {
                     if (1 == 1 || view.Build)
                     {
-                        itemGroup.AppendLine(GenerateViewDataGatewayGeneratedClass(projectNamespace, projectDirectory, view));
+                        itemGroup.AppendLine(GenerateViewDataGatewayGeneratedClass(projectNamespace, projectDirectory, providerType, view));
 
-                        itemGroup.AppendLine(GenerateViewDataGatewayUserClass(projectNamespace, projectDirectory, view));
+                        itemGroup.AppendLine(GenerateViewDataGatewayUserClass(projectNamespace, projectDirectory, providerType, view));
 
-                        itemGroup.AppendLine(GenerateViewDataEntityGeneratedClass(projectNamespace, projectDirectory, view));
+                        itemGroup.AppendLine(GenerateViewDataEntityGeneratedClass(projectNamespace, projectDirectory, providerType, view));
                     }
                 }
             }
@@ -398,7 +400,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             return itemGroup.ToString();
         }
 
-        private string GenerateViewDataGatewayGeneratedClass(string projectNamespace, string projectDirectory, View view)
+        private string GenerateViewDataGatewayGeneratedClass(string projectNamespace, string projectDirectory, string providerType, View view)
         {
             string fullFileName;
             string fileContents;
@@ -409,7 +411,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             {
 
                 GeneratedViewGateway generatedGateway =
-                    new GeneratedViewGateway(projectNamespace, view);
+                    new GeneratedViewGateway(projectNamespace, providerType, view);
 
                 fullFileName = projectDirectory + "GeneratedClasses\\Gateway\\Views\\" + generatedGateway.CLASS_NAME + "_Generated.cs";
 
@@ -431,7 +433,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             return includeFile;
         }
 
-        private string GenerateViewDataGatewayUserClass(string projectNamespace, string projectDirectory, View view)
+        private string GenerateViewDataGatewayUserClass(string projectNamespace, string projectDirectory, string providerType, View view)
         {
             string fullFileName;
             string fileContents;
@@ -442,7 +444,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             {
 
                 UserViewGateway userGateway =
-                    new UserViewGateway(projectNamespace, view);
+                    new UserViewGateway(projectNamespace, providerType, view);
 
                 fullFileName = projectDirectory + "UserGateway\\Views\\" + userGateway.CLASS_NAME + ".cs";
 
@@ -470,7 +472,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             return includeFile;
         }
 
-        private string GenerateViewDataEntityGeneratedClass(string projectNamespace, string projectDirectory, View view)
+        private string GenerateViewDataEntityGeneratedClass(string projectNamespace, string projectDirectory, string providerType, View view)
         {
             string fullFileName;
             string fileContents;
@@ -480,7 +482,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             try
             {
 
-                GeneratedViewDataObject dataObjectGenerator = new GeneratedViewDataObject(projectNamespace, view);
+                GeneratedViewDataObject dataObjectGenerator = new GeneratedViewDataObject(projectNamespace, providerType, view);
 
                 fullFileName = projectDirectory + "GeneratedClasses\\DataObject\\Views\\" + dataObjectGenerator.CLASS_NAME + "_Generated.cs";
 

@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
-using TotalSafety.DataTierGenerator.Common;
+using SumDataTierGenerator.Common;
 
-namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
+namespace SumDataTierGenerator.CodeGenerationFactory
 {
 
     public class GeneratorBase
@@ -15,6 +15,7 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
         #region private and protected member variables
 
         protected StringBuilder m_FileBuilder;
+        protected string m_ProviderType;
 
         protected int m_IndentLevel = 0;
         protected int m_SpacesPerTab = 4;
@@ -50,9 +51,10 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
 
         #region constructors / desturctors
 
-        public GeneratorBase(string rootNamespace, IView iView)
+        public GeneratorBase(string rootNamespace, string providerType, IView iView)
         {
 
+            m_ProviderType = providerType;
             m_FileBuilder = new StringBuilder();
 
             if (!string.IsNullOrEmpty(rootNamespace))

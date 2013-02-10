@@ -8,10 +8,10 @@ using System.Text;
 using System.Windows.Forms;
 
 using Microsoft.Data.ConnectionUI;
-using TotalSafety.DataTierGenerator.Common;
-using TotalSafety.DataTierGenerator.MVP;
+using SumDataTierGenerator.Common;
+using SumDataTierGenerator.MVP;
 
-namespace TotalSafety.DataTierGenerator.Controls
+namespace SumDataTierGenerator.Controls
 {
     public partial class ConfigurationView : UserControl
     {

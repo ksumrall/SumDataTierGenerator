@@ -7,9 +7,9 @@ using System.Text;
 using System.Windows.Forms;
 
 using Microsoft.Data.ConnectionUI;
-using TotalSafety.DataTierGenerator.MVP;
+using SumDataTierGenerator.MVP;
 
-namespace TotalSafety.DataTierGenerator
+namespace SumDataTierGenerator
 {
     public partial class MiscSettings : Form
     {

@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using TotalSafety.DataTierGenerator.Common;
+using SumDataTierGenerator.Common;
 
-namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
+namespace SumDataTierGenerator.CodeGenerationFactory
 {
 
     public class GeneratedViewGateway : GeneratorBase
@@ -41,8 +41,13 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
         {
         }
 
-        public GeneratedViewGateway(string rootNamespace, View view)
-            : base(rootNamespace, view)
+        public GeneratedViewGateway(string rootNamespace, string providerType)
+            : this(rootNamespace, providerType, null)
+        {
+        }
+
+        public GeneratedViewGateway(string rootNamespace, string providerType, View view)
+            : base(rootNamespace, providerType, view)
         {
             this.SUBCLASS_NAME = "IGateway<#CLASS_NAME_PREFIX#DataObject,int>";
         }

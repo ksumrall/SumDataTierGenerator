@@ -7,9 +7,9 @@ using System.Data.SqlClient;
 using System.Text;
 using System.Windows.Forms;
 
-using TotalSafety.DataTierGenerator.MVP;
+using SumDataTierGenerator.MVP;
 
-namespace TotalSafety.DataTierGenerator.Controls {
+namespace SumDataTierGenerator.Controls {
 
     public partial class SqlServerLogin : UserControl {
 

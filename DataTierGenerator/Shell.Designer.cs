@@ -1,4 +1,4 @@
-﻿namespace TotalSafety.DataTierGenerator
+﻿namespace SumDataTierGenerator
 {
     partial class Shell
     {

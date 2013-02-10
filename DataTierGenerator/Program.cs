@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace TotalSafety.DataTierGenerator
+namespace SumDataTierGenerator
 {
     class Program
     {

@@ -8,9 +8,9 @@ using System.Reflection;
 using System.Text;
 using System.Xml;
 
-using TotalSafety.DataTierGenerator.Common;
+using SumDataTierGenerator.Common;
 
-namespace TotalSafety.DataTierGenerator.SchemaExtractor
+namespace SumDataTierGenerator.SchemaExtractor
 {
     public sealed class SchemaExtractorWrapper
     {

@@ -2,14 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using TotalSafety.DataTierGenerator.Common;
+using SumDataTierGenerator.Common;
 
-namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
+namespace SumDataTierGenerator.CodeGenerationFactory
 {
 
     public class GeneratedViewDataObject : GeneratorBase
     {
-
         #region constructors / desturctors
 
         public GeneratedViewDataObject()
@@ -22,8 +21,13 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
         {
         }
 
-        public GeneratedViewDataObject(string rootNamespace, View view)
-            : base(rootNamespace, view)
+        public GeneratedViewDataObject(string rootNamespace, string providerType)
+            : this(rootNamespace, providerType, null)
+        {
+        }
+
+        public GeneratedViewDataObject(string rootNamespace, string providerType, View view)
+            : base(rootNamespace, providerType, view)
         {
             this.SUBCLASS_NAME = "I#CLASS_NAME#, IFieldValues";
         }
@@ -299,7 +303,6 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
             AppendLine("\t\t\t#CONCRETE_GATEWAY_TYPE_NAME#.Update (this);");
             AppendLine("\t\t}");
 
-            string m_ProviderType = "Microsoft SQL Server Compact 3.5 (SqlCeClient)";
             switch (m_ProviderType)
             {
                 case "Microsoft SQL Server (SqlClient)":

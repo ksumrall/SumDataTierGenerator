@@ -4,7 +4,7 @@ using System.Text;
 using System.Collections;
 using System.Xml.Serialization;
 
-namespace TotalSafety.DataTierGenerator.Common
+namespace SumDataTierGenerator.Common
 {
 
     public enum ChangeType

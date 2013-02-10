@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using TotalSafety.DataTierGenerator.Common;
+using SumDataTierGenerator.Common;
 
-namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
+namespace SumDataTierGenerator.CodeGenerationFactory
 {
 
     public class UserTableGateway : GeneratorBase
@@ -25,8 +25,13 @@ namespace TotalSafety.DataTierGenerator.CodeGenerationFactory
         {
         }
 
-        public UserTableGateway(string rootNamespace, Table table)
-            : base(rootNamespace, table)
+        public UserTableGateway(string rootNamespace, string providerType)
+            : this(rootNamespace, providerType, null)
+        {
+        }
+
+        public UserTableGateway(string rootNamespace, string providerType, Table table)
+            : base(rootNamespace, providerType, table)
         {
             m_Table = table;
             string pkType = PK_PARAMETER_TYPE_LIST;

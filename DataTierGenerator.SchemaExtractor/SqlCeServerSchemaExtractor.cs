@@ -6,9 +6,9 @@ using System.Text;
 using System.Xml;
 using System.Data.SqlServerCe;
 
-using TotalSafety.DataTierGenerator.Common;
+using SumDataTierGenerator.Common;
 
-namespace TotalSafety.DataTierGenerator.SchemaExtractor
+namespace SumDataTierGenerator.SchemaExtractor
 {
     class SqlCeServerSchemaExtractor : ISchemaExtractor
     {
@@ -24,7 +24,7 @@ namespace TotalSafety.DataTierGenerator.SchemaExtractor
 
         public SqlCeServerSchemaExtractor()
         {
-            string dataMapping = Utility.GetResource(Assembly.GetExecutingAssembly(), "TotalSafety.DataTierGenerator.SchemaExtractor.EmbeddedResources.DataMapping.xml");
+            string dataMapping = Utility.GetResource(Assembly.GetExecutingAssembly(), "SumDataTierGenerator.SchemaExtractor.EmbeddedResources.DataMapping.xml");
 
             m_DataMappingXml = new XmlDocument();
             m_DataMappingXml.LoadXml(dataMapping);
@@ -112,39 +112,39 @@ namespace TotalSafety.DataTierGenerator.SchemaExtractor
 
             sqlQuery.AppendLine(
                 Utility.GetResource(Assembly.GetExecutingAssembly(),
-                "TotalSafety.DataTierGenerator.SchemaExtractor.EmbeddedResources.SqlCeExtractDatabaseTables.sql"));
+                "SumDataTierGenerator.SchemaExtractor.EmbeddedResources.SqlCeExtractDatabaseTables.sql"));
 
             sqlQuery.AppendLine(
                 Utility.GetResource(Assembly.GetExecutingAssembly(),
-                "TotalSafety.DataTierGenerator.SchemaExtractor.EmbeddedResources.SqlCeExtractDatabaseTableColumns.sql"));
+                "SumDataTierGenerator.SchemaExtractor.EmbeddedResources.SqlCeExtractDatabaseTableColumns.sql"));
 
             sqlQuery.AppendLine(
                 Utility.GetResource(Assembly.GetExecutingAssembly(),
-                "TotalSafety.DataTierGenerator.SchemaExtractor.EmbeddedResources.SqlCeExtractDatabasePrimaryKeys.sql"));
+                "SumDataTierGenerator.SchemaExtractor.EmbeddedResources.SqlCeExtractDatabasePrimaryKeys.sql"));
 
             //sqlQuery.AppendLine(
             //    Utility.GetResource(Assembly.GetExecutingAssembly(),
-            //    "TotalSafety.DataTierGenerator.SchemaExtractor.EmbeddedResources.SqlCeExtractDatabaseForeignKeys.sql"));
+            //    "SumDataTierGenerator.SchemaExtractor.EmbeddedResources.SqlCeExtractDatabaseForeignKeys.sql"));
 
             //sqlQuery.AppendLine(
             //    Utility.GetResource(Assembly.GetExecutingAssembly(),
-            //    "TotalSafety.DataTierGenerator.SchemaExtractor.EmbeddedResources.SqlCeExtractDatabaseViews.sql"));
+            //    "SumDataTierGenerator.SchemaExtractor.EmbeddedResources.SqlCeExtractDatabaseViews.sql"));
 
             //sqlQuery.AppendLine(
             //    Utility.GetResource(Assembly.GetExecutingAssembly(),
-            //    "TotalSafety.DataTierGenerator.SchemaExtractor.EmbeddedResources.SqlCeExtractDatabaseViewColumns.sql"));
+            //    "SumDataTierGenerator.SchemaExtractor.EmbeddedResources.SqlCeExtractDatabaseViewColumns.sql"));
 
             //sqlQuery.AppendLine(
             //    Utility.GetResource(Assembly.GetExecutingAssembly(),
-            //    "TotalSafety.DataTierGenerator.SchemaExtractor.EmbeddedResources.SqlCeExtractDatabaseFunctions.sql"));
+            //    "SumDataTierGenerator.SchemaExtractor.EmbeddedResources.SqlCeExtractDatabaseFunctions.sql"));
 
             //sqlQuery.AppendLine(
             //    Utility.GetResource(Assembly.GetExecutingAssembly(),
-            //    "TotalSafety.DataTierGenerator.SchemaExtractor.EmbeddedResources.SqlCeExtractDatabaseProcedures.sql"));
+            //    "SumDataTierGenerator.SchemaExtractor.EmbeddedResources.SqlCeExtractDatabaseProcedures.sql"));
 
             //sqlQuery.AppendLine(
             //    Utility.GetResource(Assembly.GetExecutingAssembly(),
-            //    "TotalSafety.DataTierGenerator.SchemaExtractor.EmbeddedResources.SqlCeExtractDatabaseParameters.sql"));
+            //    "SumDataTierGenerator.SchemaExtractor.EmbeddedResources.SqlCeExtractDatabaseParameters.sql"));
 
             return sqlQuery.ToString();
         }
@@ -160,7 +160,7 @@ namespace TotalSafety.DataTierGenerator.SchemaExtractor
 
                 sqlQuery =
                      Utility.GetResource(Assembly.GetExecutingAssembly(),
-                     "TotalSafety.DataTierGenerator.SchemaExtractor.EmbeddedResources.SqlCeExtractDatabaseTables.sql");
+                     "SumDataTierGenerator.SchemaExtractor.EmbeddedResources.SqlCeExtractDatabaseTables.sql");
 
                 DataTable tblTables = new DataTable("Tables");
                 adapter.SelectCommand = new SqlCeCommand(sqlQuery, connection);
@@ -168,7 +168,7 @@ namespace TotalSafety.DataTierGenerator.SchemaExtractor
 
                 sqlQuery =
                     Utility.GetResource(Assembly.GetExecutingAssembly(),
-                    "TotalSafety.DataTierGenerator.SchemaExtractor.EmbeddedResources.SqlCeExtractDatabaseTableColumns.sql");
+                    "SumDataTierGenerator.SchemaExtractor.EmbeddedResources.SqlCeExtractDatabaseTableColumns.sql");
 
                 DataTable tblColumns = new DataTable("Columns");
                 adapter.SelectCommand.CommandText = sqlQuery;
@@ -176,7 +176,7 @@ namespace TotalSafety.DataTierGenerator.SchemaExtractor
 
                 sqlQuery =
                     Utility.GetResource(Assembly.GetExecutingAssembly(),
-                    "TotalSafety.DataTierGenerator.SchemaExtractor.EmbeddedResources.SqlCeExtractDatabasePrimaryKeys.sql");
+                    "SumDataTierGenerator.SchemaExtractor.EmbeddedResources.SqlCeExtractDatabasePrimaryKeys.sql");
 
                 DataTable tblKeys = new DataTable("Keys");
                 adapter.SelectCommand.CommandText = sqlQuery;

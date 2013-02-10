@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace TotalSafety.DataTierGenerator
+namespace SumDataTierGenerator
 {
     public partial class Shell : Form
     {

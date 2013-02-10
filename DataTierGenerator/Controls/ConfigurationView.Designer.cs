@@ -1,4 +1,4 @@
-﻿namespace TotalSafety.DataTierGenerator.Controls
+﻿namespace SumDataTierGenerator.Controls
 {
     partial class ConfigurationView
     {

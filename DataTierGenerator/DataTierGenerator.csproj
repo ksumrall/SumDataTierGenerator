@@ -10,7 +10,7 @@
     <ApplicationIcon>Resource\App.ico</ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
-    <AssemblyName>DataTierGenerator</AssemblyName>
+    <AssemblyName>SumDataTierGenerator</AssemblyName>
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>
     <DefaultClientScript>JScript</DefaultClientScript>
@@ -18,9 +18,9 @@
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
     <DelaySign>false</DelaySign>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>TotalSafety.DataTierGenerator</RootNamespace>
+    <RootNamespace>SumDataTierGenerator</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-    <StartupObject>TotalSafety.DataTierGenerator.Program</StartupObject>
+    <StartupObject>SumDataTierGenerator.Program</StartupObject>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
