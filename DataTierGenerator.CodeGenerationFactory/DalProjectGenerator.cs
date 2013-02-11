@@ -203,11 +203,6 @@ namespace SumDataTierGenerator.CodeGenerationFactory
             fileContents = fileContents.Replace("#ROOT_NAMESPACE#", m_DalNamespace);
             File.WriteAllText(m_DalProjectDirectory + "Common\\GatewayHelper.cs", fileContents);
 
-            // create the IGateway
-            fileContents = Utility.GetResource(Assembly.GetExecutingAssembly(), "SumDataTierGenerator.CodeGenerationFactory.EmbeddedResources.IGateway.cs");
-            fileContents = fileContents.Replace("#ROOT_NAMESPACE#", m_DalNamespace);
-            File.WriteAllText(m_DalProjectDirectory + "Common\\IGateway.cs", fileContents);
-
             // create the IFieldValues
             fileContents = Utility.GetResource(Assembly.GetExecutingAssembly(), "SumDataTierGenerator.CodeGenerationFactory.EmbeddedResources.IFieldValues.cs");
             fileContents = fileContents.Replace("#ROOT_NAMESPACE#", m_DalNamespace);

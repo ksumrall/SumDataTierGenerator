@@ -700,7 +700,7 @@ namespace SumDataTierGenerator.CodeGenerationFactory
             OnCRUD_LoadByPrimaryKey();
             OnCRUD_Insert();
             OnCRUD_Update();
-            OnCRUD_UpdateByPrimaryKey();
+            //OnCRUD_UpdateByPrimaryKey();
             OnCRUD_Delete();
             OnCRUD_DeleteByPrimaryKey();
             OnCRUD_DeleteByFieldsList();
@@ -840,22 +840,18 @@ namespace SumDataTierGenerator.CodeGenerationFactory
             }
 
             #endregion
-            AppendLine();
-
-            switch (m_ProviderType)
-            {
-                case "Microsoft SQL Server (SqlClient)":
-                    AppendLine("query = GatewayHelper.BuildSelectByFieldsQuery( SchemaTableName, FieldDefinitionArray );");
-                    break;
-
-                case "Microsoft SQL Server Compact 3.5 (SqlCeClient)":
-                    AppendLine("query = GatewayHelper.BuildSelectByFieldsQuery( TableName, FieldDefinitionArray );");
-                    break;
-            }
 
             AppendLine();
-            AppendLine("#CLASS_NAME#.LoadDataObjectByQuery(dataObject, query, fieldValueList );");
+
             AppendLine();
+            AppendLine("IDataReader dataReader = GatewayHelper.ExecuteReaderFromStoredProcedure(\"usp_zzz_autogen_crud__#TABLE_NAME#_SelectByPk\", fieldValueList);");
+            AppendLine();
+            AppendLine("if(dataReader.Read()){");
+            IndentIncrement();
+            AppendLine("GetDataObjectFromReader(dataObject, dataReader);");
+            IndentDecrement();
+            AppendLine("}");
+
             IndentDecrement();
             AppendLine("}");
 
@@ -872,75 +868,21 @@ namespace SumDataTierGenerator.CodeGenerationFactory
 
             AppendLine();
             AppendLine("#CONCRETE_DATA_ENTITY_TYPE_NAME# newDataObject = null;");
-            AppendLine("GatewayHelper.ParameterizedQuery parameterizedQuery;");
-            AppendLine("List<FieldDefinition> fieldDefinitions = new List<FieldDefinition>();");
 
             #endregion
 
             #region run query to get the object
 
             AppendLine();
-
-            switch (m_ProviderType)
-            {
-                case "Microsoft SQL Server (SqlClient)":
-                    AppendLine("List<#CONCRETE_DATA_ENTITY_TYPE_NAME#> dataObjects;");
-                    AppendLine();
-                    /*
-                    AppendLine("parameterizedQuery = GatewayHelper.BuildInsertQuery( SchemaTableName, (IFieldValues)dataObject );");
-                    AppendLine();
-                    AppendLine("dataObjects = #CLASS_NAME#.GetDataObjectsByQuery(parameterizedQuery.Query, parameterizedQuery.ParameterFieldValueList );");
-                    */
-                    AppendLine("List<SqlParameter> parameterList = GatewayHelper.GetSqlParameters((IFieldValues)dataObject);");
-                    AppendLine("IDataReader dataReader = SqlClientUtility.ExecuteReader(connectionStringName, CommandType.StoredProcedure, \"usp_zzz_autogen_crud__#CLASS_NAME_PREFIX#_Insert\", parameterList.ToArray());");
-                    AppendLine("dataObjects = GetDataObjectsFromReader(dataReader);");
-                    AppendLine();
-                    AppendLine("if ( dataObjects.Count == 1 ) {");
-                    IndentIncrement();
-                    AppendLine("newDataObject = new #CONCRETE_DATA_ENTITY_TYPE_NAME#();");
-                    AppendLine("newDataObject.IsDirty = false;");
-                    AppendLine("newDataObject.IsNew = false;");
-                    AppendLine();
-                    AppendLine("for ( int index = 0; index < FieldDefinitionArray.Length; index++ ) {");
-                    IndentIncrement();
-                    AppendLine("((IFieldValues)newDataObject).FieldValues[index].Value = ((IFieldValues)dataObjects[0]).FieldValues[index].Value;");
-                    AppendLine("((IFieldValues)newDataObject).FieldValues[index].IsDirty = false;");
-                    IndentDecrement();
-                    AppendLine("}");
-                    IndentDecrement();
-                    AppendLine("}");
-                    AppendLine("return newDataObject;");
-                    break;
-
-                case "Microsoft SQL Server Compact 3.5 (SqlCeClient)":
-                    AppendLine("parameterizedQuery = GatewayHelper.BuildInsertQuery( TableName, (IFieldValues)dataObject );");
-                    // TODO: change the select by primary key query to be more flexible
-                    AppendLine("string identityQuery = \"SELECT * FROM #CLASS_NAME_PREFIX# WHERE "
-                        + m_Table.PrimaryKey.PkColumns[0].ColumnName + " = @@IDENTITY\";");
-                    AppendLine();
-                    AppendLine("SqlCeDatabase db = new SqlCeDatabase(GatewayHelper.ConnectionString);");
-                    AppendLine("db.Open();");
-                    AppendLine("int recordsAffected =");
-                    IndentIncrement();
-                    AppendLine("GatewayHelper.ExecuteNonQueryFromSql(db, parameterizedQuery.Query, parameterizedQuery.ParameterFieldValueList.ToArray());");
-                    IndentDecrement();
-                    AppendLine("if (recordsAffected > 0)");
-                    AppendLine("{");
-                    IndentIncrement();
-                    AppendLine("IDataReader rdr = GatewayHelper.ExecuteReaderFromSql(db, identityQuery, (FieldValue[])null);");
-                    AppendLine("rdr.Read();");
-                    AppendLine("newDataObject = GetDataObjectFromReader(rdr);");
-                    AppendLine("rdr.Close();");
-                    AppendLine("rdr.Dispose();");
-                    IndentDecrement();
-                    AppendLine("}");
-                    AppendLine();
-                    AppendLine("db.Dispose();");
-                    AppendLine();
-                    AppendLine("return newDataObject;");
-                    break;
-            }
-
+            AppendLine("IDataReader dataReader = GatewayHelper.ExecuteReaderFromStoredProcedure(\"usp_zzz_autogen_crud__#TABLE_NAME#_Insert\", ((IFieldValues)dataObject).FieldValues);");
+            AppendLine();
+            AppendLine("if(dataReader.Read()){");
+            IndentIncrement();
+            AppendLine("newDataObject = GetDataObjectFromReader(dataReader);");
+            IndentDecrement();
+            AppendLine("}");
+            AppendLine();
+            AppendLine("return newDataObject;");
 
             #endregion
 
@@ -951,8 +893,6 @@ namespace SumDataTierGenerator.CodeGenerationFactory
 
         protected virtual void OnCRUD_Update()
         {
-            //Index pk = m_Table.PrimaryKey;
-
             AppendLine();
             AppendLine("/// <summary>");
             AppendLine("/// This method updates the record from the underlying table where all the fields match.");
@@ -963,129 +903,23 @@ namespace SumDataTierGenerator.CodeGenerationFactory
 
             #region variable declaration
 
-            //AppendLine ();
-            AppendLine("StringBuilder query = new StringBuilder();");
-            //AppendLine ("List<FieldDefinition> fieldDefinitions = new List<FieldDefinition>();");
-            //AppendLine ("List<FieldValue> fields = new List<FieldValue>();");
-            //AppendLine ();
-            //AppendLine ("List<FieldDefinition> pkFieldDefinitions = new List<FieldDefinition>();");
-            //AppendLine ("List<FieldValue> pkFields = new List<FieldValue>();");
-            //AppendLine ();
-            AppendLine("List<#CONCRETE_DATA_ENTITY_TYPE_NAME#> dataObjects;");
-
-            #endregion
-
-            #region initialization of the fielddefinitions and fieldvalues
-
-            //AppendLine ();
-            //AppendLine ("// gather all the changed fields");
-            //AppendLine( "for( int index = 0; index < FieldDefinitionArray.Length; index++ ){" );
-            //IndentIncrement ();
-            //AppendLine ();
-
-            //AppendLine( "if( ((IFieldValues)dataObject).FieldValues[index].IsDirty ){" );
-            //IndentIncrement ();
-            //AppendLine ();
-
-            //AppendLine( "fieldDefinitions.Add( FieldDefinitionArray[index] );" );
-            //AppendLine ("fields.Add( ((IFieldValues)dataObject).FieldValues[index] );");
-
-            //AppendLine ();
-            //IndentDecrement ();
-            //AppendLine ("}");
-
-            //AppendLine ();
-            //IndentDecrement ();
-            //AppendLine ("}");
-
             AppendLine();
-            switch (m_ProviderType)
-            {
-                case "Microsoft SQL Server (SqlClient)":
-                    AppendLine("query.AppendLine( GatewayHelper.BuildUpdateByPrimaryKeyQuery( SchemaTableName, (IFieldValues)dataObject ) );");
-                    break;
-
-                case "Microsoft SQL Server Compact 3.5 (SqlCeClient)":
-                    AppendLine("query.AppendLine( GatewayHelper.BuildUpdateByPrimaryKeyQuery( TableName, (IFieldValues)dataObject ) );");
-                    break;
-            }
-
-            AppendLine();
-            AppendLine("// get the select all clause");
-            switch (m_ProviderType)
-            {
-                case "Microsoft SQL Server (SqlClient)":
-                    AppendLine("query.AppendLine( GatewayHelper.BuildSelectByPrimaryKeyQuery( SchemaTableName, (IFieldValues)dataObject ) );");
-                    break;
-            }
-
-            #endregion
-
-            #region initialize the primary key
-
-            //AppendLine ();
-            //AppendLine ("// gather the primary key fields");
-            //AppendLine ("for( int index = 0; index < FieldDefinitionArray.Length; index++ ){");
-            //IndentIncrement ();
-            //AppendLine ();
-
-            //AppendLine( "if( FieldDefinitionArray[index].IsPrimaryKey ){" );
-            //IndentIncrement ();
-            //AppendLine ();
-
-            //AppendLine( "fieldDefinitions.Add( FieldDefinitionArray[index] );" );
-            //AppendLine ("fields.Add( ((IFieldValues)dataObject).FieldValues[index] );");
-
-            //AppendLine ();
-            //IndentDecrement ();
-            //AppendLine ("}");
-
-            //AppendLine ();
-            //IndentDecrement ();
-            //AppendLine ("}");
+            AppendLine("#CONCRETE_DATA_ENTITY_TYPE_NAME# newDataObject = null;");
 
             #endregion
 
             #region run query to get the object
 
-            switch (m_ProviderType)
-            {
-                case "Microsoft SQL Server (SqlClient)":
-                    AppendLine();
-                    AppendLine("dataObjects = #CLASS_NAME#.GetDataObjectsByQuery( query.ToString(), ((IFieldValues)dataObject).FieldValues );");
-                    AppendLine();
-                    AppendLine("if ( dataObjects.Count == 1 ) {");
-                    IndentIncrement();
-                    AppendLine("dataObject.IsDirty = false;");
-                    AppendLine();
-                    AppendLine("for ( int index = 0; index < FieldDefinitionArray.Length; index++ ) {");
-                    IndentIncrement();
-                    AppendLine("((IFieldValues)dataObject).FieldValues[index].Value = ((IFieldValues)dataObjects[0]).FieldValues[index].Value;");
-                    AppendLine("((IFieldValues)dataObject).FieldValues[index].IsDirty = false;");
-                    AppendLine("dataObject.IsNew = false;");
-                    IndentDecrement();
-                    AppendLine("}");
-                    IndentDecrement();
-                    AppendLine("}");
-                    break;
-
-                case "Microsoft SQL Server Compact 3.5 (SqlCeClient)":
-                    AppendLine();
-                    AppendLine("int count = GatewayHelper.ExecuteNonQueryFromSql( query.ToString(), ((IFieldValues)dataObject).FieldValues );");
-                    AppendLine();
-                    AppendLine("if ( count > 0 ) {");
-                    IndentIncrement();
-                    AppendLine("dataObject.IsDirty = false;");
-                    AppendLine();
-                    AppendLine("for ( int index = 0; index < FieldDefinitionArray.Length; index++ ) {");
-                    IndentIncrement();
-                    AppendLine("((IFieldValues)dataObject).FieldValues[index].IsDirty = false;");
-                    IndentDecrement();
-                    AppendLine("}");
-                    IndentDecrement();
-                    AppendLine("}");
-                    break;
-            }
+            AppendLine();
+            AppendLine("IDataReader dataReader = GatewayHelper.ExecuteReaderFromStoredProcedure(\"usp_zzz_autogen_crud__#TABLE_NAME#_Update\", ((IFieldValues)dataObject).FieldValues);");
+            AppendLine();
+            AppendLine("if(dataReader.Read()){");
+            IndentIncrement();
+            AppendLine("newDataObject = GetDataObjectFromReader(dataReader);");
+            IndentDecrement();
+            AppendLine("}");
+            AppendLine();
+            AppendLine("return newDataObject;");
 
             #endregion
 
