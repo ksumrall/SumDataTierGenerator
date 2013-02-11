@@ -218,6 +218,11 @@ namespace SumDataTierGenerator.CodeGenerationFactory
             fileContents = fileContents.Replace("#ROOT_NAMESPACE#", m_DalNamespace);
             File.WriteAllText(m_DalProjectDirectory + "Common\\IDataObject.cs", fileContents);
 
+            // create the SqlClientUtility.cs
+            fileContents = Utility.GetResource(Assembly.GetExecutingAssembly(), "SumDataTierGenerator.CodeGenerationFactory.EmbeddedResources.SqlClientUtility.cs");
+            fileContents = fileContents.Replace("#ROOT_NAMESPACE#", m_DalNamespace);
+            File.WriteAllText(m_DalProjectDirectory + "Common\\SqlClientUtility.cs", fileContents);
+
             // create the Microsoft.Practices.EnterpriseLibrary.Common.dll
             Utility.SaveResourceFile(Assembly.GetExecutingAssembly(), "SumDataTierGenerator.CodeGenerationFactory.EmbeddedResources.Microsoft.Practices.EnterpriseLibrary.Common.dll"
                 , m_DalProjectDirectory + "bin\\Microsoft.Practices.EnterpriseLibrary.Common.dll");

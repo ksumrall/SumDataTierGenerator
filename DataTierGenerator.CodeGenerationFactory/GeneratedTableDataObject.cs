@@ -325,6 +325,7 @@ namespace SumDataTierGenerator.CodeGenerationFactory
             AppendLine("}");
 
             // IGateway
+            /*
             AppendLine();
             AppendLine("public #CLASS_NAME_PREFIX#Gateway Gateway {");
             IndentIncrement();
@@ -337,6 +338,7 @@ namespace SumDataTierGenerator.CodeGenerationFactory
 
             IndentDecrement();
             AppendLine("}");
+            */
 
             AppendLine();
             AppendLine("#endregion");

@@ -31,7 +31,7 @@ namespace #ROOT_NAMESPACE# {
         }
 
         // methods
-        List<TIDataObject> SelectAll();
+        List<TIDataObject> SelectAll(string connectionStringName);
 
         TIDataObject SelectByPrimaryKey(TPK id);
 

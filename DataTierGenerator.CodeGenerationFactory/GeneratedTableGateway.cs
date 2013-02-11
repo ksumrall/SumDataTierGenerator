@@ -615,9 +615,9 @@ namespace SumDataTierGenerator.CodeGenerationFactory
             #region IGateway<T>.SelectAll
 
             AppendLine();
-            AppendLine("List<#CLASS_NAME_PREFIX#DataObject> IGateway<#CLASS_NAME_PREFIX#DataObject," + pkType + ">.SelectAll(){");
+            AppendLine("List<#CLASS_NAME_PREFIX#DataObject> IGateway<#CLASS_NAME_PREFIX#DataObject," + pkType + ">.SelectAll(string connectionStringName){");
             IndentIncrement();
-            AppendLine("return #CLASS_NAME#.SelectAll();");
+            AppendLine("return #CLASS_NAME#.SelectAll(connectionStringName);");
             IndentDecrement();
             AppendLine("}");
 
@@ -712,6 +712,7 @@ namespace SumDataTierGenerator.CodeGenerationFactory
             AddRegionHeader("private methods");
 
             AddMethod_GetDataObjectsByQuery();
+            AddMethod_GetDataObjectsFromReader();
             AddMethod_GetDataObjectFromReader();
             AddMethod_LoadDataObjectByQuery();
 
@@ -727,9 +728,10 @@ namespace SumDataTierGenerator.CodeGenerationFactory
         {
 
             AppendLine();
-            AppendLine("public static List<#CONCRETE_DATA_ENTITY_TYPE_NAME#> SelectAll(){");
+            AppendLine("public static List<#CONCRETE_DATA_ENTITY_TYPE_NAME#> SelectAll(string connectionStringName){");
             IndentIncrement();
             AppendLine();
+            /*
             AppendLine("string query;");
             AppendLine();
 
@@ -746,6 +748,11 @@ namespace SumDataTierGenerator.CodeGenerationFactory
 
             AppendLine();
             AppendLine("return #CLASS_NAME#.GetDataObjectsByQuery( query, (FieldValue[])null );");
+            */
+
+            AppendLine("IDataReader dataReader = SqlClientUtility.ExecuteReader(connectionStringName, CommandType.StoredProcedure, \"usp_zzz_autogen_crud__#CLASS_NAME_PREFIX#_SelectAll\", null);");
+            AppendLine("return GetDataObjectsFromReader(dataReader);");
+
             AppendLine();
             IndentDecrement();
             AppendLine("}");
@@ -1459,6 +1466,25 @@ namespace SumDataTierGenerator.CodeGenerationFactory
             IndentDecrement();
             AppendLine("}");
 
+        }
+
+        protected void AddMethod_GetDataObjectsFromReader()
+        {
+            AppendLine();
+            AppendLine("internal static List<#CONCRETE_DATA_ENTITY_TYPE_NAME#> GetDataObjectsFromReader(IDataReader dataReader) {");
+            IndentIncrement();
+            AppendLine();
+            AppendLine("List<#CONCRETE_DATA_ENTITY_TYPE_NAME#> dataObjectList = new List<#CONCRETE_DATA_ENTITY_TYPE_NAME#>();");
+            AppendLine();
+            AppendLine("while (dataReader.Read())");
+            AppendLine("{");
+            IndentIncrement();
+            AppendLine("dataObjectList.Add(GetDataObjectFromReader(dataReader));");
+            AppendLine("}");
+            AppendLine();
+            AppendLine("return dataObjectList;");
+            IndentDecrement();
+            AppendLine("}");
         }
 
         protected void AddMethod_GetDataObjectFromReader()
