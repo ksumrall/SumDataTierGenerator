@@ -696,9 +696,12 @@ namespace SumDataTierGenerator.CodeGenerationFactory
             AddRegionHeader("public methods");
 
             OnCRUD_SelectAll();
+            OnCRUD_SelectAllRtnTbl();
             OnCRUD_SelectByPrimaryKey();
+            OnCRUD_SelectByPrimaryKeyRtnTbl();
             OnCRUD_LoadByPrimaryKey();
             OnCRUD_Insert();
+            OnCRUD_InsertRtnTbl();
             OnCRUD_Update();
             //OnCRUD_UpdateByPrimaryKey();
             OnCRUD_Delete();
@@ -738,6 +741,30 @@ namespace SumDataTierGenerator.CodeGenerationFactory
 
             AppendLine("IDataReader dataReader = GatewayHelper.ExecuteReaderFromStoredProcedure(\"usp_zzz_autogen_crud__#TABLE_NAME#_SelectAll\");");
             AppendLine("return GetDataObjectsFromReader(dataReader);");
+
+            AppendLine();
+            IndentDecrement();
+            AppendLine("}");
+
+        }
+
+        protected virtual void OnCRUD_SelectAllRtnTbl()
+        {
+
+            AppendLine();
+            AppendLine("public static DataTable SelectAllRtnTbl(){");
+            IndentIncrement();
+            AppendLine();
+
+            AppendLine("DataTable tbl = new DataTable(\"#TABLE_NAME#\");");
+            AppendLine("using(IDataReader dataReader = GatewayHelper.ExecuteReaderFromStoredProcedure(\"usp_zzz_autogen_crud__#TABLE_NAME#_SelectAll\")){");
+            IndentIncrement();
+            AppendLine("tbl.Load(dataReader);");
+            AppendLine("dataReader.Close();");
+            IndentDecrement();
+            AppendLine("}");
+
+            AppendLine("return tbl;");
 
             AppendLine();
             IndentDecrement();
@@ -806,6 +833,66 @@ namespace SumDataTierGenerator.CodeGenerationFactory
 
         }
 
+        protected virtual void OnCRUD_SelectByPrimaryKeyRtnTbl()
+        {
+
+            if (m_Table.PrimaryKey == null || m_Table.PrimaryKey.PkColumns.Length == 0)
+            {
+                return;
+            }
+
+            PkColumn[] pkList = m_Table.PrimaryKey.PkColumns;
+            int columnCount = m_Table.PrimaryKey.PkColumns.Length;
+
+            AppendLine();
+            AppendStartLine("public static DataTable SelectByPrimaryKeyRtnTbl( ");
+            Append(PK_PARAMETER_LIST);
+            AppendEndLine(" ){");
+            IndentIncrement();
+
+            #region variable declaration
+
+            AppendLine();
+            AppendLine("List<FieldValue> fieldValueList = new List<FieldValue>( );");
+            AppendLine();
+
+            #endregion
+
+            #region initialization of the fielddefinitions and fieldvalues
+
+            for (int index = 0; index < columnCount; index++)
+            {
+                AppendStartLine("fieldValueList.Add(");
+                Append(" new FieldValue( m_FieldDefinitions.");
+                Append(m_Table.GetPkColumn(pkList[index].ColumnName).PropertyName);
+                Append(", ");
+                Append(Utility.FormatCamel(m_Table.GetPkColumn(pkList[index].ColumnName).PropertyName));
+                AppendEndLine(" ) );");
+            }
+
+            #endregion
+
+            #region run query to get the object
+
+            AppendLine();
+            AppendLine("DataTable tbl = new DataTable(\"#TABLE_NAME#\");");
+            AppendLine("using(IDataReader dataReader = GatewayHelper.ExecuteReaderFromStoredProcedure(\"usp_zzz_autogen_crud__#TABLE_NAME#_SelectByPk\", fieldValueList)){");
+            IndentIncrement();
+            AppendLine("tbl.Load(dataReader);");
+            AppendLine("dataReader.Close();");
+            IndentDecrement();
+            AppendLine("}");
+
+            #endregion
+
+            AppendLine();
+            AppendLine("return tbl;");
+            IndentDecrement();
+            AppendLine();
+            AppendLine("}");
+
+        }
+
         protected virtual void OnCRUD_LoadByPrimaryKey()
         {
 
@@ -861,7 +948,7 @@ namespace SumDataTierGenerator.CodeGenerationFactory
         {
 
             AppendLine();
-            AppendLine("public static #CONCRETE_DATA_ENTITY_TYPE_NAME# Insert( string connectionStringName, #CONCRETE_DATA_ENTITY_TYPE_NAME# dataObject ){");
+            AppendLine("public static #CONCRETE_DATA_ENTITY_TYPE_NAME# Insert( #CONCRETE_DATA_ENTITY_TYPE_NAME# dataObject ){");
             IndentIncrement();
 
             #region variable declaration
@@ -886,6 +973,40 @@ namespace SumDataTierGenerator.CodeGenerationFactory
 
             #endregion
 
+            IndentDecrement();
+            AppendLine();
+            AppendLine("}");
+        }
+
+        protected virtual void OnCRUD_InsertRtnTbl()
+        {
+
+            AppendLine();
+            AppendLine("public static DataTable InsertRtnTbl( #CONCRETE_DATA_ENTITY_TYPE_NAME# dataObject ){");
+            IndentIncrement();
+
+            #region variable declaration
+
+            AppendLine();
+            AppendLine("#CONCRETE_DATA_ENTITY_TYPE_NAME# newDataObject = null;");
+
+            #endregion
+
+            #region run query to get the object
+
+            AppendLine();
+            AppendLine("DataTable tbl = new DataTable(\"#TABLE_NAME#\");");
+            AppendLine("using(IDataReader dataReader = GatewayHelper.ExecuteReaderFromStoredProcedure(\"usp_zzz_autogen_crud__#TABLE_NAME#_Insert\", ((IFieldValues)dataObject).FieldValues)){");
+            IndentIncrement();
+            AppendLine("tbl.Load(dataReader);");
+            AppendLine("dataReader.Close();");
+            IndentDecrement();
+            AppendLine("}");
+
+            #endregion
+
+            AppendLine();
+            AppendLine("return tbl;");
             IndentDecrement();
             AppendLine();
             AppendLine("}");
