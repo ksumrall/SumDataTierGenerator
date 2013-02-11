@@ -61,6 +61,8 @@ namespace SumDataTierGenerator.CodeGenerationFactory
             m_Table = table;
             string pkType = PK_PARAMETER_TYPE_LIST;
 
+            // TODO: Remove following code if removing IGateway is the right choice
+            /*
             if (!string.IsNullOrEmpty(pkType))
             {
                 this.SUBCLASS_NAME = "IGateway<#CLASS_NAME_PREFIX#DataObject,"
@@ -71,6 +73,7 @@ namespace SumDataTierGenerator.CodeGenerationFactory
             {
                 this.SUBCLASS_NAME = "IGateway<#CLASS_NAME_PREFIX#DataObject,int>";
             }
+            */
 
         }
 
@@ -729,29 +732,11 @@ namespace SumDataTierGenerator.CodeGenerationFactory
         {
 
             AppendLine();
-            AppendLine("public static List<#CONCRETE_DATA_ENTITY_TYPE_NAME#> SelectAll(string connectionStringName){");
+            AppendLine("public static List<#CONCRETE_DATA_ENTITY_TYPE_NAME#> SelectAll(){");
             IndentIncrement();
             AppendLine();
-            /*
-            AppendLine("string query;");
-            AppendLine();
 
-            switch (m_ProviderType)
-            {
-                case "Microsoft SQL Server (SqlClient)":
-                    AppendLine("query = GatewayHelper.BuildSelectAllQuery( SchemaTableName, FieldDefinitionArray );");
-                    break;
-
-                case "Microsoft SQL Server Compact 3.5 (SqlCeClient)":
-                    AppendLine("query = GatewayHelper.BuildSelectAllQuery( TableName, FieldDefinitionArray );");
-                    break;
-            }
-
-            AppendLine();
-            AppendLine("return #CLASS_NAME#.GetDataObjectsByQuery( query, (FieldValue[])null );");
-            */
-
-            AppendLine("IDataReader dataReader = SqlClientUtility.ExecuteReader(connectionStringName, CommandType.StoredProcedure, \"usp_zzz_autogen_crud__#CLASS_NAME_PREFIX#_SelectAll\", null);");
+            AppendLine("IDataReader dataReader = GatewayHelper.ExecuteReaderFromStoredProcedure(\"usp_zzz_autogen_crud__#TABLE_NAME#_SelectAll\");");
             AppendLine("return GetDataObjectsFromReader(dataReader);");
 
             AppendLine();
@@ -780,11 +765,8 @@ namespace SumDataTierGenerator.CodeGenerationFactory
             #region variable declaration
 
             AppendLine();
-            AppendLine("string query;");
-            AppendLine("List<FieldValue> fieldValueList = new List<FieldValue>( );");
-            AppendLine();
-            AppendLine("List<#CONCRETE_DATA_ENTITY_TYPE_NAME#> dataObjects;");
             AppendLine("#CONCRETE_DATA_ENTITY_TYPE_NAME# dataObject = null;");
+            AppendLine("List<FieldValue> fieldValueList = new List<FieldValue>( );");
             AppendLine();
 
             #endregion
@@ -806,24 +788,11 @@ namespace SumDataTierGenerator.CodeGenerationFactory
             #region run query to get the object
 
             AppendLine();
-
-            switch (m_ProviderType)
-            {
-                case "Microsoft SQL Server (SqlClient)":
-                    AppendLine("query = GatewayHelper.BuildSelectByFieldsQuery( SchemaTableName, FieldDefinitionArray );");
-                    break;
-
-                case "Microsoft SQL Server Compact 3.5 (SqlCeClient)":
-                    AppendLine("query = GatewayHelper.BuildSelectByFieldsQuery( TableName, FieldDefinitionArray );");
-                    break;
-            }
-
+            AppendLine("IDataReader dataReader = GatewayHelper.ExecuteReaderFromStoredProcedure(\"usp_zzz_autogen_crud__#TABLE_NAME#_SelectByPk\", fieldValueList);");
             AppendLine();
-            AppendLine("dataObjects = #CLASS_NAME#.GetDataObjectsByQuery(query, fieldValueList );");
-            AppendLine();
-            AppendLine("if ( dataObjects.Count == 1 ) {");
+            AppendLine("if(dataReader.Read()){");
             IndentIncrement();
-            AppendLine("dataObject = dataObjects[0];");
+            AppendLine("dataObject = GetDataObjectFromReader(dataReader);");
             IndentDecrement();
             AppendLine("}");
 

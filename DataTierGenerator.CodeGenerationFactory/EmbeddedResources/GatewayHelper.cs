@@ -843,7 +843,7 @@ namespace #ROOT_NAMESPACE# {
                         dbCommand.Parameters.AddRange(GetParameters(fieldValueArray));
                     }
 
-                    rdr = dbCommand.ExecuteReader();
+                    rdr = db.ExecuteReader(dbCommand);
 
                 } finally {
                     dbCommand.Dispose();

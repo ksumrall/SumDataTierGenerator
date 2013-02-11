@@ -36,6 +36,8 @@ namespace SumDataTierGenerator.CodeGenerationFactory
             m_Table = table;
             string pkType = PK_PARAMETER_TYPE_LIST;
 
+            // TODO: Remove following code if removal of IGateway is correct choice
+            /*
             if (!string.IsNullOrEmpty(pkType))
             {
                 this.SUBCLASS_NAME = "IGateway<#CLASS_NAME_PREFIX#DataObject,"
@@ -46,6 +48,7 @@ namespace SumDataTierGenerator.CodeGenerationFactory
             {
                 this.SUBCLASS_NAME = "IGateway<#CLASS_NAME_PREFIX#DataObject,int>";
             }
+            */
         }
 
         #endregion

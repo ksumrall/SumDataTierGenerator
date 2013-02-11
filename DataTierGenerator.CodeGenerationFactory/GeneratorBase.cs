@@ -660,7 +660,7 @@ namespace SumDataTierGenerator.CodeGenerationFactory
             OnGetRegion_ConstructorsDestructors();
             OnGetRegion_PublicProperties();
             OnGetRegion_EventHandlersAndOverrides();
-            OnGetRegion_InterfaceImplementationMethods();
+            //OnGetRegion_InterfaceImplementationMethods();
             OnGetRegion_PublicMethods();
             OnGetRegion_ProtectedMethods();
             OnGetRegion_PrivateMethods();

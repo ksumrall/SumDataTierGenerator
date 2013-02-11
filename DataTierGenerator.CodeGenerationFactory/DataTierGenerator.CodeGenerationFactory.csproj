@@ -53,7 +53,6 @@
     <EmbeddedResource Include="EmbeddedResources\FieldDefinition.cs" />
     <EmbeddedResource Include="EmbeddedResources\TypeDefaultValue.cs" />
     <EmbeddedResource Include="EmbeddedResources\GatewayHelper.cs" />
-    <EmbeddedResource Include="EmbeddedResources\IGateway.cs" />
     <EmbeddedResource Include="EmbeddedResources\IFieldValues.cs" />
     <EmbeddedResource Include="EmbeddedResources\IDataObject.cs" />
     <Compile Include="GeneratorBase.cs" />
