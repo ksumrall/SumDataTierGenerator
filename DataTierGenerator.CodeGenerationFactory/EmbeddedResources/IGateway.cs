@@ -35,7 +35,7 @@ namespace #ROOT_NAMESPACE# {
 
         TIDataObject SelectByPrimaryKey(TPK id);
 
-        void Insert( TIDataObject dataObject );
+        void Insert( string connectionStringName, TIDataObject dataObject );
 
         void Update( TIDataObject dataObject );
 

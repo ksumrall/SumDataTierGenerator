@@ -313,6 +313,7 @@ namespace SumDataTierGenerator.CodeGenerationFactory
 
             AppendLine("using System.Collections.Generic;");
             AppendLine("using System.Data;");
+            AppendLine("using System.Data.SqlClient;");
             AppendLine("using System.Text;");
 
         }
@@ -647,9 +648,9 @@ namespace SumDataTierGenerator.CodeGenerationFactory
             #region IGateway<T>.Insert
 
             AppendLine();
-            AppendLine("void IGateway<#CLASS_NAME_PREFIX#DataObject," + pkType + ">.Insert( #CONCRETE_DATA_ENTITY_TYPE_NAME# dataObject ){");
+            AppendLine("void IGateway<#CLASS_NAME_PREFIX#DataObject," + pkType + ">.Insert( string connectionStringName, #CONCRETE_DATA_ENTITY_TYPE_NAME# dataObject ){");
             IndentIncrement();
-            AppendLine("#CLASS_NAME#.Insert( dataObject );");
+            AppendLine("#CLASS_NAME#.Insert( connectionStringName, dataObject );");
             IndentDecrement();
             AppendLine("}");
 
@@ -895,7 +896,7 @@ namespace SumDataTierGenerator.CodeGenerationFactory
         {
 
             AppendLine();
-            AppendLine("public static #CONCRETE_DATA_ENTITY_TYPE_NAME# Insert( #CONCRETE_DATA_ENTITY_TYPE_NAME# dataObject ){");
+            AppendLine("public static #CONCRETE_DATA_ENTITY_TYPE_NAME# Insert( string connectionStringName, #CONCRETE_DATA_ENTITY_TYPE_NAME# dataObject ){");
             IndentIncrement();
 
             #region variable declaration
@@ -916,9 +917,14 @@ namespace SumDataTierGenerator.CodeGenerationFactory
                 case "Microsoft SQL Server (SqlClient)":
                     AppendLine("List<#CONCRETE_DATA_ENTITY_TYPE_NAME#> dataObjects;");
                     AppendLine();
+                    /*
                     AppendLine("parameterizedQuery = GatewayHelper.BuildInsertQuery( SchemaTableName, (IFieldValues)dataObject );");
                     AppendLine();
                     AppendLine("dataObjects = #CLASS_NAME#.GetDataObjectsByQuery(parameterizedQuery.Query, parameterizedQuery.ParameterFieldValueList );");
+                    */
+                    AppendLine("List<SqlParameter> parameterList = GatewayHelper.GetSqlParameters((IFieldValues)dataObject);");
+                    AppendLine("IDataReader dataReader = SqlClientUtility.ExecuteReader(connectionStringName, CommandType.StoredProcedure, \"usp_zzz_autogen_crud__#CLASS_NAME_PREFIX#_Insert\", parameterList.ToArray());");
+                    AppendLine("dataObjects = GetDataObjectsFromReader(dataReader);");
                     AppendLine();
                     AppendLine("if ( dataObjects.Count == 1 ) {");
                     IndentIncrement();

@@ -463,6 +463,20 @@ namespace #ROOT_NAMESPACE# {
 
         }
 
+        internal static List<SqlParameter> GetSqlParameters(IFieldValues fieldValues){
+            List<SqlParameter> parameterList = new List<SqlParameter>();
+
+            for (int index = 0; index < fieldValues.FieldValues.Length; index++) {
+                if (!fieldValues.FieldValues[index].FieldDefinition.IsReadOnly) {
+                    if (!(fieldValues.FieldValues[index].Value == null && fieldValues.FieldValues[index].FieldDefinition.HasDefault)) {
+                        parameterList.Add(new SqlParameter("@" + fieldValues.FieldValues[index].FieldDefinition.Name, fieldValues.FieldValues[index].Value));
+                    }
+                }
+            }
+
+            return parameterList;
+        }
+
         #endregion
 
         #region update query builder methods
