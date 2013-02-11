@@ -898,7 +898,7 @@ namespace SumDataTierGenerator.CodeGenerationFactory
             AppendLine("/// This method updates the record from the underlying table where all the fields match.");
             AppendLine("/// If there is more than one record matching the filter, they all get updated.");
             AppendLine("/// </summary>");
-            AppendLine("public static void Update( #CONCRETE_DATA_ENTITY_TYPE_NAME# dataObject ){");
+            AppendLine("public static #CONCRETE_DATA_ENTITY_TYPE_NAME# Update( #CONCRETE_DATA_ENTITY_TYPE_NAME# dataObject ){");
             IndentIncrement();
 
             #region variable declaration
