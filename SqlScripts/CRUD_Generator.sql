@@ -1,6 +1,15 @@
 USE [master]
 GO
 
+IF OBJECT_ID('[dbo].[sp_makeCRUD]') IS NOT NULL
+BEGIN
+    DROP PROC [dbo].[sp_makeCRUD]
+END
+GO
+
+CREATE PROCEDURE [dbo].[sp_makeCRUD] @objectName SYSNAME, @executionMode TINYINT = 1, @dropExistingProcedures 
+    BIT = 1, @outputIndentityCalcFields BIT = 1, @procPrefix SYSNAME = 'usp_'
+AS
 --==========================================================
 -- Author: (c) 2011 Pavel Pawlowski
 -- Description: Generates CRUD procedures for a table
@@ -18,102 +27,92 @@ GO
 --
 --@outputIndentityCalcFields = 1 | 0
 -- specifies whether Identity and Calculated fields should be OUTPUTed in INSERT and UPDATE
+--
+--@procPrefix = the string prepended to the generated stored procedure name
+-- 
+-- example
+-- EXEC sp_makeCRUD 'TableName', 1, 1, 1, 'usp_zzz_autogen_CRUD__'
 --==========================================================
-IF OBJECT_ID('[dbo].[sp_makeCRUD]') IS NOT NULL
-BEGIN
-    DROP PROC [dbo].[sp_makeCRUD]
-END
-GO
-
-CREATE PROCEDURE [dbo].[sp_makeCRUD] @objectName SYSNAME
-    ,@executionMode TINYINT = 1
-    ,@dropExistingProcedures BIT = 1
-    ,@outputIndentityCalcFields BIT = 1
-AS
 BEGIN
     SET NOCOUNT ON;
     SET XACT_ABORT ON;
 
     --variables declaration
-    DECLARE @objId INT
-        ,--ID of the Table
-        @schemaName SYSNAME
-        ,--schema Name of the Table
-        @tableName SYSNAME
-        ,--TableName
-        @dbName SYSNAME
-        ,--Database name in which we are creating the procedures
-        @crlfXML NCHAR(7)
-        ,--XML representation of the CLRF
-        @crlf NCHAR(2)
-        ,--CLRF characters
-        @procPrefix SYSNAME
-        ,--CRUD procedures Prefix
-        @sql NVARCHAR(max)
-        ,--SQL code for particular steps
-        @msg NVARCHAR(max)
-        ,--A message
-        @suffixSelect SYSNAME
-        ,--Suffix for SELECT procedure
-        @suffixUpdate SYSNAME
-        ,--Suffix for UPDATE procedure
-        @suffixDelete SYSNAME
-        ,--Suffix for Delete procedure
-        @suffixInsert SYSNAME
-        ,--Suffix for INSERT procedure
-        @selectParams NVARCHAR(max)
-        ,--Parameters for SELECT procedure
-        @allColumns NVARCHAR(max)
-        ,--List of All columns in a table for SELECT statement
-        @selectAllIfNullCondition NVARCHAR(max)
-        ,--Condition for checking if all parameters in SELECT procedure are NULL
-        @selectCondition NVARCHAR(max)
-        ,--SELECT statement condition
-        @updateParams NVARCHAR(max)
-        ,--Parameters for UPDATE procedure
-        @updateColumns NVARCHAR(max)
-        ,--List of columns for UPDATE statement
-        @updateDeleteCondition NVARCHAR(max)
-        ,--Condition for UPDATE and DELETE statement
-        @updateOutputCols NVARCHAR(max)
-        ,--List of UPDATE statement output columns to output calculated columns
-        @deleteParams NVARCHAR(max)
-        ,--Parameters for DELETE procedure
-        @insertParams NVARCHAR(max)
-        ,--Parameters for INSERT procedure
-        @insertColumns NVARCHAR(max)
-        ,--List of COLUMNS for INSERT statement
-        @insertOutputCols NVARCHAR(max)
-        ,--List of INSERT statement ouptup columns to output IDENTITY and calculated fields
-        @insertParamNames NVARCHAR(max)
-        ,--List of parameter names in Insert procedure
+    DECLARE @objId INT,
+        --ID of the Table
+        @schemaName SYSNAME,
+        --schema Name of the Table
+        @tableName SYSNAME,
+        --TableName
+        @dbName SYSNAME,
+        --Database name in which we are creating the procedures
+        @crlfXML NCHAR(7),
+        --XML representation of the CLRF
+        @crlf NCHAR(2),
+        --CLRF characters
+        @sql NVARCHAR(max),
+        --SQL code for particular steps
+        @msg NVARCHAR(max),
+        --A message
+        @suffixSelect SYSNAME,
+        --Suffix for SELECT procedure
+        @suffixUpdate SYSNAME,
+        --Suffix for UPDATE procedure
+        @suffixDelete SYSNAME,
+        --Suffix for Delete procedure
+        @suffixInsert SYSNAME,
+        --Suffix for INSERT procedure
+        @selectParams NVARCHAR(max),
+        --Parameters for SELECT procedure
+        @allColumns NVARCHAR(max),
+        --List of All columns in a table for SELECT statement
+        @selectAllIfNullCondition NVARCHAR(max),
+        --Condition for checking if all parameters in SELECT procedure are NULL
+        @selectCondition NVARCHAR(max),
+        --SELECT statement condition
+        @updateParams NVARCHAR(max),
+        --Parameters for UPDATE procedure
+        @updateColumns NVARCHAR(max),
+        --List of columns for UPDATE statement
+        @updateDeleteCondition NVARCHAR(max),
+        --Condition for UPDATE and DELETE statement
+        @updateOutputCols NVARCHAR(max),
+        --List of UPDATE statement output columns to output calculated columns
+        @deleteParams NVARCHAR(max),
+        --Parameters for DELETE procedure
+        @insertParams NVARCHAR(max),
+        --Parameters for INSERT procedure
+        @insertColumns NVARCHAR(max),
+        --List of COLUMNS for INSERT statement
+        @insertOutputCols NVARCHAR(max),
+        --List of INSERT statement ouptup columns to output IDENTITY and calculated fields
+        @insertParamNames NVARCHAR(max),
+        --List of parameter names in Insert procedure
         @isTooLongForPrint BIT --Sores info whether some of the procs is too long for PRINT
-    --Declaration of fields Table Variables
+        --Declaration of fields Table Variables
     DECLARE @pkFields TABLE (
         --Table variable for storing fields which are part of primary key
-        NAME SYSNAME
-        ,--field Name
+        NAME SYSNAME,
+        --field Name
         fieldType SYSNAME --Specified data type of the field
         )
     DECLARE @allFields TABLE (
-        NAME SYSNAME
-        ,--field name
-        isIdentity BIT
-        ,--specifies whether field is INDENTITY
-        isCalculated BIT
-        ,--specifies whether filed is Calculated field
+        NAME SYSNAME,
+        --field name
+        isIdentity BIT,
+        --specifies whether field is INDENTITY
+        isCalculated BIT,
+        --specifies whether filed is Calculated field
         fieldType SYSNAME --Specified data type of the field
         )
     --Table variable for storing scripts for execution
-    DECLARE @scripts TABLE (
-        id INT NOT NULL IDENTITY
-        ,script NVARCHAR(max)
-        )
+    DECLARE @scripts TABLE (id INT NOT NULL IDENTITY, script NVARCHAR(max))
 
     --Check if an execution mode is selected
     IF ((@executionMode & 7) = 0)
     BEGIN
-        SET @msg = N'You have to select at at leas one possible execution Mode (@executionMode)
+        SET @msg = 
+            N'You have to select at at leas one possible execution Mode (@executionMode)
     1 = Print the script Only
     2 = Output the script as SELECT resordset for longer procedures which is not possible output using PRINT
     4 = Execute and Commit
@@ -121,11 +120,7 @@ BEGIN
  
 You can also combine the Print and Execute Modes, but you cannot combine both execution modes'
 
-        RAISERROR (
-                @msg
-                ,11
-                ,1
-                )
+        RAISERROR (@msg, 11, 1)
 
         RETURN
     END
@@ -134,31 +129,23 @@ You can also combine the Print and Execute Modes, but you cannot combine both ex
     BEGIN
         SET @msg = N'You cannot specify Execute and Commit with Execute and Rollback Together'
 
-        RAISERROR (
-                @msg
-                ,11
-                ,1
-                )
+        RAISERROR (@msg, 11, 1)
 
         RETURN
     END
 
     --populate parameters and constants
-    SELECT @objID = OBJECT_ID(@objectName)
-        ,@dbName = DB_NAME()
-        ,@crlfXML = N'
-' + NCHAR(10)
-        ,--XML Representation of the CR+LF delimiter as we use FOR XML PATH ant this translates the original CR+LF to XML Equivalent. We need it to change it back
-        @crlf = NCHAR(13) + NCHAR(10)
-        ,--CR+LF delimiter used in script
-        @procPrefix = 'usp_'
-        ,--Specifies prefix to be added to all CRUD procedures
-        @suffixSelect = '_Select'
-        ,--Specifies suffix to be added to the Select Procedure
-        @suffixUpdate = '_Update'
-        ,--Specifies suffix to be added to the Update Procedure
-        @suffixDelete = '_Delete'
-        ,--Specifies suffix to be added to the Delete Procedure
+    SELECT @objID = OBJECT_ID(@objectName), @dbName = DB_NAME(), @crlfXML = N'
+' + NCHAR(10),
+        --XML Representation of the CR+LF delimiter as we use FOR XML PATH ant this translates the original CR+LF to XML Equivalent. We need it to change it back
+        @crlf = NCHAR(13) + NCHAR(10),
+        --CR+LF delimiter used in script
+        @suffixSelect = '_Select',
+        --Specifies suffix to be added to the Select Procedure
+        @suffixUpdate = '_Update',
+        --Specifies suffix to be added to the Update Procedure
+        @suffixDelete = '_Delete',
+        --Specifies suffix to be added to the Delete Procedure
         @suffixInsert = '_Insert' --Specifies suffix to be added to the Inser Procedure
 
     --Check whether object exists
@@ -166,18 +153,13 @@ You can also combine the Print and Execute Modes, but you cannot combine both ex
     BEGIN
         SET @msg = N'Object "' + @objectName + '" doesnt'' exist in database ' + QUOTENAME(@dbName)
 
-        RAISERROR (
-                @msg
-                ,11
-                ,1
-                )
+        RAISERROR (@msg, 11, 1)
 
         RETURN
     END
 
     --Populate table name and schema name
-    SELECT @schemaName = s.NAME
-        ,@tableName = o.NAME
+    SELECT @schemaName = s.NAME, @tableName = o.NAME
     FROM sys.objects o
     INNER JOIN sys.schemas s ON o.schema_id = s.schema_id
     WHERE o.object_id = @objId
@@ -186,44 +168,26 @@ You can also combine the Print and Execute Modes, but you cannot combine both ex
     --check whether object is table
     IF (@tableName IS NULL)
     BEGIN
-        SET @msg = N'Object "' + @objectName + '" is not User Table. Creating CRUD procedures is possible only on User Tables.'
+        SET @msg = N'Object "' + @objectName + 
+            '" is not User Table. Creating CRUD procedures is possible only on User Tables.'
 
-        RAISERROR (
-                @msg
-                ,11
-                ,1
-                )
+        RAISERROR (@msg, 11, 1)
 
         RETURN
     END
 
     --Get all table fields and store them in the @allFields table variable for construction of CRUD procedures
-    INSERT INTO @allFields (
-        NAME
-        ,isIdentity
-        ,isCalculated
-        ,fieldType
-        )
-    SELECT c.NAME
-        ,is_identity
-        ,is_computed
-        ,CASE 
-            WHEN t.NAME IN (
-                    N'char'
-                    ,N'nchar'
-                    ,N'varchar'
-                    ,N'nvarchar'
-                    )
+    INSERT INTO @allFields (NAME, isIdentity, isCalculated, fieldType)
+    SELECT c.NAME, is_identity, is_computed, CASE 
+            WHEN t.NAME IN (N'char', N'nchar', N'varchar', N'nvarchar')
                 THEN QUOTENAME(t.NAME) + N'(' + CASE 
                         WHEN c.max_length = - 1
                             THEN N'max'
                         ELSE CAST(c.max_length AS SYSNAME)
                         END + N')'
-            WHEN t.NAME IN (
-                    N'decimal'
-                    ,N'numeric'
-                    )
-                THEN QUOTENAME(t.NAME) + N'(' + CAST(c.precision AS SYSNAME) + N', ' + CAST(c.scale AS SYSNAME) + N')'
+            WHEN t.NAME IN (N'decimal', N'numeric')
+                THEN QUOTENAME(t.NAME) + N'(' + CAST(c.precision AS SYSNAME) + N', ' + CAST(c.scale AS SYSNAME) + 
+                    N')'
             ELSE QUOTENAME(t.NAME)
             END
     FROM sys.columns c
@@ -231,28 +195,17 @@ You can also combine the Print and Execute Modes, but you cannot combine both ex
     WHERE object_id = @objId
 
     --Get list of Primary Key Fields and store them in @pkFields table variable for construction of CRUD procedures
-    INSERT INTO @pkFields (
-        NAME
-        ,fieldType
-        )
-    SELECT c.NAME
-        ,CASE 
-            WHEN t.NAME IN (
-                    N'char'
-                    ,N'nchar'
-                    ,N'varchar'
-                    ,N'nvarchar'
-                    )
+    INSERT INTO @pkFields (NAME, fieldType)
+    SELECT c.NAME, CASE 
+            WHEN t.NAME IN (N'char', N'nchar', N'varchar', N'nvarchar')
                 THEN QUOTENAME(t.NAME) + N'(' + CASE 
                         WHEN c.max_length = - 1
                             THEN N'max'
                         ELSE CAST(c.max_length AS SYSNAME)
                         END + N')'
-            WHEN t.NAME IN (
-                    N'decimal'
-                    ,N'numeric'
-                    )
-                THEN QUOTENAME(t.NAME) + N'(' + CAST(c.precision AS SYSNAME) + N', ' + CAST(c.scale AS SYSNAME) + N')'
+            WHEN t.NAME IN (N'decimal', N'numeric')
+                THEN QUOTENAME(t.NAME) + N'(' + CAST(c.precision AS SYSNAME) + N', ' + CAST(c.scale AS SYSNAME) + 
+                    N')'
             ELSE QUOTENAME(t.NAME)
             END
     FROM sys.key_constraints kc
@@ -274,16 +227,13 @@ You can also combine the Print and Execute Modes, but you cannot combine both ex
                 )
             )
     BEGIN
-        SET @msg = N'Table "' + @objectName + '" does not have a Primary Key. There must exists a primary key prior generating CRUD procedures.'
+        SET @msg = N'Table "' + @objectName + 
+            '" does not have a Primary Key. There must exists a primary key prior generating CRUD procedures.'
 
-        RAISERROR (
-                @msg
-                ,11
-                ,1
-                )
+        RAISERROR (@msg, 11, 1)
     END
 
-    --list of output columns for INSERT statement (ouptup of Identity and calculated fields)
+    --list of output columns for INSERT statement (output of Identity and calculated fields)
     SELECT @insertOutputCols = STUFF(REPLACE((
                     SELECT N'        ' + @crlf + N'        ,inserted.' + QUOTENAME(c.NAME)
                     FROM @allFields c
@@ -332,7 +282,8 @@ You can also combine the Print and Execute Modes, but you cannot combine both ex
 
     --condition for UPDATE and DELETE statement
     SET @updateDeleteCondition = STUFF(REPLACE((
-                    SELECT N'        ' + @crlf + N'        AND' + @crlf + '        ' + QUOTENAME(c.NAME) + N' = @' + c.NAME
+                    SELECT N'        ' + @crlf + N'        AND' + @crlf + '        ' + QUOTENAME(c.NAME) + 
+                        N' = @' + c.NAME
                     FROM @pkFields c
                     FOR XML PATH(N'')
                     ), /*@crlfXML*/ '&#x0D;', '' /*@crlf*/), 1, 23, N'')
@@ -344,7 +295,8 @@ You can also combine the Print and Execute Modes, but you cannot combine both ex
                 ), 1, 5, N'')
     --Select condition (for SELECT ONE)
     SET @selectCondition = STUFF(REPLACE((
-                    SELECT N'            ' + @crlf + N'            AND' + @crlf + N'            (@' + c.NAME + N' IS NULL OR ' + QUOTENAME(c.NAME) + N' = @' + c.NAME + N')'
+                    SELECT N'            ' + @crlf + N'            AND' + @crlf + N'            (@' + c.NAME + 
+                        N' IS NULL OR ' + QUOTENAME(c.NAME) + N' = @' + c.NAME + N')'
                     FROM @pkFields c
                     FOR XML PATH(N'')
                     ), /*@crlfXML*/ '&#x0D;', '' /*@crlf*/), 1, 31, N'')
@@ -411,9 +363,13 @@ You can also combine the Print and Execute Modes, but you cannot combine both ex
     --SELECT ALL PROCEDURE
     IF (@dropExistingProcedures = 1)
     BEGIN
-        SET @sql = N'--Drop existing SELECT ALL CRUD Procedure
-IF (EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(''' + QUOTENAME(@schemaName) + N'.[' + @procPrefix + @tableName + @suffixSelect + N'All]'') AND type = ''P''))
-    DROP PROCEDURE ' + QUOTENAME(@schemaName) + N'.[' + @procPrefix + @tableName + @suffixSelect + N'All]
+        SET @sql = 
+            N'--Drop existing SELECT ALL CRUD Procedure
+IF (EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(''' 
+            + QUOTENAME(@schemaName) + N'.[' + @procPrefix + @tableName + @suffixSelect + 
+            N'All]'') AND type = ''P''))
+    DROP PROCEDURE ' + QUOTENAME(@schemaName) + N'.[' + 
+            @procPrefix + @tableName + @suffixSelect + N'All]
 '
 
         INSERT INTO @scripts (script)
@@ -421,19 +377,26 @@ IF (EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(''' + QUOTENAM
     END
 
     SET @sql = N'-- =======================================================
--- Author:      ' + QUOTENAME(SUSER_SNAME()) + N'
--- Create date: ' + CONVERT(NVARCHAR(10), GETDATE(), 111) + N'
--- Description: Selects all records from table ' + QUOTENAME(@schemaName) + '.' + QUOTENAME(@tableName) + N'
+-- Author:      ' + 
+        QUOTENAME(SUSER_SNAME()) + N'
+-- Create date: ' + CONVERT(NVARCHAR(10), GETDATE(), 111) + 
+        N'
+-- Description: Selects all records from table ' + QUOTENAME(@schemaName) + '.' + QUOTENAME(
+            @tableName) + 
+        N'
 -- =======================================================
-CREATE PROCEDURE ' + QUOTENAME(@schemaName) + N'.[' + @procPrefix + @tableName + @suffixSelect + N'All]
-' + N'
+CREATE PROCEDURE ' + QUOTENAME
+        (@schemaName) + N'.[' + @procPrefix + @tableName + @suffixSelect + N'All]
+' + 
+        N'
 AS
 BEGIN
     SET NOCOUNT ON;
  
     SELECT
 ' + @allColumns + N'
-    FROM ' + QUOTENAME(@schemaName) + N'.' + QUOTENAME(@tableName) + N'
+    FROM ' + QUOTENAME(
+            @schemaName) + N'.' + QUOTENAME(@tableName) + N'
 END
 ';
 
@@ -443,9 +406,13 @@ END
     --SELECT BY PRIMARY KEY PROCEDURE
     IF (@dropExistingProcedures = 1)
     BEGIN
-        SET @sql = N'--Drop existing SELECT BY PRIMARY KEY CRUD Procedure
-IF (EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(''' + QUOTENAME(@schemaName) + N'.[' + @procPrefix + @tableName + @suffixSelect + N'ByPk]'') AND type = ''P''))
-    DROP PROCEDURE ' + QUOTENAME(@schemaName) + N'.[' + @procPrefix + @tableName + @suffixSelect + N'ByPk]
+        SET @sql = 
+            N'--Drop existing SELECT BY PRIMARY KEY CRUD Procedure
+IF (EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(''' 
+            + QUOTENAME(@schemaName) + N'.[' + @procPrefix + @tableName + @suffixSelect + 
+            N'ByPk]'') AND type = ''P''))
+    DROP PROCEDURE ' + QUOTENAME(@schemaName) + N'.[' + 
+            @procPrefix + @tableName + @suffixSelect + N'ByPk]
 '
 
         INSERT INTO @scripts (script)
@@ -453,29 +420,39 @@ IF (EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(''' + QUOTENAM
     END
 
     SET @sql = N'-- =======================================================
--- Author:      ' + QUOTENAME(SUSER_SNAME()) + N'
--- Create date: ' + CONVERT(NVARCHAR(10), GETDATE(), 111) + N'
--- Description: Selects records from table ' + QUOTENAME(@schemaName) + '.' + QUOTENAME(@tableName) + N'
+-- Author:      ' + 
+        QUOTENAME(SUSER_SNAME()) + N'
+-- Create date: ' + CONVERT(NVARCHAR(10), GETDATE(), 111) + 
+        N'
+-- Description: Selects records from table ' + QUOTENAME(@schemaName) + '.' + QUOTENAME(
+            @tableName) + 
+        N'
 -- =======================================================
-CREATE PROCEDURE ' + QUOTENAME(@schemaName) + N'.[' + @procPrefix + @tableName + @suffixSelect + N'ByPk]
-' + @selectParams + N'
+CREATE PROCEDURE ' + QUOTENAME
+        (@schemaName) + N'.[' + @procPrefix + @tableName + @suffixSelect + N'ByPk]
+' + @selectParams + 
+        N'
 AS
 BEGIN
     SET NOCOUNT ON;
  
-    IF (' + @selectAllIfNullCondition + N')
+    IF (' + @selectAllIfNullCondition + 
+        N')
     BEGIN
         SELECT
 ' + @allColumns + N'
-        FROM ' + QUOTENAME(@schemaName) + N'.' + QUOTENAME(@tableName) + N'
+        FROM ' + QUOTENAME(@schemaName) + N'.' 
+        + QUOTENAME(@tableName) + N'
     END
     ELSE
     BEGIN
         SELECT
-' + @allColumns + N'
+' + @allColumns + 
+        N'
         FROM ' + QUOTENAME(@schemaName) + N'.' + QUOTENAME(@tableName) + N'
         WHERE
-' + @selectCondition + N'
+' + 
+        @selectCondition + N'
     END
 END
 ';
@@ -486,9 +463,13 @@ END
     --UPDATE PROCEDURE
     IF (@dropExistingProcedures = 1)
     BEGIN
-        SET @sql = N'--Drop existing UPDATE CRUD Procedure
-IF (EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(''' + QUOTENAME(@schemaName) + N'.[' + @procPrefix + @tableName + @suffixUpdate + N']'') AND type = ''P''))
-    DROP PROCEDURE ' + QUOTENAME(@schemaName) + N'.[' + @procPrefix + @tableName + @suffixUpdate + N']
+        SET @sql = 
+            N'--Drop existing UPDATE CRUD Procedure
+IF (EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(''' 
+            + QUOTENAME(@schemaName) + N'.[' + @procPrefix + @tableName + @suffixUpdate + 
+            N']'') AND type = ''P''))
+    DROP PROCEDURE ' + QUOTENAME(@schemaName) + N'.[' + @procPrefix 
+            + @tableName + @suffixUpdate + N']
 '
 
         INSERT INTO @scripts (script)
@@ -496,26 +477,27 @@ IF (EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(''' + QUOTENAM
     END
 
     SET @sql = N'-- =======================================================
--- Author:      ' + QUOTENAME(SUSER_SNAME()) + N'
--- Create date: ' + CONVERT(NVARCHAR(10), GETDATE(), 111) + N'
--- Description: Updates record in table ' + QUOTENAME(@schemaName) + '.' + QUOTENAME(@tableName) + N'
+-- Author:      ' + 
+        QUOTENAME(SUSER_SNAME()) + N'
+-- Create date: ' + CONVERT(NVARCHAR(10), GETDATE(), 111) + 
+        N'
+-- Description: Updates record in table ' + QUOTENAME(@schemaName) + '.' + QUOTENAME(
+            @tableName) + 
+        N'
 -- =======================================================
-CREATE PROCEDURE ' + QUOTENAME(@schemaName) + N'.[' + @procPrefix + @tableName + @suffixUpdate + N']
-' + @updateParams + N'
+CREATE PROCEDURE ' + QUOTENAME
+        (@schemaName) + N'.[' + @procPrefix + @tableName + @suffixUpdate + N']
+' + @updateParams + 
+        N'
 AS
 BEGIN
     SET NOCOUNT ON;
  
-    UPDATE ' + QUOTENAME(@schemaName) + N'.' + QUOTENAME(@tableName) + N' SET
-' + @updateColumns + CASE 
-            WHEN @outputIndentityCalcFields = 1
-                AND @updateOutputCols <> N''
-                AND @updateOutputCols IS NOT NULL
-                THEN N'
+    UPDATE ' + QUOTENAME(@schemaName) + N'.' + QUOTENAME(
+            @tableName) + N' SET
+' + @updateColumns + N'
     OUTPUT
-' + @updateOutputCols
-            ELSE N''
-            END + N'
+        inserted.*
     WHERE
 ' + @updateDeleteCondition + N'
 END
@@ -527,9 +509,13 @@ END
     --DELETE PROCEDURE
     IF (@dropExistingProcedures = 1)
     BEGIN
-        SET @sql = N'--Drop existing DELETE CRUD Procedure
-IF (EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(''' + QUOTENAME(@schemaName) + N'.[' + @procPrefix + @tableName + @suffixDelete + N']'') AND type = ''P''))
-    DROP PROCEDURE ' + QUOTENAME(@schemaName) + N'.[' + @procPrefix + @tableName + @suffixDelete + N']
+        SET @sql = 
+            N'--Drop existing DELETE CRUD Procedure
+IF (EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(''' 
+            + QUOTENAME(@schemaName) + N'.[' + @procPrefix + @tableName + @suffixDelete + 
+            N']'') AND type = ''P''))
+    DROP PROCEDURE ' + QUOTENAME(@schemaName) + N'.[' + @procPrefix 
+            + @tableName + @suffixDelete + N']
 '
 
         INSERT INTO @scripts (script)
@@ -537,17 +523,24 @@ IF (EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(''' + QUOTENAM
     END
 
     SET @sql = N'-- =======================================================
--- Author:      ' + QUOTENAME(SUSER_SNAME()) + N'
--- Create date: ' + CONVERT(NVARCHAR(10), GETDATE(), 111) + N'
--- Description: Deletes recors from table ' + QUOTENAME(@schemaName) + '.' + QUOTENAME(@tableName) + N'
+-- Author:      ' + 
+        QUOTENAME(SUSER_SNAME()) + N'
+-- Create date: ' + CONVERT(NVARCHAR(10), GETDATE(), 111) + 
+        N'
+-- Description: Deletes recors from table ' + QUOTENAME(@schemaName) + '.' + QUOTENAME(
+            @tableName) + 
+        N'
 -- =======================================================
-CREATE PROCEDURE ' + QUOTENAME(@schemaName) + N'.[' + @procPrefix + @tableName + @suffixDelete + N']
-' + @deleteParams + N'
+CREATE PROCEDURE ' + QUOTENAME
+        (@schemaName) + N'.[' + @procPrefix + @tableName + @suffixDelete + N']
+' + @deleteParams + 
+        N'
 AS
 BEGIN
     SET NOCOUNT ON;
  
-    DELETE FROM ' + QUOTENAME(@schemaName) + N'.' + QUOTENAME(@tableName) + N'
+    DELETE FROM ' + QUOTENAME(@schemaName) + N'.' + 
+        QUOTENAME(@tableName) + N'
     WHERE
 ' + @updateDeleteCondition + N'
 END
@@ -559,9 +552,13 @@ END
     --INSERT PROCEDURE
     IF (@dropExistingProcedures = 1)
     BEGIN
-        SET @sql = N'--Drop existing INSERT CRUD Procedure
-IF (EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(''' + QUOTENAME(@schemaName) + N'.[' + @procPrefix + @tableName + @suffixInsert + N']'') AND type = ''P''))
-    DROP PROCEDURE ' + QUOTENAME(@schemaName) + N'.[' + @procPrefix + @tableName + @suffixInsert + N']
+        SET @sql = 
+            N'--Drop existing INSERT CRUD Procedure
+IF (EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(''' 
+            + QUOTENAME(@schemaName) + N'.[' + @procPrefix + @tableName + @suffixInsert + 
+            N']'') AND type = ''P''))
+    DROP PROCEDURE ' + QUOTENAME(@schemaName) + N'.[' + @procPrefix 
+            + @tableName + @suffixInsert + N']
 '
 
         INSERT INTO @scripts (script)
@@ -569,27 +566,28 @@ IF (EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(''' + QUOTENAM
     END
 
     SET @sql = N'-- =======================================================
--- Author:      ' + QUOTENAME(SUSER_SNAME()) + N'
--- Create date: ' + CONVERT(NVARCHAR(10), GETDATE(), 111) + N'
--- Description: Inserts records into table ' + QUOTENAME(@schemaName) + '.' + QUOTENAME(@tableName) + N'
+-- Author:      ' + 
+        QUOTENAME(SUSER_SNAME()) + N'
+-- Create date: ' + CONVERT(NVARCHAR(10), GETDATE(), 111) + 
+        N'
+-- Description: Inserts records into table ' + QUOTENAME(@schemaName) + '.' + QUOTENAME(
+            @tableName) + 
+        N'
 -- =======================================================
-CREATE PROCEDURE ' + QUOTENAME(@schemaName) + N'.[' + @procPrefix + @tableName + @suffixInsert + N']
-' + @insertParams + N'
+CREATE PROCEDURE ' + QUOTENAME
+        (@schemaName) + N'.[' + @procPrefix + @tableName + @suffixInsert + N']
+' + @insertParams + 
+        N'
 AS
 BEGIN
     SET NOCOUNT ON;
  
-    INSERT INTO ' + QUOTENAME(@schemaName) + N'.' + QUOTENAME(@tableName) + N' (
+    INSERT INTO ' + QUOTENAME(@schemaName) + N'.' + 
+        QUOTENAME(@tableName) + N' (
 ' + @insertColumns + N'
-    )' + CASE 
-            WHEN @outputIndentityCalcFields = 1
-                AND @insertOutputCols <> N''
-                AND @insertOutputCols IS NOT NULL
-                THEN N'
+    )' + N'
     OUTPUT
-' + @insertOutputCols
-            ELSE N''
-            END + N'
+        inserted.*
     SELECT
 ' + @insertParamNames + N'
 END
@@ -605,7 +603,7 @@ END
     ORDER BY id
 
     --if EXECUTION mode contains 2 we should output the code using SELECT
-    --Script generate using the SELECT can be saved by right lick on the result and
+    --Script generate using the SELECT can be saved by right click on the result and
     --select Save Result AS and storing it as CSV
     IF (
             (@executionMode & 2) = 2
@@ -698,9 +696,5 @@ END
 
     DEALLOCATE cr
 END
-GO
-
-EXECUTE sp_ms_marksystemobject 'dbo.sp_makeCRUD'
-GO
 
 
