@@ -961,7 +961,21 @@ namespace SumDataTierGenerator.CodeGenerationFactory
             #region run query to get the object
 
             AppendLine();
-            AppendLine("IDataReader dataReader = GatewayHelper.ExecuteReaderFromStoredProcedure(\"usp_zzz_autogen_crud__#TABLE_NAME#_Insert\", ((IFieldValues)dataObject).FieldValues);");
+            AppendLine("FieldValue[] fieldValueArray = ((IFieldValues)dataObject).FieldValues;");
+            AppendLine("List<FieldValue> fieldValueList = new List<FieldValue>();");
+            AppendLine("foreach (var fieldValue in fieldValueArray)");
+            AppendLine("{");
+            IndentIncrement();
+            AppendLine("if (!fieldValue.FieldDefinition.IsReadOnly)");
+            AppendLine("{");
+            IndentIncrement();
+            AppendLine("fieldValueList.Add(fieldValue);");
+            IndentDecrement();
+            AppendLine("}");
+            IndentDecrement();
+            AppendLine("}");
+            AppendLine();
+            AppendLine("IDataReader dataReader = GatewayHelper.ExecuteReaderFromStoredProcedure(\"usp_zzz_autogen_crud__#TABLE_NAME#_Insert\", fieldValueList.ToArray());");
             AppendLine();
             AppendLine("if(dataReader.Read()){");
             IndentIncrement();
@@ -988,15 +1002,28 @@ namespace SumDataTierGenerator.CodeGenerationFactory
             #region variable declaration
 
             AppendLine();
-            AppendLine("#CONCRETE_DATA_ENTITY_TYPE_NAME# newDataObject = null;");
 
             #endregion
 
             #region run query to get the object
 
             AppendLine();
+            AppendLine("FieldValue[] fieldValueArray = ((IFieldValues)dataObject).FieldValues;");
+            AppendLine("List<FieldValue> fieldValueList = new List<FieldValue>();");
+            AppendLine("foreach (var fieldValue in fieldValueArray)");
+            AppendLine("{");
+            IndentIncrement();
+            AppendLine("if (!fieldValue.FieldDefinition.IsReadOnly)");
+            AppendLine("{");
+            IndentIncrement();
+            AppendLine("fieldValueList.Add(fieldValue);");
+            IndentDecrement();
+            AppendLine("}");
+            IndentDecrement();
+            AppendLine("}");
+            AppendLine();
             AppendLine("DataTable tbl = new DataTable(\"#TABLE_NAME#\");");
-            AppendLine("using(IDataReader dataReader = GatewayHelper.ExecuteReaderFromStoredProcedure(\"usp_zzz_autogen_crud__#TABLE_NAME#_Insert\", ((IFieldValues)dataObject).FieldValues)){");
+            AppendLine("using(IDataReader dataReader = GatewayHelper.ExecuteReaderFromStoredProcedure(\"usp_zzz_autogen_crud__#TABLE_NAME#_Insert\", fieldValueList.ToArray())){");
             IndentIncrement();
             AppendLine("tbl.Load(dataReader);");
             AppendLine("dataReader.Close();");

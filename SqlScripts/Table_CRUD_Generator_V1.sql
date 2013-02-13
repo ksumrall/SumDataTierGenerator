@@ -20,7 +20,7 @@ BEGIN
 
     DECLARE @name NVARCHAR(100);
 
-    WHILE @i < @max
+    WHILE @i <= @max
     BEGIN
         SELECT @name = NAME
         FROM @TableName
