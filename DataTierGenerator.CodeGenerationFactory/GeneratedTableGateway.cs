@@ -955,14 +955,14 @@ namespace SumDataTierGenerator.CodeGenerationFactory
 
             AppendLine();
             AppendLine("#CONCRETE_DATA_ENTITY_TYPE_NAME# newDataObject = null;");
+            AppendLine("List<FieldValue> fieldValueList = new List<FieldValue>();");
+            AppendLine("FieldValue[] fieldValueArray = ((IFieldValues)dataObject).FieldValues;");
 
             #endregion
 
             #region run query to get the object
 
             AppendLine();
-            AppendLine("FieldValue[] fieldValueArray = ((IFieldValues)dataObject).FieldValues;");
-            AppendLine("List<FieldValue> fieldValueList = new List<FieldValue>();");
             AppendLine("foreach (var fieldValue in fieldValueArray)");
             AppendLine("{");
             IndentIncrement();
@@ -1002,14 +1002,14 @@ namespace SumDataTierGenerator.CodeGenerationFactory
             #region variable declaration
 
             AppendLine();
+            AppendLine("List<FieldValue> fieldValueList = new List<FieldValue>();");
+            AppendLine("FieldValue[] fieldValueArray = ((IFieldValues)dataObject).FieldValues;");
 
             #endregion
 
             #region run query to get the object
 
             AppendLine();
-            AppendLine("FieldValue[] fieldValueArray = ((IFieldValues)dataObject).FieldValues;");
-            AppendLine("List<FieldValue> fieldValueList = new List<FieldValue>();");
             AppendLine("foreach (var fieldValue in fieldValueArray)");
             AppendLine("{");
             IndentIncrement();
